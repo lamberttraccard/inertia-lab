@@ -7,13 +7,17 @@ Status: approved, pending implementation plan
 
 A Laravel + Inertia + React application whose only subject is Inertia itself. The reader clones it, runs one command, and walks through chapters. Each chapter isolates one Inertia concept, lets the reader trigger it, and shows both halves of what happened: the wire on the client side, and the prop resolution on the server side.
 
-Primary reader: an engineering manager who clones and runs the app, evaluating the Inertia monolith chosen in the BKO V3 ADR, section 3 (Confluence DEM 5575213079). Secondary reader: BKO V3 developers onboarding onto Inertia.
+Primary reader: an engineering manager who clones and runs the app, evaluating the Inertia monolith chosen in the BKO V3 ADR, section 3 (Confluence DEM 5575213079). Secondary reader: BKO V3 developers onboarding onto Inertia. Both may be English speakers, which is why the application is written in English.
 
-The success criterion is narrow and testable: after an hour in the app, the reader can explain what travels over the wire on an Inertia visit, and can name which prop type to reach for in a given situation and why.
+**The reader arrives with a specific mental model, and shifting it is the point of the project.** They are used to conventional applications: a backend exposing an API, a frontend consuming it. Every question they will ask is framed by that model. Where is the endpoint. How does the component get its data if it does not fetch. What replaces my loading state, my client cache, my API contract. A chapter that explains an Inertia feature without answering the question underneath it will be read as a trick rather than a mechanism.
+
+So the lab is built to relocate that model, not merely to enumerate features. Every chapter is designed to be understood by someone whose reflex is `fetch()`.
+
+The success criterion is narrow and testable: after an hour in the app, the reader can trace what travels over the wire on an Inertia visit, can say where the API layer went and what took over each of its jobs, and can name which prop type to reach for in a given situation and why.
 
 ## 2. Non-goals
 
-- No comparison against API + SPA. The subject is the mechanism, not the architecture debate. The ADR already made that call.
+- No argued comparison against API + SPA: no benchmark, no scorecard, no "look how much less code" claim. The ADR already made that call and the lab does not relitigate it. This is distinct from the mental-model translation described in section 5.6, which is a teaching device: naming what an API-first developer would have written, so they can locate the equivalent here. Translating is in scope, arguing is not.
 - No SSR chapter. The target is an internal application with no SEO requirement. The README states this in one paragraph so the question does not resurface in review.
 - No production concerns: deployment, scaling, auth hardening, i18n.
 - No Equativ domain. The sample domain is deliberately generic so that domain knowledge is never a prerequisite.
@@ -65,7 +69,7 @@ No login wall. The app boots as an authenticated demo user, with a user switcher
 
 ## 5. The teaching layer
 
-Four devices, shared by every chapter. This is the expensive part of the build; once it exists, chapters are repetitive and cheap.
+Six devices, shared by every chapter. This is the expensive part of the build; once it exists, chapters are repetitive and cheap.
 
 ### 5.1 Wire strip
 
@@ -99,16 +103,33 @@ Inertia 3 ships its own DevTools: a Chrome extension plus a server-side recorder
 
 The lab does not compete with them and does not reimplement them. The in-page strip exists because it sits next to the lesson, needs no extension install, and is narrated by the chapter. The official DevTools get their own chapter in wave 3, because they are the tool the team will actually use day to day. Where the two overlap, the chapter says so.
 
+### 5.6 Mental-model bridge
+
+The device that addresses the reader's starting point, present in three forms.
+
+**The round-trip diagram**, on every chapter page. A small schematic of the full path: browser event, HTTP request, route, controller, prop resolution, page object, wire, client router, component render. After each visit, the segments that were actually exercised light up, annotated with what happened there. A partial reload lights up a shorter path than a first load; a deferred prop lights up a second pass; a prefetch lights up a path that ends in the cache instead of the screen. The reader watches the same diagram change shape across chapters, which is how the mechanism becomes a model rather than a list of features.
+
+**The translation callout**, one per chapter, in a fixed format: *"In an API-first application you would have written this. Here, that job is done by this, or it no longer exists because of that."* Written flatly, without advocacy. Examples: a REST controller plus an API resource becomes the props array; the client-side loading state becomes deferred props or it disappears with the request; client cache invalidation after a mutation disappears because the server redirect returns the new page object; the OpenAPI contract becomes the TypeScript type of the page props.
+
+**The "where did it go?" reference page**, reachable from the home page and linked from every callout. One row per artefact an API-first developer expects to write: REST endpoint, serializer or API resource, client-side router, `fetch` or axios call, loading and error state, client cache and its invalidation, optimistic UI, API contract and its versioning, CORS, token authentication, pagination metadata. Each row says what plays that role in Inertia, or why the role stops existing, and links to the chapter that demonstrates it. This page is the one artefact most likely to be read on its own and quoted in a meeting, so it is written to stand alone.
+
+### 5.7 Chapter shell
+
+Every chapter has the same skeleton, so the reader learns the format once and then only meets new content. In order: the question the chapter answers, in plain language and without Inertia vocabulary; the thing to try, with real controls; what to watch in the wire strip, the trace and the diagram; the translation callout; the source view; when to reach for this in practice, and when not to; the link to the official documentation page.
+
+The chapters form an ordered path with previous and next links, so the app reads as a course rather than a reference. A glossary page defines the recurring vocabulary once (visit, page object, prop, partial reload, shared props, merge intent) and every chapter links terms to it on first use.
+
 ## 6. Chapter map
 
 Chapters are grouped into three build waves. Each wave is independently demonstrable. Every chapter links to its page in the official v3 documentation, and the chapter set mirrors the documentation's own taxonomy minus SSR, so coverage is auditable rather than a matter of memory.
 
 ### Wave 1: foundation, protocol and the full prop taxonomy
 
-Foundation: home page with the chapter map, the anatomy of the page object, the header reference, and the versions actually installed, read from `composer.lock` and `package-lock.json` rather than hardcoded.
+Foundation: home page with the chapter map, the anatomy of the page object, the header reference, the glossary, the "where did it go?" reference page, and the versions actually installed, read from `composer.lock` and `package-lock.json` rather than hardcoded.
 
 Protocol chapters:
 
+0. The mental-model switch, and the first chapter anyone reads. Side by side, the same screen described twice: the path the reader expects (component mounts, calls an endpoint, receives JSON, sets state, renders, handles loading and error) and the path that actually runs here (link click, HTTP request, controller, props, page object, component render). No claim that one is better. The chapter ends by naming the three things that surprise people most: there is no endpoint for this screen, the component never fetches anything, and the server decides what the client receives.
 1. `how-it-works` and `the-protocol`: initial document (`<script data-page="app" type="application/json">` followed by `<div id="app">`, which replaced the `data-page` attribute in version 3) versus an `X-Inertia: true` visit. Anatomy of the page object.
 2. `responses`, `routing`, `pages`: `Inertia::render()`, component resolution, `ensure_pages_exist` and `ComponentNotFoundException`, `transformComponentUsing()`, `resolveUrlUsing()`.
 3. `redirects`: 302 handling, the GET-after-PUT/PATCH/DELETE rule, `Inertia::back()`, `Inertia::location()` with its 409 and `X-Inertia-Location`.
@@ -158,11 +179,11 @@ app/Http/Controllers/Chapters/      one thin controller per chapter
 app/Lab/                            Lab::props(), the trace, the chapter registry
 app/Http/Middleware/LabTrace.php    injects the trace into the response
 resources/js/pages/chapters/        one page component per chapter
-resources/js/lab/                   wire strip, source view, chapter shell
+resources/js/lab/                   wire strip, source view, round-trip diagram, chapter shell
 docs/superpowers/specs/             this document
 ```
 
-The chapter registry is a single source of truth: slug, title, concept, route, server file, client file, documentation URL, wave. The home page, the navigation and the coverage test all read from it. Adding a chapter means adding one registry entry, one controller and one page component.
+The chapter registry is a single source of truth: slug, title, the plain-language question the chapter answers, concept, route, server file, client file, translation callout, documentation URL, order and wave. The home page, the navigation, the ordered path and the coverage test all read from it. Adding a chapter means adding one registry entry, one controller and one page component.
 
 ## 8. Error handling
 
@@ -174,14 +195,15 @@ The lab's own instrumentation fails loudly. If a source view cannot read a file,
 
 - One Pest feature test per chapter route, asserting the component and the expected props through `AssertableInertia`, including partial-reload assertions where the chapter covers them.
 - A test per prop type asserting that an instrumented prop from `Lab::props()` behaves identically to the raw prop.
-- A registry consistency test: every chapter has a route that returns 200, an existing page component, existing source-view file paths, and a documentation URL.
+- A registry consistency test: every chapter has a route that returns 200, an existing page component, existing source-view file paths, a documentation URL, a plain-language question, and a translation callout. The last two are asserted because they are the parts most likely to be skipped under time pressure, and they are the parts that carry the teaching.
+- A test asserting every row of the "where did it go?" page links to a chapter that exists.
 - No browser or end-to-end tests in scope.
 
 ## 10. Assumptions and open questions
 
 Assumptions, stated so they can be corrected cheaply:
 
-- Application text, code, comments and README are in English, per the project convention. The chapter prose can be switched to French on request, since the first reader is a French-speaking manager.
+- Application text, code, comments and README are in English. Confirmed rather than assumed: the demo is expected to be handed to English-speaking readers beyond the first one.
 - The reader has PHP 8.4, Composer and Node available. `git clone`, `composer install`, `npm install`, `composer run dev` is the entire setup, with SQLite created and seeded by a post-install script.
 
 Open question:
