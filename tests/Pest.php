@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 /*
@@ -47,4 +49,15 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+/**
+ * The asset version Inertia's own middleware would compute right now. A built
+ * public/build/manifest.json changes this from '', so simulated Inertia requests
+ * must send the real value instead of a hardcoded '' or they trip the built-in
+ * version-mismatch redirect (409) as soon as the frontend has been built once.
+ */
+function currentInertiaVersion(): string
+{
+    return (string) app(HandleInertiaRequests::class)->version(Request::create('/'));
 }

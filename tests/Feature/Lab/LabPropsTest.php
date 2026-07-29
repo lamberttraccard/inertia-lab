@@ -2,8 +2,11 @@
 
 use App\Lab\Lab;
 use App\Lab\Trace\TraceCollector;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Inertia\AlwaysProp;
 use Inertia\DeferProp;
+use Inertia\Inertia;
 use Inertia\MergeProp;
 use Inertia\OnceProp;
 use Inertia\OptionalProp;
@@ -55,6 +58,17 @@ it('times a prop only when it is actually resolved', function () {
     $prop();
 
     expect(app(TraceCollector::class)->declared()['slow']['ms'])->toBeGreaterThan(15);
+});
+
+it('resolves a prop closure through the container the way real Inertia resolves callables', function () {
+    Route::middleware('web')->get('/di-fixture', fn (Lab $lab) => Inertia::render('welcome', [
+        'agent' => $lab->closure('agent', fn (Request $request) => $request->getRequestUri()),
+    ]));
+
+    $response = $this->withHeaders(['X-Inertia' => 'true', 'X-Inertia-Version' => currentInertiaVersion()])->get('/di-fixture');
+
+    $response->assertOk();
+    expect($response->json('props.agent'))->toBe('/di-fixture');
 });
 
 it('does not invoke callable-shaped strings the way real Inertia would not', function () {
