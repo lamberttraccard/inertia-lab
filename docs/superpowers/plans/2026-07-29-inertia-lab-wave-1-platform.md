@@ -408,13 +408,6 @@ it('gives every chapter the teaching fields that carry the pedagogy', function (
     }
 });
 
-it('points every chapter at source files that exist', function () {
-    foreach (app(ChapterRegistry::class)->all() as $chapter) {
-        expect(file_exists(base_path($chapter->serverFile)))->toBeTrue("missing {$chapter->serverFile}")
-            ->and(file_exists(base_path($chapter->clientFile)))->toBeTrue("missing {$chapter->clientFile}");
-    }
-});
-
 it('links chapters into a path', function () {
     $registry = app(ChapterRegistry::class);
     $first = $registry->all()[0];
@@ -528,7 +521,7 @@ class ChapterRegistry
 php artisan test --filter=ChapterRegistryTest
 ```
 
-Expected: the first, second and fourth tests PASS; the third FAILS because the chapter 0 files do not exist yet. Leave it failing and note it: Task 13 creates those files. Do not weaken the test.
+Expected: PASS. The assertion that every declared source file exists on disk is deliberately not here: chapter 0's files do not exist until Task 13, and a task must not end on a red test. Task 13 adds that assertion once the files it guards are real.
 
 - [ ] **Step 6: Commit**
 
@@ -1996,7 +1989,18 @@ git add -A && git commit -m "Add chapter shell, home, glossary and the where-did
 
 **Interfaces:**
 - Consumes: `Lab`, `ChapterRegistry`, `ChapterShell`
-- Produces: route `chapters.mental-model`, and a green `ChapterRegistryTest` (its third test has been failing since Task 3 because these files did not exist)
+- Produces: route `chapters.mental-model`, and the source-file assertion that Task 3 deliberately deferred to here
+
+This task also adds to `tests/Feature/Lab/ChapterRegistryTest.php`, now that the files it guards exist:
+
+```php
+it('points every chapter at source files that exist', function () {
+    foreach (app(App\Lab\ChapterRegistry::class)->all() as $chapter) {
+        expect(file_exists(base_path($chapter->serverFile)))->toBeTrue("missing {$chapter->serverFile}")
+            ->and(file_exists(base_path($chapter->clientFile)))->toBeTrue("missing {$chapter->clientFile}");
+    }
+});
+```
 
 - [ ] **Step 1: Write the failing test**
 
