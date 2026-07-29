@@ -56,3 +56,20 @@ it('times a prop only when it is actually resolved', function () {
 
     expect(app(TraceCollector::class)->declared()['slow']['ms'])->toBeGreaterThan(15);
 });
+
+it('does not invoke callable-shaped strings the way real Inertia would not', function () {
+    $prop = app(Lab::class)->always('formatter', 'strtoupper');
+
+    expect($prop())->toBe('strtoupper');
+});
+
+it('still times a genuine closure passed to always', function () {
+    $prop = app(Lab::class)->always('slow', function () {
+        usleep(20_000);
+
+        return 'value';
+    });
+
+    expect($prop())->toBe('value')
+        ->and(app(TraceCollector::class)->declared()['slow']['ms'])->toBeGreaterThan(15);
+});

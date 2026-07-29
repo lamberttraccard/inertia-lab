@@ -66,6 +66,8 @@ class Lab
 
     private function wrap(string $key, mixed $value): mixed
     {
-        return is_callable($value) ? fn () => $this->trace->time($key, $value) : $value;
+        return (is_object($value) && is_callable($value))
+            ? fn () => $this->trace->time($key, $value)
+            : $value;
     }
 }

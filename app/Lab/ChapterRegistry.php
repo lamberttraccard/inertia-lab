@@ -35,17 +35,20 @@ class ChapterRegistry
 
     public function next(string $slug): ?Chapter
     {
-        $chapters = $this->all();
-        $index = array_search($slug, array_map(fn (Chapter $c) => $c->slug, $chapters), true);
+        $index = $this->indexOf($slug);
 
-        return $index === false ? null : ($chapters[$index + 1] ?? null);
+        return $index === false ? null : ($this->all()[$index + 1] ?? null);
     }
 
     public function previous(string $slug): ?Chapter
     {
-        $chapters = $this->all();
-        $index = array_search($slug, array_map(fn (Chapter $c) => $c->slug, $chapters), true);
+        $index = $this->indexOf($slug);
 
-        return $index === false || $index === 0 ? null : $chapters[$index - 1];
+        return $index === false || $index === 0 ? null : $this->all()[$index - 1];
+    }
+
+    private function indexOf(string $slug): int|false
+    {
+        return array_search($slug, array_map(fn (Chapter $chapter) => $chapter->slug, $this->all()), true);
     }
 }
