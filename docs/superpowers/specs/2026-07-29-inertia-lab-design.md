@@ -29,8 +29,8 @@ Pinned to the latest releases as of 2026-07-29:
 
 | Package | Version | Note |
 | --- | --- | --- |
-| PHP | 8.4 | |
-| Laravel | 13.x | |
+| PHP | `^8.3`, 8.5.1 locally | |
+| Laravel | 13.x | scaffolded with `laravel new --react --no-authentication --pest --database=sqlite` |
 | `inertiajs/inertia-laravel` | `^3.2` | v3.2.1 released 2026-07-29 |
 | `@inertiajs/react` | `^3.6` | 3.6.1 published 2026-07-07 |
 | React | 19 | required by Inertia 3 |
@@ -83,9 +83,18 @@ Implementation: `window.fetch` is patched at boot to capture exact headers, byte
 
 The device that carries the actual pedagogy, and the one thing the official DevTools do not provide. For every request it reports, per prop: whether it was evaluated or skipped, the reason it was skipped (not requested by `only`, excluded by `except`, deferred to a follow-up request, `optional()` and not requested, `once()` and already held by the client), the resolution time, and the serialized byte weight.
 
-Implementation, primary approach: a `Lab::props()` helper wraps the array passed to `Inertia::render()`. It walks the array and, for each entry, rebuilds an instrumented equivalent of the same type, preserving constructor arguments so Inertia's semantics are untouched: plain values are measured, bare closures are wrapped, and `OptionalProp`, `DeferProp`, `MergeProp`, `AlwaysProp`, `ScrollProp` and `OnceProp` are reconstructed with an instrumented callable and their original options (group, wrapper, metadata, expiry).
+Implementation. An earlier draft of this design proposed rebuilding each prop object with an instrumented callable, and named that the main technical risk of the project. Reading the v3.2.1 source removed the risk: it is not how the trace should be built.
 
-This is the main technical risk of the project, because it depends on the constructor shape of six prop classes. It is mitigated by a test per prop type asserting that the instrumented prop behaves identically to the raw one. Fallback if rebuilding proves fragile against a future release: diff the declared prop list against the keys present in the emitted payload, which yields evaluated versus skipped without timings, and drop the timing column rather than ship a wrong one.
+`Inertia\Response::toResponse()` instantiates `PropsResolver` directly, so that class cannot be decorated. But the same method reports to `Inertia\DevTools\DevTools::recorder($request)`, which resolves `RequestRecorder` **from the container**. That class exposes the exact lifecycle the trace needs: `requestStarted()`, `sharedPropsResolved()`, `propsShared()`, `pageRendering()`, `propResolved($path, $prop)` for every prop actually resolved, `propRescued()`, `pageRendered($request, $page, $resolvedProps)` and `respondedWith()`.
+
+So the trace is built from two cooperating pieces, neither of which touches Inertia internals:
+
+- A `LabRecorder` bound in place of `RequestRecorder`, extending it and calling `parent::` throughout so the official DevTools keep working unchanged. It records which props were resolved, in which order, and with what classification. `Inertia\DevTools\PropClassifier` is reused rather than reimplemented.
+- Lab prop factories (`Lab::value()`, `Lab::optional()`, `Lab::defer()`, `Lab::always()`, `Lab::merge()`, `Lab::once()`, `Lab::scroll()`) that build **genuine Inertia prop objects** from an already-instrumented callable, so resolution time is measured at construction time rather than patched in afterwards. The returned object is the real thing, so fluent chaining still works. The factories also record the declared prop list.
+
+Evaluated versus skipped is then the declared list minus the resolved list, and the reason comes from the prop type plus the request headers plus the page metadata. No reflection, no constructor replication, no dependency on protected members.
+
+One consequence to handle explicitly: `DevTools::enabled()` defaults to `app()->environment('local')` and honours `inertia.devtools.enabled`. If a reader disables it, the trace goes dark. Per the failure rule in section 8, the strip must then state that recording is off and how to turn it back on, rather than render an empty panel.
 
 Attaching the trace to the response, by a middleware gated to the local environment: for Inertia JSON responses, decode the payload, add `props._lab`, re-encode. For the initial HTML document the page object is embedded in `<script data-page="app" type="application/json">`, so the trace is injected instead as a separate `<script id="lab-trace" type="application/json">` block before `</body>`. Both paths are read by the wire strip at boot.
 
@@ -194,7 +203,8 @@ The lab's own instrumentation fails loudly. If a source view cannot read a file,
 ## 9. Testing
 
 - One Pest feature test per chapter route, asserting the component and the expected props through `AssertableInertia`, including partial-reload assertions where the chapter covers them.
-- A test per prop type asserting that an instrumented prop from `Lab::props()` behaves identically to the raw prop.
+- A test per prop type asserting that a prop built by a `Lab` factory is the genuine Inertia class, still supports fluent chaining, and resolves to the same value as the raw prop.
+- A test asserting the trace still reports correctly when the official DevTools recorder is disabled, by showing the disabled state rather than an empty panel.
 - A registry consistency test: every chapter has a route that returns 200, an existing page component, existing source-view file paths, a documentation URL, a plain-language question, and a translation callout. The last two are asserted because they are the parts most likely to be skipped under time pressure, and they are the parts that carry the teaching.
 - A test asserting every row of the "where did it go?" page links to a chapter that exists.
 - No browser or end-to-end tests in scope.
