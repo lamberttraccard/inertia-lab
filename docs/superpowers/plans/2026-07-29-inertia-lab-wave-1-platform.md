@@ -515,18 +515,21 @@ class ChapterRegistry
 
     public function next(string $slug): ?Chapter
     {
-        $chapters = $this->all();
-        $index = array_search($slug, array_map(fn (Chapter $c) => $c->slug, $chapters), true);
+        $index = $this->indexOf($slug);
 
-        return $index === false ? null : ($chapters[$index + 1] ?? null);
+        return $index === false ? null : ($this->all()[$index + 1] ?? null);
     }
 
     public function previous(string $slug): ?Chapter
     {
-        $chapters = $this->all();
-        $index = array_search($slug, array_map(fn (Chapter $c) => $c->slug, $chapters), true);
+        $index = $this->indexOf($slug);
 
-        return $index === false || $index === 0 ? null : $chapters[$index - 1];
+        return $index === false || $index === 0 ? null : $this->all()[$index - 1];
+    }
+
+    private function indexOf(string $slug): int|false
+    {
+        return array_search($slug, array_map(fn (Chapter $chapter) => $chapter->slug, $this->all()), true);
     }
 }
 ```
@@ -793,10 +796,14 @@ class Lab
 
     private function wrap(string $key, mixed $value): mixed
     {
-        return is_callable($value) ? fn () => $this->trace->time($key, $value) : $value;
+        return (is_object($value) && is_callable($value))
+            ? fn () => $this->trace->time($key, $value)
+            : $value;
     }
 }
 ```
+
+The `is_object` guard is not optional: it mirrors `Inertia\ResolvesCallables::useAsCallable()`, which both `AlwaysProp` and `MergeProp` use. Without it the lab would invoke callable-shaped strings and arrays that raw Inertia sends through untouched, so `Lab::always('App\Support\Formatter::default')` would ship the return value of that method instead of the string itself. A teaching tool that behaves differently from the thing it teaches is worse than no teaching tool.
 
 - [ ] **Step 6: Bind both as scoped services**
 
