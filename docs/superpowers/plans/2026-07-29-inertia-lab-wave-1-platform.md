@@ -189,6 +189,14 @@ it('gives every post an author and at least one tag', function () {
     expect(Post::doesntHave('author')->count())->toBe(0)
         ->and(Post::doesntHave('tags')->count())->toBe(0);
 });
+
+it('anchors every timestamp so two runs on different days produce the same rows', function () {
+    $this->seed(LabSeeder::class);
+
+    expect(Post::min('published_at'))->toBe('2026-03-03 09:00:00')
+        ->and(Post::max('published_at'))->toBe('2026-07-01 09:00:00')
+        ->and(Post::whereDate('created_at', '2026-07-01')->count())->toBe(120);
+});
 ```
 
 - [ ] **Step 2: Run it to confirm it fails**
@@ -283,6 +291,8 @@ public function author(): BelongsTo { return $this->belongsTo(User::class, 'user
 
 `Notification` casts `data` to `array`. `Post` casts `published_at` to `datetime`.
 
+`User` must drop the starter kit's `Notifiable` trait. That trait composes `HasDatabaseNotifications`, whose `readNotifications()` and `unreadNotifications()` call `$this->notifications()` and expect the trait's own polymorphic relation. The blog domain's `notifications()` relation shadows it, so those two methods would throw `BadMethodCallException` on the lab's `Notification` model. The lab never sends a Laravel notification, so removing the trait is the honest fix and keeps the domain relation named after the domain.
+
 - [ ] **Step 4: Write the seeder with a fixed seed**
 
 `database/seeders/LabSeeder.php`:
@@ -298,10 +308,14 @@ use Illuminate\Support\Str;
 
 class LabSeeder extends Seeder
 {
+    private const EPOCH = '2026-07-01 09:00:00';
+
     public function run(): void
     {
         mt_srand(20260729);
         fake()->seed(20260729);
+
+        $epoch = CarbonImmutable::parse(self::EPOCH);
 
         $users = User::factory()->count(8)->create();
         $tags = collect(range(1, 15))->map(fn (int $i) => Tag::create([
@@ -309,7 +323,7 @@ class LabSeeder extends Seeder
             'slug' => "tag-{$i}",
         ]));
 
-        $posts = collect(range(1, 120))->map(function (int $i) use ($users) {
+        $posts = collect(range(1, 120))->map(function (int $i) use ($users, $epoch) {
             $title = fake()->sentence(6);
 
             return Post::create([
@@ -318,7 +332,7 @@ class LabSeeder extends Seeder
                 'slug' => Str::slug($title).'-'.$i,
                 'excerpt' => fake()->sentence(15),
                 'body' => fake()->paragraphs(8, true),
-                'published_at' => now()->subDays(120 - $i),
+                'published_at' => $epoch->subDays(120 - $i),
                 'views' => mt_rand(0, 5000),
             ]);
         });
@@ -343,12 +357,14 @@ class LabSeeder extends Seeder
                 'user_id' => $users->first()->id,
                 'type' => 'comment',
                 'data' => ['post_id' => $posts->random()->id],
-                'read_at' => $i > 7 ? now() : null,
+                'read_at' => $i > 7 ? $epoch : null,
             ]);
         }
     }
 }
 ```
+
+Every timestamp is anchored to `EPOCH` rather than `now()`, including the `created_at` and `updated_at` columns Eloquent fills in: wrap the whole `run()` body in `CarbonImmutable::withTestNow($epoch, function () { ... })` so the model timestamps are anchored too. Without that, two runs on different days produce different rows, which defeats the point of seeding deterministically.
 
 - [ ] **Step 5: Run the tests until they pass**
 
