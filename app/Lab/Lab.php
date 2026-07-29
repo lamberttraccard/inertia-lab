@@ -36,11 +36,11 @@ class Lab
         return Inertia::optional(fn () => $this->trace->time($key, $callback));
     }
 
-    public function defer(string $key, callable $callback, string $group = 'default'): DeferProp
+    public function defer(string $key, callable $callback, string $group = 'default', bool $rescue = false): DeferProp
     {
-        $this->trace->declare($key, 'defer', ['group' => $group]);
+        $this->trace->declare($key, 'defer', ['group' => $group, 'rescue' => $rescue]);
 
-        return Inertia::defer(fn () => $this->trace->time($key, $callback), $group);
+        return Inertia::defer(fn () => $this->trace->time($key, $callback), $group, $rescue);
     }
 
     public function always(string $key, mixed $value): AlwaysProp

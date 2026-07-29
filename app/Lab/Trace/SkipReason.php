@@ -9,6 +9,7 @@ enum SkipReason: string
     case Deferred = 'deferred to a follow-up request';
     case Optional = 'optional and not requested';
     case AlreadyHeld = 'once prop already held by the client';
+    case Rescued = 'resolution threw and was rescued';
 
     public function explanation(): string
     {
@@ -18,6 +19,7 @@ enum SkipReason: string
             self::Deferred => 'Deferred props are skipped on the first pass and fetched by a second request.',
             self::Optional => 'Optional props are never sent unless a partial reload asks for them by name.',
             self::AlreadyHeld => 'The client sent X-Inertia-Except-Once-Props, so the server skipped work it already delivered.',
+            self::Rescued => 'The server ran this prop, it threw, and Inertia caught the exception because the prop was declared with rescue.',
         };
     }
 }

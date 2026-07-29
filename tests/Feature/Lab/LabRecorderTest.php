@@ -52,6 +52,71 @@ it('attributes a partial reload skip to the only filter, not the declared type',
         ->and($payload['skipped']['extra']['reason'])->toBe(SkipReason::NotRequested->value);
 });
 
+it('reports a rescued deferred prop as rescued rather than not requested', function () {
+    Route::middleware('web')->get('/rescue-fixture', fn (Lab $lab) => Inertia::render('welcome', [
+        'flaky' => $lab->defer('flaky', fn () => throw new RuntimeException('boom'), 'dashboard', rescue: true),
+    ]));
+
+    $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+        'X-Inertia-Partial-Component' => 'welcome',
+        'X-Inertia-Partial-Data' => 'flaky',
+    ])->get('/rescue-fixture');
+
+    $payload = app(TraceCollector::class)->payload(request());
+
+    expect(array_keys($payload['props']))->not->toContain('flaky')
+        ->and($payload['skipped']['flaky']['reason'])->toBe(SkipReason::Rescued->value);
+});
+
+it('reports a prop excluded by the except header as excluded', function () {
+    $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+        'X-Inertia-Partial-Component' => 'welcome',
+        'X-Inertia-Partial-Except' => 'body',
+    ])->get('/trace-fixture');
+
+    $payload = app(TraceCollector::class)->payload(request());
+
+    expect($payload['skipped']['body']['reason'])->toBe(SkipReason::Excluded->value);
+});
+
+it('lets an only mismatch win over a simultaneous except match', function () {
+    $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+        'X-Inertia-Partial-Component' => 'welcome',
+        'X-Inertia-Partial-Data' => 'title',
+        'X-Inertia-Partial-Except' => 'body',
+    ])->get('/trace-fixture');
+
+    $payload = app(TraceCollector::class)->payload(request());
+
+    // 'body' fails the only filter AND is named in except. pathMatchesPartialRequest()
+    // checks the only mismatch first and returns before ever looking at except, so the
+    // only mismatch is the real cause.
+    expect($payload['skipped']['body']['reason'])->toBe(SkipReason::NotRequested->value);
+});
+
+it('reports a once prop already held by the client as already held', function () {
+    Route::middleware('web')->get('/once-fixture', fn (Lab $lab) => Inertia::render('welcome', [
+        'secret' => $lab->once('secret', fn () => 'value'),
+    ]));
+
+    $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+        'X-Inertia-Except-Once-Props' => 'secret',
+    ])->get('/once-fixture');
+
+    $payload = app(TraceCollector::class)->payload(request());
+
+    expect(array_keys($payload['props']))->not->toContain('secret')
+        ->and($payload['skipped']['secret']['reason'])->toBe(SkipReason::AlreadyHeld->value);
+});
+
 it('reports that recording is off rather than returning an empty trace', function () {
     config()->set('inertia.devtools.enabled', false);
 

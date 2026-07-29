@@ -123,23 +123,40 @@ class TraceCollector
     }
 
     /**
+     * A rescued path never reaches resolved(): PropsResolver::resolveProps() calls
+     * propRescued() and continues before propResolved() would ever run, so this is
+     * checked before anything else, and it can never collide with the reasons below
+     * (reaching resolveValue() at all already means it passed every exclusion check
+     * those reasons describe).
+     *
      * Inertia's PropsResolver only runs the defer/optional/once exclusion machinery
      * (excludeFromInitialResponse) when the request is not a partial reload of the
      * current component: resolveProps() guards that call with `! $this->isPartial`.
      * On a partial reload, the sole reason a prop is missing is the only/except
-     * filter, regardless of its declared type, so that must be checked first.
+     * filter, regardless of its declared type, so that must be checked first, and
+     * pathMatchesPartialRequest() checks an only mismatch before an except match
+     * (the except check is only reached once the only check has already passed).
      *
      * @param  array{type: string, meta: array<string, mixed>, ms: float|null, order: int|null}  $entry
      */
     private function skipReason(string $key, array $entry, Request $request): SkipReason
     {
+        if (in_array($key, $this->rescued, true)) {
+            return SkipReason::Rescued;
+        }
+
         $component = $this->page['component'] ?? null;
         $isPartial = $component !== null && $request->header(Header::PARTIAL_COMPONENT) === $component;
 
         if ($isPartial) {
+            $only = array_filter(explode(',', (string) $request->header(Header::PARTIAL_ONLY)));
             $except = array_filter(explode(',', (string) $request->header(Header::PARTIAL_EXCEPT)));
 
-            return in_array($key, $except, true) ? SkipReason::Excluded : SkipReason::NotRequested;
+            return match (true) {
+                $only !== [] && ! in_array($key, $only, true) => SkipReason::NotRequested,
+                in_array($key, $except, true) => SkipReason::Excluded,
+                default => SkipReason::NotRequested,
+            };
         }
 
         $exceptOnce = array_filter(explode(',', (string) $request->header(Header::EXCEPT_ONCE_PROPS)));
