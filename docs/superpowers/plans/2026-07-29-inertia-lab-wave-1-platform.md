@@ -657,6 +657,7 @@ enum SkipReason: string
     case Deferred = 'deferred to a follow-up request';
     case Optional = 'optional and not requested';
     case AlreadyHeld = 'once prop already held by the client';
+    case Rescued = 'resolution threw and was rescued';
 
     public function explanation(): string
     {
@@ -666,6 +667,7 @@ enum SkipReason: string
             self::Deferred => 'Deferred props are skipped on the first pass and fetched by a second request.',
             self::Optional => 'Optional props are never sent unless a partial reload asks for them by name.',
             self::AlreadyHeld => 'The client sent X-Inertia-Except-Once-Props, so the server skipped work it already delivered.',
+            self::Rescued => 'The server ran this prop, it threw, and Inertia caught the exception because the prop was declared with rescue.',
         };
     }
 }
@@ -766,11 +768,11 @@ class Lab
         return Inertia::optional(fn () => $this->trace->time($key, $callback));
     }
 
-    public function defer(string $key, callable $callback, string $group = 'default'): DeferProp
+    public function defer(string $key, callable $callback, string $group = 'default', bool $rescue = false): DeferProp
     {
-        $this->trace->declare($key, 'defer', ['group' => $group]);
+        $this->trace->declare($key, 'defer', ['group' => $group, 'rescue' => $rescue]);
 
-        return Inertia::defer(fn () => $this->trace->time($key, $callback), $group);
+        return new DeferProp(fn () => $this->trace->time($key, $callback), $group, $rescue);
     }
 
     public function always(string $key, mixed $value): AlwaysProp
@@ -1030,11 +1032,12 @@ Add to `TraceCollector`:
         $exceptOnce = array_filter(explode(',', (string) $request->header(Header::EXCEPT_ONCE_PROPS)));
 
         return match (true) {
+            in_array($key, $this->rescued, true) => SkipReason::Rescued,
             in_array($key, $exceptOnce, true) => SkipReason::AlreadyHeld,
+            $only !== [] && ! in_array($key, $only, true) => SkipReason::NotRequested,
             in_array($key, $except, true) => SkipReason::Excluded,
             $entry['type'] === 'defer' => SkipReason::Deferred,
             $entry['type'] === 'optional' => SkipReason::Optional,
-            $only !== [] => SkipReason::NotRequested,
             default => SkipReason::NotRequested,
         };
     }
