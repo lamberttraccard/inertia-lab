@@ -40,3 +40,11 @@ it('gives every post an author and at least one tag', function () {
     expect(Post::doesntHave('author')->count())->toBe(0)
         ->and(Post::doesntHave('tags')->count())->toBe(0);
 });
+
+it('anchors every timestamp so two runs on different days produce the same rows', function () {
+    $this->seed(LabSeeder::class);
+
+    expect(Post::min('published_at'))->toBe('2026-03-04 09:00:00')
+        ->and(Post::max('published_at'))->toBe('2026-07-01 09:00:00')
+        ->and(Post::whereDate('created_at', '2026-07-01')->count())->toBe(120);
+});
