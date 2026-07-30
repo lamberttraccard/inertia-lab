@@ -179,6 +179,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 11,
             ),
+            new Chapter(
+                slug: 'always-props',
+                title: 'Props that ignore your instructions',
+                question: 'You asked for one prop. Why did three arrive?',
+                concept: 'Inertia::always() survives partial reload filtering; errors, shared by the framework itself, behaves the same way.',
+                routeName: 'chapters.always-props',
+                serverFile: 'app/Http/Controllers/Chapters/AlwaysPropsController.php',
+                clientFile: 'resources/js/pages/chapters/always-props.tsx',
+                translationFrom: 'A response envelope you always merge into your client-side store, whether this request needed it or not.',
+                translationTo: 'Props the server marks as non-negotiable, included in every response regardless of what only or except named.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/partial-reloads',
+                wave: 1,
+                order: 12,
+            ),
         ];
     }
 

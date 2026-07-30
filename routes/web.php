@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Chapters\AlwaysPropsController;
 use App\Http\Controllers\Chapters\AssetVersioningController;
 use App\Http\Controllers\Chapters\DeferredPropsController;
 use App\Http\Controllers\Chapters\EventsController;
@@ -48,4 +49,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/partial-reloads', [PartialReloadsController::class, 'show'])->name('partial-reloads');
     Route::get('/optional-props', [OptionalPropsController::class, 'show'])->name('optional-props');
     Route::get('/deferred-props', [DeferredPropsController::class, 'show'])->name('deferred-props');
+    Route::get('/always-props', [AlwaysPropsController::class, 'show'])->name('always-props');
+    Route::post('/always-props/flash', [AlwaysPropsController::class, 'flash'])->name('always-props.flash');
 });
