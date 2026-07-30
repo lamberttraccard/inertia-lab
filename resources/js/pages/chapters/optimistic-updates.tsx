@@ -163,11 +163,9 @@ export default function OptimisticUpdates({
                     on screen. Click Like on the right card and the same thing
                     happens, then the count falls back to where it started: that
                     endpoint always answers 422, and once the visit finishes
-                    without succeeding, the{' '}
-                    <Term term="Optimistic update">rollback</Term> restores
-                    exactly the value this card held the moment you clicked, not
-                    a value read back from the server, since the server never
-                    sent one.
+                    without succeeding, the rollback restores exactly the value
+                    this card held the moment you clicked, not a value read back
+                    from the server, since the server never sent one.
                 </p>
             }
             whenToUse={
@@ -193,10 +191,11 @@ export default function OptimisticUpdates({
                     stores callback and returns the router itself, so the very
                     next visit method chained onto it, here{' '}
                     <code className="font-mono">.post()</code>, picks it up as
-                    that visit&apos;s own optimistic option. Passing{' '}
-                    <code className="font-mono">optimistic</code> directly in a
-                    visit&apos;s own options object, without the chained call,
-                    works identically: both are read from the same{' '}
+                    that visit&apos;s own{' '}
+                    <Term term="Optimistic update">optimistic update</Term>.
+                    Passing <code className="font-mono">optimistic</code>{' '}
+                    directly in a visit&apos;s own options object, without the
+                    chained call, works identically: both are read from the same{' '}
                     <code className="font-mono">Visit</code> type in{' '}
                     <code className="font-mono">
                         node_modules/@inertiajs/core/types/types.d.ts
