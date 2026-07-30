@@ -77,7 +77,11 @@ A strip docked at the bottom of every chapter page, always visible next to the l
 
 A second tab shows the client event timeline: `before`, `start`, `progress`, `beforeUpdate`, `success`, `flash`, `error`, `httpException`, `networkError`, `finish`, `navigate`, `location`, `prefetching`, `prefetched`, `cancel`, with which ones are cancelable.
 
-Implementation: `window.fetch` is patched at boot to capture exact headers, byte counts and timings. Inertia 3 replaced Axios with its own fetch-based client, so every visit passes through it. Lifecycle events come from `router.on()`. The patch is lab-only, gated to the local environment, and the chapter that introduces the strip says explicitly that this is a teaching device and not a pattern to copy into an application.
+Implementation: the transport is patched at boot to capture exact headers, byte counts and timings, and lifecycle events come from `router.on()`.
+
+Which transport, corrected during implementation: Inertia 3 dropped Axios, and the release notes call the replacement a built-in XHR client. Verified in the installed bundle, `@inertiajs/core` 3.6.1 ships `XhrHttpClient` and issues real visits through `XMLHttpRequest`, with no `fetch` call in the bundle at all. The capture therefore patches `XMLHttpRequest`, and patches `fetch` as well so the strip keeps working if the client changes transport in a later release. An earlier draft of this document asserted a fetch-based client on the strength of the release notes alone; the installed code disagreed, and the installed code wins. That rule is in section 3 for a reason, and it caught this.
+
+The patch is lab-only, gated to the local environment, and the chapter that introduces the strip says explicitly that this is a teaching device and not a pattern to copy into an application.
 
 ### 5.2 Server prop-resolution trace
 

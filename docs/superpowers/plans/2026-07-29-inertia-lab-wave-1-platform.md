@@ -1584,7 +1584,7 @@ function collectHeaders(headers: Headers): Record<string, string> {
 }
 ```
 
-Patching `window.fetch` is a teaching device, not a pattern to copy. Inertia 3 replaced Axios with its own fetch-based client, which is why every visit passes through here. The chapter that introduces the strip says this in as many words.
+Patching the transport is a teaching device, not a pattern to copy. Corrected during implementation: `@inertiajs/core` 3.6.1 ships `XhrHttpClient` and issues visits through `XMLHttpRequest`, not `fetch`, so the capture patches `XMLHttpRequest` and keeps the `fetch` patch as insurance against a future transport change. The chapter that introduces the strip says this in as many words.
 
 - [ ] **Step 3: Type check**
 
