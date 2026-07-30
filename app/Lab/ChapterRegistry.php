@@ -263,6 +263,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 17,
             ),
+            new Chapter(
+                slug: 'file-uploads',
+                title: 'Files, progress, and multipart',
+                question: 'What changes when a form carries a file?',
+                concept: 'A visit whose data includes a File is sent as multipart/form-data automatically, and the same visit reports upload progress as it goes.',
+                routeName: 'chapters.file-uploads',
+                serverFile: 'app/Http/Controllers/Chapters/FileUploadsController.php',
+                clientFile: 'resources/js/pages/chapters/file-uploads.tsx',
+                translationFrom: 'Build the FormData object yourself and wire an XMLHttpRequest progress handler to a percentage.',
+                translationTo: 'Put the File in the form data; the visit builds the multipart body and progress arrives as a prop of its own.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/file-uploads',
+                wave: 1,
+                order: 18,
+            ),
         ];
     }
 

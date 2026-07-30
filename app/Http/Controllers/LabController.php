@@ -74,6 +74,10 @@ class LabController extends Controller
             'term' => 'Polling',
             'definition' => 'Reloading chosen props on a fixed interval through usePoll, instead of opening a persistent connection such as a websocket. Polling throttles sharply once the browser tab is hidden, unless keepAlive is set.',
         ],
+        [
+            'term' => 'Multipart request',
+            'definition' => "A request whose body is encoded as multipart/form-data instead of JSON, the encoding a file upload needs. Putting a File anywhere in a visit's data is what makes the visit send this way; nothing else about declaring or submitting the form changes.",
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

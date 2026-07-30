@@ -4,6 +4,7 @@ use App\Http\Controllers\Chapters\AlwaysPropsController;
 use App\Http\Controllers\Chapters\AssetVersioningController;
 use App\Http\Controllers\Chapters\DeferredPropsController;
 use App\Http\Controllers\Chapters\EventsController;
+use App\Http\Controllers\Chapters\FileUploadsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\FormsController;
 use App\Http\Controllers\Chapters\InfiniteScrollController;
@@ -63,4 +64,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/polling/simulate', [PollingController::class, 'simulate'])->name('polling.simulate');
     Route::get('/forms', [FormsController::class, 'show'])->name('forms');
     Route::post('/forms', [FormsController::class, 'store'])->name('forms.store');
+    Route::get('/file-uploads', [FileUploadsController::class, 'show'])->name('file-uploads');
+    Route::post('/file-uploads', [FileUploadsController::class, 'store'])->name('file-uploads.store');
 });
