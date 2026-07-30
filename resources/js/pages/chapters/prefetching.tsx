@@ -16,8 +16,15 @@ const DESTINATION = '/chapters/prefetching/destination';
 // node_modules/@inertiajs/core/dist/index.js's cacheForToStaleAndExpires(): the first
 // number is how long a cached response stays fresh (re-triggering prefetch on it is a
 // no-op), the second is how long until it is dropped from the cache entirely. A single
-// value, string or number, is used for both. Passing 0 marks a single-use entry, evicted
-// immediately after the first real visit consumes it.
+// value, string or number, is used for both.
+//
+// 0 is not a general single-use marker: node_modules/@inertiajs/react/dist/index.js's Link
+// component destructures its own cacheFor prop as `cacheFor = 0`, so a caller who passes 0
+// and a caller who passes nothing at all are indistinguishable once inside it. The value it
+// resolves to is `cacheFor !== 0 ? cacheFor : (linkIsClickOnly ? 0 : config.get('prefetch.cacheFor'))`,
+// so 0 only survives as single-use on a link whose sole strategy is "click"; for hover or
+// mount it silently becomes the 30 second default instead. See the note next to the
+// selector below.
 const CACHE_FOR_PRESETS: Record<
     'default' | 'none' | 'ten_seconds' | 'swr',
     number | string | number[] | undefined
@@ -95,7 +102,7 @@ export default function Prefetching({
                                 <option value="default">
                                     default (30 seconds)
                                 </option>
-                                <option value="none">0, single-use</option>
+                                <option value="none">0 (see note below)</option>
                                 <option value="ten_seconds">10 seconds</option>
                                 <option value="swr">
                                     stale after 3s, evicted after 15s
@@ -125,6 +132,19 @@ export default function Prefetching({
                         </code>
                         ), and all point at the same URL, so they read and write
                         the same cache entry.
+                    </p>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                        The 0 preset only reads as single-use on the click link
+                        below. For hover or mount, this installed version cannot
+                        tell 0 apart from leaving cacheFor unset entirely, so
+                        both fall back to the 30 second default: pick 0, flush
+                        the cache, hover the hover link, then press &quot;Check
+                        cache status&quot; below. It will report &quot;reusable
+                        until it expires&quot;, not single-use. The mount link
+                        only prefetches once, on this page&apos;s first load, so
+                        it cannot be retried against a different preset without
+                        a fresh page load, which resets this selector back to
+                        its own default anyway.
                     </p>
                     <div className="flex flex-wrap items-center gap-3">
                         <Link
@@ -257,8 +277,9 @@ export default function Prefetching({
                         node_modules/@inertiajs/core/types/types.d.ts
                     </code>
                     . There is no fourth strategy in this installed version. The
-                    default cache duration a prefetched response is kept for is
-                    30 seconds (
+                    default cache duration{' '}
+                    <Term term="Prefetch">a prefetched response</Term> is kept
+                    for is 30 seconds (
                     <code className="font-mono">
                         config.get(&apos;prefetch.cacheFor&apos;)
                     </code>
@@ -269,7 +290,16 @@ export default function Prefetching({
                     special-cases that combination to a cacheFor of 0, a single
                     use, since a response fetched on the mouse-down of the very
                     click that is about to consume it has nothing left to be
-                    cached for afterwards.
+                    cached for afterwards. That special case is the only way to
+                    reach a single-use entry in this version: the same component
+                    destructures its own cacheFor prop as{' '}
+                    <code className="font-mono">cacheFor = 0</code>, so a caller
+                    who passes <code className="font-mono">0</code> explicitly
+                    and a caller who passes nothing at all are indistinguishable
+                    once inside it. A hover or mount link therefore has no
+                    cacheFor value that makes it single-use: 0 collapses to the
+                    same 30 second default that leaving it undefined would
+                    produce.
                 </p>
             </section>
 
