@@ -71,11 +71,31 @@ function labTrace(\Illuminate\Testing\TestResponse $response): array
 
 Verify both against the real response shapes before relying on them, and make them throw rather than return an empty array when the expected script tag is absent: a helper that silently returns `[]` would turn a broken page into a passing test. Refactor `tests/Feature/Chapters/MentalModelTest.php` onto them in the same task, so there is exactly one copy of this knowledge.
 
+Losing `assertInertia()` also loses the bootstrap assertions it performed for free, so a third helper restores them. Every chapter test calls it on every response it examines, including partial reloads, where a regression serving the wrong component would otherwise pass silently:
+
+```php
+function assertInertiaPage(\Illuminate\Testing\TestResponse $response, string $component): array
+{
+    $page = inertiaPage($response);
+
+    expect($page)->toHaveKeys(['component', 'props', 'url', 'version'])
+        ->and($page['component'])->toBe($component);
+
+    return $page;
+}
+```
+
 Chapter tests still need `config()->set('inertia.devtools.enabled', true);` in a `beforeEach`, because `DevTools::enabled()` defaults to the local environment and the test environment is not local, so the trace would otherwise be off.
 
 **Step D. Add the registry entry** to `ChapterRegistry::all()`, in `order` sequence, with every field filled: `slug`, `title`, `question`, `concept`, `routeName`, `serverFile`, `clientFile`, `translationFrom`, `translationTo`, `docsUrl`, `wave`, `order`. The registry consistency test enforces that none of these is empty.
 
-**Step E. Write the controller and the page component.** The controller is thin: its interesting content is the props array, because that is what the source view shows the reader. Every prop goes through a `Lab` factory so the trace can see it. The page component uses `ChapterShell` and supplies `tryThis`, `watchFor` and `whenToUse`.
+**Step E. Write the controller and the page component.** The controller is thin: its interesting content is the props array, because that is what the source view shows the reader. The page component uses `ChapterShell` and supplies `tryThis`, `watchFor` and `whenToUse`.
+
+Three template rules, each found by review of chapter 0 and each easy to repeat by copying:
+
+- **Every prop goes through a `Lab` factory, including the chapter metadata.** `chapter`, `previous` and `next` are props like any other. Passed raw they never reach `TraceCollector::declared()`, so they are invisible in `_lab`, in an application whose entire subject is showing the reader every prop. Wrap them in `Lab::value()`.
+- **Link a term to the glossary on its first use in a chapter.** Use the shared `<Term>` component in `resources/js/lab/Term.tsx`. Prose that says "partial reload" or "deferred prop" without linking it leaves the glossary an orphan page nobody reaches.
+- **The shell links the translation callout to the "where did it go?" page.** That is shell-level and already done; do not reimplement it per chapter.
 
 **Step F. Run the suite and the gates, then commit.** One commit per chapter, subject line `Add chapter <order>: <slug>`.
 
