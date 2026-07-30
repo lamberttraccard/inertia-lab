@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { ChapterShell } from '@/lab/ChapterShell';
 import { Term } from '@/lab/Term';
@@ -34,6 +35,12 @@ export default function Precognition({
         },
     );
 
+    // Captured at submit time rather than read from form.data at render time: form.data
+    // keeps changing as the reader edits the slug field afterward, and form.wasSuccessful
+    // stays true until the next submission, so reading form.data live here would have the
+    // confirmation below silently start describing a row that was never actually created.
+    const [created, setCreated] = useState<PrecognitionFormData | null>(null);
+
     function handleSlugChange(event: ChangeEvent<HTMLInputElement>) {
         form.setData('slug', event.target.value);
         form.validate('slug');
@@ -41,7 +48,13 @@ export default function Precognition({
 
     function handleSubmit(event: FormEvent) {
         event.preventDefault();
-        form.post('/chapters/precognition', { preserveScroll: true });
+
+        const submitted = { title: form.data.title, slug: form.data.slug };
+
+        form.post('/chapters/precognition', {
+            preserveScroll: true,
+            onSuccess: () => setCreated(submitted),
+        });
     }
 
     return (
@@ -160,10 +173,10 @@ export default function Precognition({
                     >
                         Create post
                     </button>
-                    {form.wasSuccessful ? (
+                    {form.wasSuccessful && created ? (
                         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                            Created &quot;{form.data.title}&quot; at slug &quot;
-                            {form.data.slug}&quot;.
+                            Created &quot;{created.title}&quot; at slug &quot;
+                            {created.slug}&quot;.
                         </p>
                     ) : null}
                 </form>
