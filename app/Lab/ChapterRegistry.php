@@ -389,6 +389,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 26,
             ),
+            new Chapter(
+                slug: 'http-requests',
+                title: 'Requests that are not visits',
+                question: 'How do you call the server without changing the page?',
+                concept: 'useHttp issues a request that shares the router\'s data and error handling conventions without producing a visit, touching history, or ever carrying the X-Inertia header a visit always does.',
+                routeName: 'chapters.http-requests',
+                serverFile: 'app/Http/Controllers/Chapters/HttpRequestsController.php',
+                clientFile: 'resources/js/pages/chapters/http-requests.tsx',
+                translationFrom: 'The same fetch you would have written, because this is the one case where you still want it.',
+                translationTo: 'A hook that shares useForm\'s own shape, for the times a request should not touch the page at all.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/http-requests',
+                wave: 1,
+                order: 27,
+            ),
         ];
     }
 
