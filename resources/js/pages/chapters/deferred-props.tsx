@@ -13,6 +13,9 @@ type DeferredPropsProps = {
     commentStats?: CommentStats;
     tagCloud?: string[];
     belowTheFold?: string | null;
+    // riskyInsight has no entry here on purpose: its value is never read in JSX below, only
+    // its key is named as a string for <Deferred data="riskyInsight">, so there is nothing
+    // to type.
     previous: Neighbour | null;
     next: Neighbour | null;
 };
@@ -123,16 +126,23 @@ export default function DeferredProps({
 
             <section>
                 <h2 className="text-lg font-semibold">
-                    Two props, one request; a third, a separate one
+                    Three groups, three follow-up requests
                 </h2>
                 <p className="mt-1">
                     postStats and commentStats are declared in the same defer
                     group, stats. tagCloud is declared in a different group,
-                    sidebar. The client requests one group at a time: open your
-                    browser&apos;s network tab and you will see exactly two
-                    follow-up requests after this page loads, one carrying both
-                    stats props, one carrying tagCloud alone, never three
-                    separate requests and never one request for everything.
+                    sidebar. riskyInsight, covered in the next section, is
+                    declared in a third group, insights. The client fires one
+                    follow-up request per group, regardless of which Deferred
+                    components are actually mounted on the page: open your
+                    browser&apos;s network tab and you will see exactly three
+                    requests after this page loads, never a single request for
+                    everything and never one request per prop. A rescued prop
+                    does not get out of this: riskyInsight still costs its own
+                    request and still gets its own entry in deferredProps below,
+                    the same as postStats or tagCloud; rescue only changes what
+                    happens once that request actually runs the callback, not
+                    whether the request happens at all.
                 </p>
                 <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <Deferred
