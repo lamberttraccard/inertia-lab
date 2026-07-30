@@ -5,6 +5,8 @@ type Row = {
     inertiaEquivalent: string;
     disappears: boolean;
     chapter: string;
+    chapterTitle: string;
+    chapterOrder: number;
 };
 
 export default function WhereDidItGo({ rows }: { rows: Row[] }) {
@@ -63,7 +65,8 @@ export default function WhereDidItGo({ rows }: { rows: Row[] }) {
                                             href={`/chapters/${row.chapter}`}
                                             className="underline"
                                         >
-                                            {row.chapter}
+                                            {row.chapterOrder}.{' '}
+                                            {row.chapterTitle}
                                         </Link>
                                     </td>
                                 </tr>

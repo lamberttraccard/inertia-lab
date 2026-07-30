@@ -135,16 +135,10 @@ class LabController extends Controller
             'chapter' => 'mental-model',
         ],
         [
-            'artefact' => 'API resource or serializer',
-            'inertiaEquivalent' => 'The props array built directly in the controller, or a class implementing ProvidesInertiaProperties. Shaping the response and rendering the page happen in the same step.',
-            'disappears' => false,
-            'chapter' => 'mental-model',
-        ],
-        [
-            'artefact' => 'Client-side router',
-            'inertiaEquivalent' => "Inertia's own client-side router, which swaps the page component and its props on every visit without a full reload.",
-            'disappears' => false,
-            'chapter' => 'mental-model',
+            'artefact' => 'A hand-designed JSON response shape',
+            'inertiaEquivalent' => 'The page object every visit already carries: component, props, url and version, plus whichever metadata keys that response actually used. There is no envelope to design; it is the same shape on every route.',
+            'disappears' => true,
+            'chapter' => 'first-load-vs-visit',
         ],
         [
             'artefact' => 'fetch or axios call',
@@ -153,58 +147,226 @@ class LabController extends Controller
             'chapter' => 'mental-model',
         ],
         [
-            'artefact' => 'Loading state',
-            'inertiaEquivalent' => "None for a first render: the data is already there. For a deferred prop, the fallback slot of Inertia's Deferred component plays the same role for the one request that still needs it.",
-            'disappears' => false,
-            'chapter' => 'mental-model',
-        ],
-        [
-            'artefact' => 'Error state',
-            'inertiaEquivalent' => 'The same page component. Inertia treats an error response as a normal render: validation errors arrive as ordinary props, and a server error shows the framework error page.',
-            'disappears' => false,
-            'chapter' => 'mental-model',
-        ],
-        [
-            'artefact' => 'Client cache',
-            'inertiaEquivalent' => 'None in the chapters built so far: every visit asks the server again. Inertia does support a prefetch cache; a later chapter demonstrates it once it exists.',
-            'disappears' => true,
-            'chapter' => 'mental-model',
-        ],
-        [
-            'artefact' => 'Cache invalidation',
-            'inertiaEquivalent' => "Not needed the way a client cache needs it: a mutation's response is the server's redirect to the fresh page, so the next page already carries current data.",
-            'disappears' => true,
-            'chapter' => 'mental-model',
-        ],
-        [
-            'artefact' => 'Optimistic UI',
-            'inertiaEquivalent' => 'Inertia applies a local change before the server confirms it and rolls it back automatically on failure. A later chapter demonstrates the controls once it exists.',
-            'disappears' => false,
-            'chapter' => 'mental-model',
-        ],
-        [
-            'artefact' => 'API contract and versioning',
-            'inertiaEquivalent' => "The TypeScript type of the page's props, written or generated alongside the controller. There is no separate contract document to keep in sync, because the props array is the contract.",
-            'disappears' => false,
-            'chapter' => 'mental-model',
-        ],
-        [
-            'artefact' => 'CORS',
+            'artefact' => 'CORS configuration',
             'inertiaEquivalent' => 'Not applicable: the page and its data are served from the same origin, in the same response. There is no cross-origin request to configure.',
             'disappears' => true,
             'chapter' => 'mental-model',
         ],
         [
-            'artefact' => 'Token authentication',
-            'inertiaEquivalent' => 'The session cookie the browser already sends with every request. An Inertia visit is a same-origin request, not a call to a separate API, so there is no bearer token to attach.',
-            'disappears' => true,
-            'chapter' => 'mental-model',
+            'artefact' => 'Client-side router matching a URL to a component',
+            'inertiaEquivalent' => 'Inertia::render() names a component from the server, and the client resolves that name to a module. There is no client-side route table matching paths to components.',
+            'disappears' => false,
+            'chapter' => 'render-and-components',
+        ],
+        [
+            'artefact' => 'Client-side redirect handling after a mutation',
+            'inertiaEquivalent' => "The server's own redirect, which Inertia follows and renders automatically. A DELETE, PUT or PATCH forces the follow-up request to be a GET, so reloading the page it lands on never repeats the mutation.",
+            'disappears' => false,
+            'chapter' => 'redirects',
+        ],
+        [
+            'artefact' => 'Visit options passed to a client-side router',
+            'inertiaEquivalent' => 'The same option set on every visit or Link: replace, preserveState, preserveScroll, preserveUrl, only, except and more, sent as headers the server reads.',
+            'disappears' => false,
+            'chapter' => 'links-and-visits',
+        ],
+        [
+            'artefact' => 'Promise callbacks or interceptors around a request',
+            'inertiaEquivalent' => 'A fixed sequence of events every visit fires, from before to finish, some of which can cancel the visit if a listener returns false.',
+            'disappears' => false,
+            'chapter' => 'events',
+        ],
+        [
+            'artefact' => 'A deploy banner or stale-client detection',
+            'inertiaEquivalent' => 'A version hash sent with every visit. Once it stops matching what the server now serves, the next visit gets a 409 and the client reloads the page fully on its own, with no banner to build.',
+            'disappears' => false,
+            'chapter' => 'asset-versioning',
+        ],
+        [
+            'artefact' => 'API resource or serializer',
+            'inertiaEquivalent' => 'The props array built directly in the controller, or a class implementing ProvidesInertiaProperty or ProvidesInertiaProperties. Shaping the response and rendering the page happen in the same step.',
+            'disappears' => false,
+            'chapter' => 'props-and-types',
+        ],
+        [
+            'artefact' => 'Global client store for cross-cutting data',
+            'inertiaEquivalent' => 'Inertia::share(), which attaches props to every response from one place. A closure shared this way is only evaluated once a response actually needs it.',
+            'disappears' => false,
+            'chapter' => 'shared-data',
+        ],
+        [
+            'artefact' => 'A second endpoint for a partial UI update',
+            'inertiaEquivalent' => 'The same route and controller, told through a header which props to resolve this time. The only and except visit options skip the server-side work, not just trim the payload afterwards.',
+            'disappears' => false,
+            'chapter' => 'partial-reloads',
+        ],
+        [
+            'artefact' => 'An endpoint called only once a panel opens',
+            'inertiaEquivalent' => 'Inertia::optional(), a prop on the same page that the server never resolves unless a later partial reload names it explicitly.',
+            'disappears' => false,
+            'chapter' => 'optional-props',
+        ],
+        [
+            'artefact' => 'Loading state for a slow section of the page',
+            'inertiaEquivalent' => 'Nothing, for a first render: the data is already there. For a prop wrapped in Inertia::defer(), the fallback slot of the Deferred component covers the one request that still needs it.',
+            'disappears' => false,
+            'chapter' => 'deferred-props',
+        ],
+        [
+            'artefact' => 'A response envelope merged in on every call regardless of need',
+            'inertiaEquivalent' => "Inertia::always(), which survives only and except filtering. The framework's own errors prop, shared on every response, behaves the same way.",
+            'disappears' => false,
+            'chapter' => 'always-props',
+        ],
+        [
+            'artefact' => 'Manually concatenating and deduplicating a load more list',
+            'inertiaEquivalent' => 'Inertia::merge() or Inertia::deepMerge(), which mark a prop so the client combines the new response with what it already holds, matching existing items on a named key instead of duplicating them.',
+            'disappears' => false,
+            'chapter' => 'merging-props',
         ],
         [
             'artefact' => 'Pagination metadata',
-            'inertiaEquivalent' => 'Ordinary props: a page of records plus whatever shape the controller chooses for the total, the cursor or the next link. Inertia does not standardize a paginator shape.',
+            'inertiaEquivalent' => 'Inertia::scroll(), built from a real paginator, carries the previous, next and current page identifiers the InfiniteScroll component needs to page in either direction.',
             'disappears' => false,
-            'chapter' => 'mental-model',
+            'chapter' => 'infinite-scroll',
+        ],
+        [
+            'artefact' => 'Caching static reference data client-side',
+            'inertiaEquivalent' => 'Inertia::once(), which sends a prop a single time. The client names it in a header on every later request, and the server trusts that header instead of resolving the value again.',
+            'disappears' => false,
+            'chapter' => 'once-props',
+        ],
+        [
+            'artefact' => 'A websocket or interval poll for a live counter',
+            'inertiaEquivalent' => 'usePoll, which reissues the same partial reload on a fixed interval and throttles sharply once the tab is hidden, unless keepAlive is set.',
+            'disappears' => false,
+            'chapter' => 'polling',
+        ],
+        [
+            'artefact' => 'Client-side form library',
+            'inertiaEquivalent' => 'The Form component or useForm, both shipped with the adapter. A failed submission redirects back with errors already attached, read like any other prop.',
+            'disappears' => false,
+            'chapter' => 'forms',
+        ],
+        [
+            'artefact' => 'Building FormData and an upload progress handler by hand',
+            'inertiaEquivalent' => "Putting a File anywhere in the visit's data. The visit becomes multipart automatically, and upload progress arrives as a prop of its own.",
+            'disappears' => true,
+            'chapter' => 'file-uploads',
+        ],
+        [
+            'artefact' => "Client-side validation duplicated from the server's rules",
+            'inertiaEquivalent' => 'A Precognition request: the same route and the same data a real submission would send, tagged with a header that makes the server validate and stop there.',
+            'disappears' => true,
+            'chapter' => 'precognition',
+        ],
+        [
+            'artefact' => 'Client-side cache for pages already visited',
+            'inertiaEquivalent' => 'A cache the router itself owns: a link can prefetch its target on hover, mount or click, kept for a configurable duration and tagged for later.',
+            'disappears' => false,
+            'chapter' => 'prefetching',
+        ],
+        [
+            'artefact' => 'Cache invalidation after a mutation',
+            'inertiaEquivalent' => 'router.flush(), router.flushByCacheTags() and router.flushAll(), which drop one, several or every cached entry the router is holding.',
+            'disappears' => false,
+            'chapter' => 'prefetching',
+        ],
+        [
+            'artefact' => 'A hand-built optimistic route transition or skeleton screen',
+            'inertiaEquivalent' => 'A visit given a component name up front: the client renders that component immediately with the shared props already on hand, then swaps in the real page once it arrives.',
+            'disappears' => false,
+            'chapter' => 'instant-visits',
+        ],
+        [
+            'artefact' => 'Optimistic UI update with a manual rollback',
+            'inertiaEquivalent' => 'router.optimistic() and its form equivalents, which apply the change immediately and restore the previous value automatically if the visit finishes without succeeding.',
+            'disappears' => false,
+            'chapter' => 'optimistic-updates',
+        ],
+        [
+            'artefact' => 'A page-transition animation library',
+            'inertiaEquivalent' => "The viewTransition visit option, which hands the page swap to the browser's own View Transitions API where it exists, and changes nothing where it does not.",
+            'disappears' => false,
+            'chapter' => 'view-transitions',
+        ],
+        [
+            'artefact' => 'Client-side state persistence across a remount',
+            'inertiaEquivalent' => 'useRemember, which puts component state into the current history entry itself, restored automatically once that entry becomes current again.',
+            'disappears' => false,
+            'chapter' => 'remembering-state',
+        ],
+        [
+            'artefact' => 'Clearing sensitive data from browser history on logout',
+            'inertiaEquivalent' => 'encryptHistory(), which encrypts every history entry a route builds this way, and clearHistory(), which drops the key those entries were encrypted with.',
+            'disappears' => false,
+            'chapter' => 'history-encryption',
+        ],
+        [
+            'artefact' => 'A persistent shell or layout across route changes',
+            'inertiaEquivalent' => "A component assigned as a page's layout, kept mounted across a visit to another page assigning that same component, instead of being torn down and rebuilt.",
+            'disappears' => false,
+            'chapter' => 'layouts',
+        ],
+        [
+            'artefact' => 'A one-off request that should not navigate',
+            'inertiaEquivalent' => "useHttp, which shares the router's own conventions for data and errors without producing a visit, touching history, or carrying the X-Inertia header a visit always does.",
+            'disappears' => false,
+            'chapter' => 'http-requests',
+        ],
+        [
+            'artefact' => 'Head or meta management library',
+            'inertiaEquivalent' => 'The Head component shipped with the adapter itself, mounted the same way any other component is, with no separate library to install or configure.',
+            'disappears' => false,
+            'chapter' => 'head-and-meta',
+        ],
+        [
+            'artefact' => 'Error state',
+            'inertiaEquivalent' => 'The same page component. Validation errors arrive as an ordinary prop, and a genuine server exception can render as a normal Inertia page too, through Inertia::handleExceptionsUsing().',
+            'disappears' => false,
+            'chapter' => 'error-handling',
+        ],
+        [
+            'artefact' => 'Token authentication',
+            'inertiaEquivalent' => 'The session cookie the browser already sends with every request. An Inertia visit is a same-origin request, not a call to a separate API, so there is no bearer token to attach.',
+            'disappears' => true,
+            'chapter' => 'authorization-and-csrf',
+        ],
+        [
+            'artefact' => 'Authorization or permission checks decoded from a token',
+            'inertiaEquivalent' => 'Props computed server-side from a real policy on every request, such as a can array. Nothing is decoded on the client, because nothing was encoded for it in the first place.',
+            'disappears' => false,
+            'chapter' => 'authorization-and-csrf',
+        ],
+        [
+            'artefact' => 'CSRF token handling',
+            'inertiaEquivalent' => "Laravel's own CSRF middleware, checking the token the session already carries. A stale or wrong one is rejected with a 419 before the action it targeted ever runs.",
+            'disappears' => false,
+            'chapter' => 'authorization-and-csrf',
+        ],
+        [
+            'artefact' => 'Devtools for inspecting requests and state',
+            'inertiaEquivalent' => 'The official Inertia DevTools browser extension, which records every visit this application makes and pairs each one with the props it resolved.',
+            'disappears' => false,
+            'chapter' => 'devtools-and-testing',
+        ],
+        [
+            'artefact' => 'Mocking the server in frontend tests',
+            'inertiaEquivalent' => 'Nothing to mock: a Pest test drives the real route and reads the same page object a browser would receive, through helpers built on top of AssertableInertia.',
+            'disappears' => true,
+            'chapter' => 'devtools-and-testing',
+        ],
+        [
+            'artefact' => 'API contract and its versioning',
+            'inertiaEquivalent' => "The TypeScript type of the page's props, written next to the component. There is no separate contract document to keep in sync, because the props array the controller returns is the contract.",
+            'disappears' => false,
+            'chapter' => 'typescript-and-splitting',
+        ],
+        [
+            'artefact' => 'Route-level code splitting',
+            'inertiaEquivalent' => "The build's own default behaviour: Vite gives every page component its own chunk, fetched only once a visit actually renders that page.",
+            'disappears' => false,
+            'chapter' => 'typescript-and-splitting',
         ],
     ];
 
@@ -266,9 +428,21 @@ class LabController extends Controller
         return Inertia::render('lab/glossary', ['terms' => self::TERMS]);
     }
 
-    public function whereDidItGo(): Response
+    public function whereDidItGo(ChapterRegistry $registry): Response
     {
-        return Inertia::render('lab/where-did-it-go', ['rows' => self::ROWS]);
+        // A row naming a chapter that does not exist would be a broken link on the one page
+        // meant to stand on its own, so this fails loudly instead of rendering it anyway.
+        $rows = array_map(function (array $row) use ($registry) {
+            $chapter = $registry->find($row['chapter'])
+                ?? throw new RuntimeException("The where-did-it-go page links a chapter that does not exist: [{$row['chapter']}].");
+
+            return $row + [
+                'chapterTitle' => $chapter->title,
+                'chapterOrder' => $chapter->order,
+            ];
+        }, self::ROWS);
+
+        return Inertia::render('lab/where-did-it-go', ['rows' => $rows]);
     }
 
     public function source(ChapterRegistry $registry, SourceReader $reader, string $slug): JsonResponse
