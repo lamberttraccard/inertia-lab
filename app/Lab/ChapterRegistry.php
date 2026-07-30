@@ -319,6 +319,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 21,
             ),
+            new Chapter(
+                slug: 'optimistic-updates',
+                title: 'Updating before the server agrees',
+                question: 'What happens to an optimistic like when the server refuses it?',
+                concept: 'router.optimistic() and its form equivalents apply a local change immediately and roll it back automatically once the visit finishes without having succeeded.',
+                routeName: 'chapters.optimistic-updates',
+                serverFile: 'app/Http/Controllers/Chapters/OptimisticUpdatesController.php',
+                clientFile: 'resources/js/pages/chapters/optimistic-updates.tsx',
+                translationFrom: 'Mutate the store, remember the previous value by hand, restore it in a catch block.',
+                translationTo: 'Declare the optimistic shape; the router remembers the previous value itself and restores it on failure.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/optimistic-updates',
+                wave: 1,
+                order: 22,
+            ),
         ];
     }
 

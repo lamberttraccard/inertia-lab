@@ -90,6 +90,10 @@ class LabController extends Controller
             'term' => 'Instant visit',
             'definition' => 'A visit whose target component is named up front, on the link or the visit itself. The client renders that component immediately, with whatever shared props the current page already holds and every page-specific prop undefined, then swaps in the real page once its response arrives.',
         ],
+        [
+            'term' => 'Optimistic update',
+            'definition' => "A local change to a page's props applied immediately, before the server confirms it, through router.optimistic() or a form's own equivalent. The client remembers the value each changed prop held beforehand and restores it automatically once the visit finishes without having succeeded.",
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

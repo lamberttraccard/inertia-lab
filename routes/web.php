@@ -13,6 +13,7 @@ use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
 use App\Http\Controllers\Chapters\MergingPropsController;
 use App\Http\Controllers\Chapters\OncePropsController;
+use App\Http\Controllers\Chapters\OptimisticUpdatesController;
 use App\Http\Controllers\Chapters\OptionalPropsController;
 use App\Http\Controllers\Chapters\PartialReloadsController;
 use App\Http\Controllers\Chapters\PollingController;
@@ -77,4 +78,7 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/prefetching/destination', [PrefetchingController::class, 'destination'])->name('prefetching.destination');
     Route::get('/instant-visits', [InstantVisitsController::class, 'show'])->name('instant-visits');
     Route::get('/instant-visits/{post}', [InstantVisitsController::class, 'detail'])->name('instant-visits.detail');
+    Route::get('/optimistic-updates', [OptimisticUpdatesController::class, 'show'])->name('optimistic-updates');
+    Route::post('/optimistic-updates/like', [OptimisticUpdatesController::class, 'like'])->name('optimistic-updates.like');
+    Route::post('/optimistic-updates/like-unreliable', [OptimisticUpdatesController::class, 'likeUnreliable'])->name('optimistic-updates.like-unreliable');
 });
