@@ -221,6 +221,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 14,
             ),
+            new Chapter(
+                slug: 'once-props',
+                title: 'Sent once, then never again',
+                question: 'Why send the same unchanging list on every single visit?',
+                concept: 'Inertia::once() sends a prop once per client; the client then names it in a request header so the server can skip resolving it again, unless a partial reload names that same prop explicitly.',
+                routeName: 'chapters.once-props',
+                serverFile: 'app/Http/Controllers/Chapters/OncePropsController.php',
+                clientFile: 'resources/js/pages/chapters/once-props.tsx',
+                translationFrom: 'Cache it in the client store and remember to invalidate it.',
+                translationTo: 'The client tells the server what it already holds, and the server trusts it.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/once-props',
+                wave: 1,
+                order: 15,
+            ),
         ];
     }
 

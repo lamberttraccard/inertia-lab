@@ -66,6 +66,10 @@ class LabController extends Controller
             'term' => 'Scroll prop',
             'definition' => 'A prop wrapped in Inertia::scroll(), built from a paginator. It carries pagination metadata (a page name, and the previous, next and current page identifiers) that the InfiniteScroll component reads to fetch the adjacent page and merge it into the wrapped data array, in either direction.',
         ],
+        [
+            'term' => 'Once prop',
+            'definition' => 'A prop wrapped in Inertia::once(), sent to the client a single time. The client then names it in an X-Inertia-Except-Once-Props header on later requests, and the server skips resolving it again, unless a partial reload of the same page names that same prop explicitly.',
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

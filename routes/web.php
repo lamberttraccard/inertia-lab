@@ -9,6 +9,7 @@ use App\Http\Controllers\Chapters\InfiniteScrollController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
 use App\Http\Controllers\Chapters\MergingPropsController;
+use App\Http\Controllers\Chapters\OncePropsController;
 use App\Http\Controllers\Chapters\OptionalPropsController;
 use App\Http\Controllers\Chapters\PartialReloadsController;
 use App\Http\Controllers\Chapters\PropsAndTypesController;
@@ -55,4 +56,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/always-props/flash', [AlwaysPropsController::class, 'flash'])->name('always-props.flash');
     Route::get('/merging-props', [MergingPropsController::class, 'show'])->name('merging-props');
     Route::get('/infinite-scroll', [InfiniteScrollController::class, 'show'])->name('infinite-scroll');
+    Route::get('/once-props', [OncePropsController::class, 'show'])->name('once-props');
 });
