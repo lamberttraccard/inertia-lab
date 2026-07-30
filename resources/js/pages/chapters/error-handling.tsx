@@ -24,7 +24,9 @@ function triggerBadCsrfToken() {
     // can produce; overwriting it client-side with plain text is what makes the token
     // wrong on purpose. The client still reads whatever is in the cookie and sends it as
     // X-XSRF-TOKEN (verified in node_modules/@inertiajs/core/dist/index.js), so this is
-    // enough to make PreventRequestForgery::getTokenFromRequest() fail to decrypt it.
+    // enough to make RequireCsrfTokenMatch's own token decryption fail, the same way it
+    // would fail inside PreventRequestForgery::getTokenFromRequest(), which this route
+    // does not use (see the "why this route needs its own middleware" section below).
     document.cookie = 'XSRF-TOKEN=deliberately-invalid-token; path=/';
     router.post('/chapters/error-handling/protected');
 }
@@ -241,6 +243,29 @@ export default function ErrorHandling({
                     only repeats work already done. Calling it every time is
                     what makes all three renders consistent without having to
                     remember which case needed it.
+                </p>
+            </section>
+
+            <section>
+                <h2 className="text-lg font-semibold">
+                    Why the 419 button needs its own middleware
+                </h2>
+                <p className="mt-1">
+                    A wrong token alone is not actually enough to produce this
+                    response on the application&apos;s own default CSRF
+                    middleware. PreventRequestForgery::hasValidOrigin() trusts a
+                    same-origin browser&apos;s own Sec-Fetch-Site header ahead
+                    of the token, and this browser, like every current browser,
+                    sends Sec-Fetch-Site: same-origin on every request to this
+                    application, confirmed directly rather than assumed. That
+                    means the token is never even examined for a plain
+                    same-origin click under the default middleware. The route
+                    behind this button (/chapters/error-handling/protected)
+                    replaces it with
+                    app/Http/Middleware/RequireCsrfTokenMatch.php, a standalone
+                    reimplementation of just the token check, so the
+                    button&apos;s label stays true for the browser actually
+                    reading this page.
                 </p>
             </section>
         </ChapterShell>

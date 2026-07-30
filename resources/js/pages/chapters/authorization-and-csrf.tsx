@@ -30,8 +30,9 @@ function RenameForm({ post, can }: { post: Post; can: Can }) {
 
     function saveWithBadToken() {
         // Same technique as chapter 29: overwriting the cookie with plain text is what
-        // makes PreventRequestForgery::getTokenFromRequest() fail to decrypt it, producing
-        // a real CSRF mismatch rather than a simulated one.
+        // makes RequireCsrfTokenMatch's own token decryption fail, producing a real CSRF
+        // mismatch rather than a simulated one (see "two protections, not one" below for
+        // why this route does not use the application's default CSRF middleware).
         document.cookie = 'XSRF-TOKEN=deliberately-invalid-token; path=/';
         form.patch(`/chapters/authorization-and-csrf/${post.id}`, {
             preserveScroll: true,
@@ -192,8 +193,23 @@ export default function AuthorizationAndCsrf({
                     active when can.update is already true, so a rejection from
                     it is never explained by authorization: the request would
                     have succeeded if the token had been valid, and fails only
-                    because PreventRequestForgery runs before rename() ever gets
-                    a chance to check the policy at all.
+                    because the token check runs before rename() ever gets a
+                    chance to check the policy at all.
+                </p>
+                <p className="mt-2">
+                    That token check is not this application&apos;s default one.
+                    PreventRequestForgery::hasValidOrigin() trusts a same-origin
+                    browser&apos;s own Sec-Fetch-Site header ahead of the token,
+                    and this browser, like every current browser, sends
+                    Sec-Fetch-Site: same-origin on every request to this
+                    application, confirmed directly rather than assumed: a wrong
+                    token alone never reaches the check on the default
+                    middleware, because the header alone already satisfies it.
+                    The PATCH route behind the rename buttons replaces it with
+                    app/Http/Middleware/RequireCsrfTokenMatch.php, the same
+                    standalone token check chapter 29 uses for the same reason,
+                    so the wrong-token button&apos;s label stays true for the
+                    browser actually reading this page.
                 </p>
             </section>
         </ChapterShell>

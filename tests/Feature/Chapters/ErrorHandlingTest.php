@@ -43,14 +43,10 @@ it('answers a URL with no matching route with a rendered Inertia page carrying s
 });
 
 it('answers a bad CSRF token with a rendered Inertia page carrying shared data', function () {
-    // PreventRequestForgery::runningUnitTests() short-circuits CSRF verification whenever
-    // app()->runningInConsole() && app()->runningUnitTests() both hold, which they do for
-    // every test in this suite by default (verified in vendor/laravel/framework/src/
-    // Illuminate/Foundation/Http/Middleware/PreventRequestForgery.php). Overriding the
-    // 'env' container binding is what disables that bypass for this one test, so the
-    // request below hits the real token check instead of skipping it.
-    app()->instance('env', 'local');
-
+    // No _token here: this route runs RequireCsrfTokenMatch instead of the default
+    // PreventRequestForgery (see routes/web.php), which has no runningUnitTests()
+    // bypass, so this hits the real token check and fails it exactly as a browser
+    // request with a corrupted XSRF-TOKEN cookie would.
     $response = $this->withHeaders([
         'X-Inertia' => 'true',
         'X-Inertia-Version' => currentInertiaVersion(),
@@ -66,13 +62,20 @@ it('answers a bad CSRF token with a rendered Inertia page carrying shared data',
 });
 
 it('records a successful protected action and reflects it as the chapter status prop', function () {
+    // A GET first, the same as every other test in this file: it starts the session that
+    // csrf_token() below reads, the same one the test client's persistent cookie jar then
+    // carries into the POST. Without it, csrf_token() reads a session that never gets
+    // attached to the request that follows, and this fails the same as a wrong token would.
+    $this->get(route('chapters.error-handling'));
+
     // back() resolves against the Referer header (or the session's previous-url value)
     // when one is present, and falls back to "/" otherwise: a real browser submitting
     // this from the chapter page itself always sends one, which is what this reproduces.
-    // The testing environment's CSRF bypass applies here too, standing in for a real
-    // browser that sent a valid, matching token: this is the recovery path's contrast case.
+    // This route runs RequireCsrfTokenMatch instead of the default PreventRequestForgery
+    // (see routes/web.php), which has no runningUnitTests() bypass, so this request needs
+    // a genuinely valid _token, the recovery path's contrast case against the bad-token test.
     $this->withHeaders(['referer' => route('chapters.error-handling')])
-        ->post(route('chapters.error-handling.protected'))
+        ->post(route('chapters.error-handling.protected'), ['_token' => csrf_token()])
         ->assertRedirect(route('chapters.error-handling'));
 
     $reload = $this->get(route('chapters.error-handling'));

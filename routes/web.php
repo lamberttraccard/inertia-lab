@@ -35,6 +35,8 @@ use App\Http\Controllers\Chapters\TypescriptAndSplittingController;
 use App\Http\Controllers\Chapters\ViewTransitionsController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\SlowModeController;
+use App\Http\Middleware\RequireCsrfTokenMatch;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LabController::class, 'home'])->name('lab.home');
@@ -109,11 +111,25 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     // since a route that exists (even one calling abort(404) on purpose) would have already
     // run through this app's own web middleware, including HandleInertiaRequests, before
     // ever throwing. Only a URL with no matching route at all skips that middleware entirely.
-    Route::post('/error-handling/protected', [ErrorHandlingController::class, 'protectedAction'])->name('error-handling.protected');
+    // RequireCsrfTokenMatch replaces the default 'web' group's PreventRequestForgery on this
+    // one route: that default trusts a same-origin browser's own Sec-Fetch-Site header over
+    // the token (verified against a real browser, not just this suite's fake requests, which
+    // never send that header at all), so a corrupted token alone cannot reach this action's
+    // token check without it.
+    Route::post('/error-handling/protected', [ErrorHandlingController::class, 'protectedAction'])
+        ->withoutMiddleware(PreventRequestForgery::class)
+        ->middleware(RequireCsrfTokenMatch::class)
+        ->name('error-handling.protected');
     Route::post('/error-handling/crash', [ErrorHandlingController::class, 'crash'])->name('error-handling.crash');
     Route::get('/error-handling/plain', [ErrorHandlingController::class, 'plain'])->name('error-handling.plain');
     Route::get('/authorization-and-csrf', [AuthorizationAndCsrfController::class, 'show'])->name('authorization-and-csrf');
-    Route::patch('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'rename'])->name('authorization-and-csrf.rename');
+    // Same reason as chapters/error-handling/protected: without replacing the default
+    // PreventRequestForgery here, a same-origin browser's own Sec-Fetch-Site header would
+    // authorize this request before the token was ever examined, regardless of its value.
+    Route::patch('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'rename'])
+        ->withoutMiddleware(PreventRequestForgery::class)
+        ->middleware(RequireCsrfTokenMatch::class)
+        ->name('authorization-and-csrf.rename');
     Route::delete('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'destroy'])->name('authorization-and-csrf.destroy');
     Route::get('/devtools-and-testing', [DevtoolsAndTestingController::class, 'show'])->name('devtools-and-testing');
     Route::get('/typescript-and-splitting', [TypescriptAndSplittingController::class, 'show'])->name('typescript-and-splitting');

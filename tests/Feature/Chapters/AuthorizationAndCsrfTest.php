@@ -59,7 +59,10 @@ it('updates the title when the post author renames it', function () {
     $before = assertInertiaPage($this->get(route('chapters.authorization-and-csrf')), 'chapters/authorization-and-csrf');
     $postId = $before['props']['post']['id'];
 
-    $this->patch("/chapters/authorization-and-csrf/{$postId}", ['title' => 'A renamed title'])
+    // This route runs RequireCsrfTokenMatch instead of the default PreventRequestForgery
+    // (see routes/web.php), which has no runningUnitTests() bypass, so a genuinely valid
+    // _token is required here the way a real browser's own cookie-derived one would be.
+    $this->patch("/chapters/authorization-and-csrf/{$postId}", ['title' => 'A renamed title', '_token' => csrf_token()])
         ->assertRedirect();
 
     expect(Post::query()->findOrFail($postId)->title)->toBe('A renamed title');
@@ -74,7 +77,7 @@ it('rejects a rename from a non-author with 403 and leaves the title unchanged',
 
     $this->post(route('chapters.shared-data.switch-user'), ['user_id' => $users[1]->id]);
 
-    $this->patch("/chapters/authorization-and-csrf/{$postId}", ['title' => 'Should not stick'])
+    $this->patch("/chapters/authorization-and-csrf/{$postId}", ['title' => 'Should not stick', '_token' => csrf_token()])
         ->assertForbidden();
 
     expect(Post::query()->findOrFail($postId)->title)->toBe($originalTitle);
@@ -116,14 +119,10 @@ it('answers a bad CSRF token on the rename route with a 419 and leaves the title
     $postId = $before['props']['post']['id'];
     $originalTitle = $before['props']['post']['title'];
 
-    // PreventRequestForgery::runningUnitTests() short-circuits CSRF verification whenever
-    // app()->runningInConsole() && app()->runningUnitTests() both hold, which they do for
-    // every test in this suite by default (verified in vendor/laravel/framework/src/
-    // Illuminate/Foundation/Http/Middleware/PreventRequestForgery.php, and while writing
-    // chapter 29's own test for the same 419). Overriding the 'env' container binding
-    // disables that bypass for this one request, so it hits the real token check instead.
-    app()->instance('env', 'local');
-
+    // No _token at all here, unlike the two tests above: RequireCsrfTokenMatch (see
+    // routes/web.php and app/Http/Middleware/RequireCsrfTokenMatch.php) has no
+    // runningUnitTests() bypass, so this request hits the real token check and fails it
+    // exactly as a browser request with a corrupted XSRF-TOKEN cookie would.
     $this->patch("/chapters/authorization-and-csrf/{$postId}", ['title' => 'Should not stick either'])
         ->assertStatus(419);
 
