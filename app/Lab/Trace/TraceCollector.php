@@ -2,6 +2,7 @@
 
 namespace App\Lab\Trace;
 
+use App\Lab\SlowMode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Inertia\DevTools\DevTools;
@@ -9,7 +10,7 @@ use Inertia\Support\Header;
 
 class TraceCollector
 {
-    /** @var array<string, array{type: string, meta: array<string, mixed>, ms: float|null, order: int|null}> */
+    /** @var array<string, array{type: string, meta: array<string, mixed>, ms: float|null, delayMs: int, order: int|null}> */
     private array $declared = [];
 
     /** @var array<int, string> */
@@ -26,11 +27,17 @@ class TraceCollector
     /** @param array<string, mixed> $meta */
     public function declare(string $key, string $type, array $meta = []): void
     {
-        $this->declared[$key] = ['type' => $type, 'meta' => $meta, 'ms' => null, 'order' => null];
+        $this->declared[$key] = ['type' => $type, 'meta' => $meta, 'ms' => null, 'delayMs' => 0, 'order' => null];
     }
 
     public function time(string $key, callable $callback): mixed
     {
+        $delay = app(SlowMode::class)->delayMs();
+
+        if ($delay > 0) {
+            usleep($delay * 1000);
+        }
+
         $started = hrtime(true);
 
         try {
@@ -40,7 +47,8 @@ class TraceCollector
             return $this->useAsCallable($callback) ? App::call($callback) : $callback();
         } finally {
             if (isset($this->declared[$key])) {
-                $this->declared[$key]['ms'] = round((hrtime(true) - $started) / 1_000_000, 2);
+                $this->declared[$key]['ms'] = round((hrtime(true) - $started) / 1_000_000, 2) + $delay;
+                $this->declared[$key]['delayMs'] = $delay;
                 $this->declared[$key]['order'] ??= ++$this->counter;
             }
         }
@@ -66,7 +74,7 @@ class TraceCollector
         $this->page = $page;
     }
 
-    /** @return array<string, array{type: string, meta: array<string, mixed>, ms: float|null, order: int|null}> */
+    /** @return array<string, array{type: string, meta: array<string, mixed>, ms: float|null, delayMs: int, order: int|null}> */
     public function declared(): array
     {
         return $this->declared;
@@ -137,7 +145,7 @@ class TraceCollector
      * pathMatchesPartialRequest() checks an only mismatch before an except match
      * (the except check is only reached once the only check has already passed).
      *
-     * @param  array{type: string, meta: array<string, mixed>, ms: float|null, order: int|null}  $entry
+     * @param  array{type: string, meta: array<string, mixed>, ms: float|null, delayMs: int, order: int|null}  $entry
      */
     private function skipReason(string $key, array $entry, Request $request): SkipReason
     {
