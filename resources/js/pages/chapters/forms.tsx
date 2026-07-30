@@ -114,11 +114,17 @@ export default function Forms({
                     that redirect on its own, landing back on this same page,
                     whose errors prop now carries them, shared by Inertia&apos;s
                     own middleware and always included regardless of what a
-                    partial reload would otherwise have asked for. Both forms
-                    below read that same flat errors object, since both submit
-                    the same fields to the same route: nothing here splits them
-                    into a named <Term term="Error bag">error bag</Term>, so a
-                    failure from either form is visible on both.
+                    partial reload would otherwise have asked for. Submit
+                    whichever form you like: only that one shows the result,
+                    confirmed by trying it below. errors, processing, isDirty
+                    and wasSuccessful are state its own Form or useForm instance
+                    keeps, populated by its own submission, not a live mirror of
+                    the shared prop. Both forms happen to submit the same field
+                    names to the same route, so if their errors needed to stay
+                    apart on screen at the same time, a named{' '}
+                    <Term term="Error bag">error bag</Term> is what separates
+                    them; neither form here needs one, since each already shows
+                    only what it submitted.
                 </p>
             }
             whenToUse={
