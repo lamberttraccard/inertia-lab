@@ -23,6 +23,7 @@ use App\Http\Controllers\Chapters\PropsAndTypesController;
 use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
 use App\Http\Controllers\Chapters\SharedDataController;
+use App\Http\Controllers\Chapters\ViewTransitionsController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\SlowModeController;
 use Illuminate\Support\Facades\Route;
@@ -81,4 +82,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/optimistic-updates', [OptimisticUpdatesController::class, 'show'])->name('optimistic-updates');
     Route::post('/optimistic-updates/like', [OptimisticUpdatesController::class, 'like'])->name('optimistic-updates.like');
     Route::post('/optimistic-updates/like-unreliable', [OptimisticUpdatesController::class, 'likeUnreliable'])->name('optimistic-updates.like-unreliable');
+    Route::get('/view-transitions', [ViewTransitionsController::class, 'show'])->name('view-transitions');
+    Route::get('/view-transitions/{post}', [ViewTransitionsController::class, 'detail'])->name('view-transitions.detail');
 });

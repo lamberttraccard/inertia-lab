@@ -94,6 +94,10 @@ class LabController extends Controller
             'term' => 'Optimistic update',
             'definition' => "A local change to a page's props applied immediately, before the server confirms it, through router.optimistic() or a form's own equivalent. The client remembers the value each changed prop held beforehand and restores it automatically once the visit finishes without having succeeded.",
         ],
+        [
+            'term' => 'View transition',
+            'definition' => "A browser-native animation between two page states, requested by passing viewTransition to a visit. Inertia hands the swap to the browser's View Transitions API where the current browser supports it, and performs a plain, unanimated swap everywhere else.",
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

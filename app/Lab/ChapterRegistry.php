@@ -333,6 +333,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 22,
             ),
+            new Chapter(
+                slug: 'view-transitions',
+                title: 'Animating between pages',
+                question: 'Can a page change be animated without a client-side animation library?',
+                concept: "The viewTransition visit option hands the page swap to the browser's own View Transitions API where it exists, and changes nothing at all where it does not.",
+                routeName: 'chapters.view-transitions',
+                serverFile: 'app/Http/Controllers/Chapters/ViewTransitionsController.php',
+                clientFile: 'resources/js/pages/chapters/view-transitions.tsx',
+                translationFrom: 'An animation library wrapping every route transition.',
+                translationTo: 'One visit option, plus a CSS property on whichever element should carry itself across the change.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/view-transitions',
+                wave: 1,
+                order: 23,
+            ),
         ];
     }
 
