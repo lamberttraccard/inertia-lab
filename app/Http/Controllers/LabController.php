@@ -98,6 +98,10 @@ class LabController extends Controller
             'term' => 'View transition',
             'definition' => "A browser-native animation between two page states, requested by passing viewTransition to a visit. Inertia hands the swap to the browser's View Transitions API where the current browser supports it, and performs a plain, unanimated swap everywhere else.",
         ],
+        [
+            'term' => 'Remembered state',
+            'definition' => 'Local component state saved into the current history entry by useRemember. A component rebuilt from that same entry, after a full remount rather than a mere reload, reads its initial value back out of it instead of starting over.',
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

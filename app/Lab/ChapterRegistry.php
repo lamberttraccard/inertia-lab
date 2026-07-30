@@ -347,6 +347,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 23,
             ),
+            new Chapter(
+                slug: 'remembering-state',
+                title: 'State that survives the back button',
+                question: 'You filter a list, open an item, press back. Where did the filter go?',
+                concept: 'useRemember stores component state in the current history entry so a full remount can recover it; preserveState and preserveScroll decide what a visit keeps without needing that at all.',
+                routeName: 'chapters.remembering-state',
+                serverFile: 'app/Http/Controllers/Chapters/RememberingStateController.php',
+                clientFile: 'resources/js/pages/chapters/remembering-state.tsx',
+                translationFrom: 'Serialise the filter into the query string and parse it back out on mount.',
+                translationTo: 'A hook that puts the same state into the history entry itself, restored automatically when that entry becomes current again.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/remembering-state',
+                wave: 1,
+                order: 24,
+            ),
         ];
     }
 

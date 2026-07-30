@@ -21,6 +21,7 @@ use App\Http\Controllers\Chapters\PrecognitionController;
 use App\Http\Controllers\Chapters\PrefetchingController;
 use App\Http\Controllers\Chapters\PropsAndTypesController;
 use App\Http\Controllers\Chapters\RedirectsController;
+use App\Http\Controllers\Chapters\RememberingStateController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
 use App\Http\Controllers\Chapters\SharedDataController;
 use App\Http\Controllers\Chapters\ViewTransitionsController;
@@ -84,4 +85,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/optimistic-updates/like-unreliable', [OptimisticUpdatesController::class, 'likeUnreliable'])->name('optimistic-updates.like-unreliable');
     Route::get('/view-transitions', [ViewTransitionsController::class, 'show'])->name('view-transitions');
     Route::get('/view-transitions/{post}', [ViewTransitionsController::class, 'detail'])->name('view-transitions.detail');
+    Route::get('/remembering-state', [RememberingStateController::class, 'show'])->name('remembering-state');
+    Route::get('/remembering-state/{post}', [RememberingStateController::class, 'detail'])->name('remembering-state.detail');
 });
