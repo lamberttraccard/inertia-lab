@@ -15,7 +15,10 @@ beforeEach(function () {
 });
 
 it('renders the chapter with a real reliable card and a fixed unreliable card', function () {
-    $response = $this->get(route('chapters.optimistic-updates'));
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.optimistic-updates'));
 
     $response->assertOk();
 
@@ -24,9 +27,21 @@ it('renders the chapter with a real reliable card and a fixed unreliable card', 
     $page = assertInertiaPage($response, 'chapters/optimistic-updates');
     $trace = labTrace($response);
 
-    expect($page['props']['reliable'])->toBe(['label' => 'A post you can really like', 'likes' => 0, 'likedByMe' => false])
-        ->and($page['props']['unreliable'])->toBe(['label' => 'A post that never accepts a like', 'likes' => 12, 'likedByMe' => false])
-        ->and($trace['props'])->toHaveKeys(['reliable', 'unreliable']);
+    // Verified empirically against this exact route (see the debug trace taken from
+    // chapters/first-load-vs-visit for the shared baseline): errors, name, auth, demoUser,
+    // unreadNotifications and demoUserOptions are the platform's own shared props, added to
+    // every page regardless of this chapter; chapter, previous and next are the standard
+    // chapter metadata every chapter passes.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'reliable', 'unreliable', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions', 'chapter', 'previous', 'next',
+            'reliable', 'unreliable',
+        ])
+        ->and($page['props']['reliable'])->toBe(['label' => 'A post you can really like', 'likes' => 0, 'likedByMe' => false])
+        ->and($page['props']['unreliable'])->toBe(['label' => 'A post that never accepts a like', 'likes' => 12, 'likedByMe' => false]);
 });
 
 it('persists a like on the reliable endpoint and removes it again on a second toggle', function () {
