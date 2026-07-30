@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
+use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
 use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
@@ -26,4 +27,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/redirects/post', [RedirectsController::class, 'post'])->name('redirects.post');
     Route::delete('/redirects/delete', [RedirectsController::class, 'delete'])->name('redirects.delete');
     Route::get('/redirects/location', [RedirectsController::class, 'location'])->name('redirects.location');
+    Route::get('/links-and-visits', [LinksAndVisitsController::class, 'show'])->name('links-and-visits');
 });

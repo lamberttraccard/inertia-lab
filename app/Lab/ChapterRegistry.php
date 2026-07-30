@@ -67,6 +67,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 3,
             ),
+            new Chapter(
+                slug: 'links-and-visits',
+                title: 'Links, visits, and the options that shape them',
+                question: 'What is the difference between a link and a manual visit, and what can you ask of either?',
+                concept: 'Link is a visit with a nicer syntax; every visit takes the same option set.',
+                routeName: 'chapters.links-and-visits',
+                serverFile: 'app/Http/Controllers/Chapters/LinksAndVisitsController.php',
+                clientFile: 'resources/js/pages/chapters/links-and-visits.tsx',
+                translationFrom: 'A client router intercepts the click and you fetch in an effect.',
+                translationTo: 'A link is an HTTP request whose response replaces the page.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/links',
+                wave: 1,
+                order: 4,
+            ),
         ];
     }
 
