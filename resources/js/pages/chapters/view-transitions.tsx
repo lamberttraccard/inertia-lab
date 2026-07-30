@@ -46,8 +46,9 @@ export default function ViewTransitions({
                     </label>
                     <p className="text-sm text-neutral-600 dark:text-neutral-400">
                         This browser{' '}
-                        {supported ? 'supports' : 'does not support'} the View
-                        Transitions API right now, read live from{' '}
+                        {supported ? 'supports' : 'does not support'} the{' '}
+                        <Term term="View transition">View Transitions API</Term>{' '}
+                        right now, read live from{' '}
                         <code className="font-mono">
                             &apos;startViewTransition&apos; in document
                         </code>
