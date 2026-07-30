@@ -29,7 +29,49 @@ Every chapter in this plan is built by the same six steps. The per-chapter secti
 
 **Step B. Verify the APIs the chapter teaches.** Grep the installed packages for every method, component, hook and header the chapter names. Record in your report what you verified and where. A chapter that teaches a method that does not exist is the worst failure this project can produce.
 
-**Step C. Write the failing test** in `tests/Feature/Chapters/<Name>Test.php`. Every chapter test asserts at least: the route returns the expected component, the chapter's registry metadata reaches the page, and the props the chapter is about behave as the concept requires (resolved, skipped, merged, deferred, and so on) as visible through `_lab` and the page props. Use `Inertia\Testing\AssertableInertia`. Run it, confirm it fails for the right reason.
+**Step C. Write the failing test** in `tests/Feature/Chapters/<Name>Test.php`. Every chapter test asserts at least: the route returns the expected component, the chapter's registry metadata reaches the page, and the props the chapter is about behave as the concept requires (resolved, skipped, merged, deferred, and so on) as visible through `_lab` and the page props. Run it, confirm it fails for the right reason.
+
+**Do not use `assertInertia()` in chapter tests.** It reads `TestResponse::viewData('page')`, which needs `Response::original` to still hold the view Inertia rendered. With the official DevTools recorder enabled, `Inertia\Middleware::handle()` calls `respondedWith()` after our own middleware has run and restored `original`, and that call injects its devtools id tag through a second `setContent()`, which clobbers `original` back to a plain string. On an Inertia JSON response the problem is different and equally fatal: `toResponse()` returns a bare `JsonResponse` and never touches a view at all.
+
+The first task in this plan therefore adds two helpers to `tests/Pest.php`, and every chapter test uses them instead of re-extracting JSON by hand. Thirty-two copies of a `Str::betweenFirst` block would be exactly the verbatim duplication the review rubric rejects.
+
+```php
+function inertiaPage(\Illuminate\Testing\TestResponse $response): array
+{
+    if ($response->headers->get('Content-Type') === 'application/json') {
+        return $response->json();
+    }
+
+    $json = \Illuminate\Support\Str::betweenFirst(
+        (string) $response->getContent(),
+        '<script data-page="app" type="application/json">',
+        '</script>'
+    );
+
+    return json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+}
+
+function labTrace(\Illuminate\Testing\TestResponse $response): array
+{
+    $page = inertiaPage($response);
+
+    if (isset($page['props']['_lab'])) {
+        return $page['props']['_lab'];
+    }
+
+    $json = \Illuminate\Support\Str::betweenFirst(
+        (string) $response->getContent(),
+        '<script id="lab-trace" type="application/json">',
+        '</script>'
+    );
+
+    return json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+}
+```
+
+Verify both against the real response shapes before relying on them, and make them throw rather than return an empty array when the expected script tag is absent: a helper that silently returns `[]` would turn a broken page into a passing test. Refactor `tests/Feature/Chapters/MentalModelTest.php` onto them in the same task, so there is exactly one copy of this knowledge.
+
+Chapter tests still need `config()->set('inertia.devtools.enabled', true);` in a `beforeEach`, because `DevTools::enabled()` defaults to the local environment and the test environment is not local, so the trace would otherwise be off.
 
 **Step D. Add the registry entry** to `ChapterRegistry::all()`, in `order` sequence, with every field filled: `slug`, `title`, `question`, `concept`, `routeName`, `serverFile`, `clientFile`, `translationFrom`, `translationTo`, `docsUrl`, `wave`, `order`. The registry consistency test enforces that none of these is empty.
 
