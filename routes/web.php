@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
@@ -28,4 +29,8 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::delete('/redirects/delete', [RedirectsController::class, 'delete'])->name('redirects.delete');
     Route::get('/redirects/location', [RedirectsController::class, 'location'])->name('redirects.location');
     Route::get('/links-and-visits', [LinksAndVisitsController::class, 'show'])->name('links-and-visits');
+    Route::get('/events', [EventsController::class, 'show'])->name('events');
+    Route::post('/events/unprocessable', [EventsController::class, 'unprocessable'])->name('events.unprocessable');
+    Route::post('/events/server-error', [EventsController::class, 'serverError'])->name('events.server-error');
+    Route::get('/events/non-inertia', [EventsController::class, 'nonInertia'])->name('events.non-inertia');
 });

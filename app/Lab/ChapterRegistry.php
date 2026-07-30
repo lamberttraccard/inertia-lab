@@ -81,6 +81,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 4,
             ),
+            new Chapter(
+                slug: 'events',
+                title: 'The events a visit fires',
+                question: 'What happens, in order, between the click and the new screen?',
+                concept: 'Every visit emits a fixed sequence of client events, some of which can cancel it.',
+                routeName: 'chapters.events',
+                serverFile: 'app/Http/Controllers/Chapters/EventsController.php',
+                clientFile: 'resources/js/pages/chapters/events.tsx',
+                translationFrom: 'Promise callbacks around your fetch.',
+                translationTo: 'A lifecycle you can subscribe to globally or per visit.',
+                docsUrl: 'https://inertiajs.com/docs/v3/advanced/events',
+                wave: 1,
+                order: 5,
+            ),
         ];
     }
 

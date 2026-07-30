@@ -10,7 +10,10 @@ import { installWireCapture, readInitialTrace } from './wire-capture';
 //   `fireCancelEvent` anywhere; nothing in this installed version ever fires it.
 // - 'clientVisit' is added: `fireClientVisitEvent` is defined and called (client-side
 //   visits such as router.push/replace), and the spec's list omitted it.
-const EVENTS = [
+// Exported so a chapter teaching the event list (chapters/events.tsx) reads the same
+// two constants this strip renders from, rather than keeping a second copy that could
+// drift from the one actually wired up here.
+export const EVENTS = [
     'before',
     'start',
     'progress',
@@ -30,7 +33,7 @@ const EVENTS = [
 
 // The only members whose `result` type in GlobalEventsMap is `boolean | void` rather than
 // plain `void`: returning false from one of these is what can actually cancel something.
-const CANCELABLE = new Set([
+export const CANCELABLE = new Set([
     'before',
     'httpException',
     'networkError',
