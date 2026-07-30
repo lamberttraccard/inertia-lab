@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { CodeBlock } from '@/lab/CodeBlock';
 import { Term } from '@/lab/Term';
 import type { ChapterData, Neighbour } from './types';
 
@@ -86,15 +87,19 @@ export default function MentalModel({
         >
             <section>
                 <h2 className="text-lg font-semibold">The path you expect</h2>
-                <pre className="mt-1 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                    {FAMILIAR}
-                </pre>
+                <CodeBlock
+                    code={FAMILIAR}
+                    lang="tsx"
+                    className="mt-1 overflow-x-auto"
+                />
                 <h2 className="mt-4 text-lg font-semibold">
                     The path that just ran
                 </h2>
-                <pre className="mt-1 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                    {ACTUAL}
-                </pre>
+                <CodeBlock
+                    code={ACTUAL}
+                    lang="tsx"
+                    className="mt-1 overflow-x-auto"
+                />
                 <p className="mt-2">
                     The posts are already here: {posts.length} of them, passed
                     as an argument.

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { CodeBlock } from './CodeBlock';
+import { langForPath } from './highlighter';
 
 type SourceFile = { path: string; contents: string; lines: number };
 
@@ -96,18 +98,24 @@ export function SourceView({ slug, serverFile, clientFile }: SourceViewProps) {
                             {state.data.server.path} ({state.data.server.lines}{' '}
                             lines)
                         </p>
-                        <pre className="mt-1 max-h-96 overflow-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                            {state.data.server.contents}
-                        </pre>
+                        <CodeBlock
+                            code={state.data.server.contents}
+                            lang={langForPath(state.data.server.path)}
+                            showLineNumbers
+                            className="mt-1 max-h-96 overflow-auto"
+                        />
                     </div>
                     <div>
                         <p className="font-mono text-xs text-neutral-500">
                             {state.data.client.path} ({state.data.client.lines}{' '}
                             lines)
                         </p>
-                        <pre className="mt-1 max-h-96 overflow-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                            {state.data.client.contents}
-                        </pre>
+                        <CodeBlock
+                            code={state.data.client.contents}
+                            lang={langForPath(state.data.client.path)}
+                            showLineNumbers
+                            className="mt-1 max-h-96 overflow-auto"
+                        />
                     </div>
                 </div>
             )}

@@ -1,6 +1,7 @@
 import { Link, router } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { CodeBlock } from '@/lab/CodeBlock';
 import { Term } from '@/lab/Term';
 import type { ChapterData, Neighbour } from './types';
 
@@ -140,9 +141,11 @@ export default function LinksAndVisits({
                         </label>
                     </div>
 
-                    <pre className="overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                        {JSON.stringify(options, null, 2)}
-                    </pre>
+                    <CodeBlock
+                        code={JSON.stringify(options, null, 2)}
+                        lang="json"
+                        className="overflow-x-auto"
+                    />
 
                     <div className="flex flex-wrap items-center gap-3">
                         <Link

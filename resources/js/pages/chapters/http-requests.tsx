@@ -1,5 +1,6 @@
 import { useHttp } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { CodeBlock } from '@/lab/CodeBlock';
 import { Term } from '@/lab/Term';
 import type { ChapterData, Neighbour } from './types';
 
@@ -37,9 +38,11 @@ export default function HttpRequests({
                         {String(http.wasSuccessful)}
                     </p>
                     {http.response ? (
-                        <pre className="overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                            {JSON.stringify(http.response, null, 2)}
-                        </pre>
+                        <CodeBlock
+                            code={JSON.stringify(http.response, null, 2)}
+                            lang="json"
+                            className="overflow-x-auto"
+                        />
                     ) : (
                         <p className="text-sm text-neutral-500">
                             No response yet.

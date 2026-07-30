@@ -1,4 +1,5 @@
 import { ChapterShell } from '@/lab/ChapterShell';
+import { CodeBlock } from '@/lab/CodeBlock';
 import type { ChapterData, Neighbour } from './types';
 
 const CONTROLLER_PROPS = `->render('chapters/error-handling-page', [
@@ -85,16 +86,20 @@ export default function TypescriptAndSplitting({
                     Chapter 29&apos;s error page is small enough to show in
                     full. Its controller passes exactly these three props:
                 </p>
-                <pre className="mt-1 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                    {CONTROLLER_PROPS}
-                </pre>
+                <CodeBlock
+                    code={CONTROLLER_PROPS}
+                    lang="php"
+                    className="mt-1 overflow-x-auto"
+                />
                 <p className="mt-2">
                     Its component declares exactly this type for them,
                     resources/js/pages/chapters/error-handling-page.tsx:
                 </p>
-                <pre className="mt-1 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                    {COMPONENT_TYPE}
-                </pre>
+                <CodeBlock
+                    code={COMPONENT_TYPE}
+                    lang="typescript"
+                    className="mt-1 overflow-x-auto"
+                />
                 <p className="mt-2">
                     Nobody generated the second block from the first, or the
                     first from the second. A person wrote both, by hand,
@@ -138,9 +143,11 @@ export default function TypescriptAndSplitting({
                     ErrorHandlingController::show(), the generated function
                     looks like this:
                 </p>
-                <pre className="mt-1 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                    {WAYFINDER_EXAMPLE}
-                </pre>
+                <CodeBlock
+                    code={WAYFINDER_EXAMPLE}
+                    lang="typescript"
+                    className="mt-1 overflow-x-auto"
+                />
                 <p className="mt-2">
                     That types the request side of a visit: the URL and the
                     method, kept correct because it is regenerated from the same

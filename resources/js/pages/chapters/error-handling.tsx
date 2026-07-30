@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { CodeBlock } from '@/lab/CodeBlock';
 import { Term } from '@/lab/Term';
 import type { ChapterData, Neighbour } from './types';
 
@@ -145,9 +146,11 @@ export default function ErrorHandling({
                     </code>
                     .
                 </p>
-                <pre className="mt-2 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                    {REGISTRATION}
-                </pre>
+                <CodeBlock
+                    code={REGISTRATION}
+                    lang="php"
+                    className="mt-2 overflow-x-auto"
+                />
                 <dl className="mt-3 space-y-2 text-sm">
                     <div>
                         <dt className="font-mono font-medium">render()</dt>

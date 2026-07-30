@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { CodeBlock } from '@/lab/CodeBlock';
+import { langForPath } from '@/lab/highlighter';
 import { Term } from '@/lab/Term';
 import type { ChapterData, Neighbour } from './types';
 
@@ -85,9 +87,11 @@ function PlatformSourceFile({ path }: { path: string }) {
             <p className="font-mono text-xs text-neutral-500">
                 {state.data.path} ({state.data.lines} lines)
             </p>
-            <pre className="mt-1 max-h-96 overflow-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                {state.data.contents}
-            </pre>
+            <CodeBlock
+                code={state.data.contents}
+                lang={langForPath(state.data.path)}
+                className="mt-1 max-h-96 overflow-auto"
+            />
         </div>
     );
 }
@@ -331,11 +335,11 @@ export default function DevtoolsAndTesting({
                     produced this, one particular run (the duration varies, the
                     counts do not):
                 </p>
-                <pre className="mt-1 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
-                    {
-                        '{"tool":"pest","result":"passed","tests":3,"passed":3,"assertions":23,"duration_ms":223}'
-                    }
-                </pre>
+                <CodeBlock
+                    code='{"tool":"pest","result":"passed","tests":3,"passed":3,"assertions":23,"duration_ms":223}'
+                    lang="json"
+                    className="mt-1 overflow-x-auto"
+                />
                 <PlatformSourceFile path="tests/Feature/Chapters/DevtoolsAndTestingTest.php" />
                 <p className="mt-3 text-sm text-neutral-600 dark:text-neutral-400">
                     And the helpers it, and every other chapter test, calls:
