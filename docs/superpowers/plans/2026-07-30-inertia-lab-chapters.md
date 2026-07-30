@@ -96,6 +96,7 @@ Three template rules, each found by review of chapter 0 and each easy to repeat 
 - **Every prop goes through a `Lab` factory, including the chapter metadata.** `chapter`, `previous` and `next` are props like any other. Passed raw they never reach `TraceCollector::declared()`, so they are invisible in `_lab`, in an application whose entire subject is showing the reader every prop. Wrap them in `Lab::value()`.
 - **Link a term to the glossary on its first use in a chapter.** Use the shared `<Term>` component in `resources/js/lab/Term.tsx`. Prose that says "partial reload" or "deferred prop" without linking it leaves the glossary an orphan page nobody reaches.
 - **The shell links the translation callout to the "where did it go?" page.** That is shell-level and already done; do not reimplement it per chapter.
+- **Shared shapes live in one place.** The `ChapterData` and `Neighbour` TypeScript types belong in `resources/js/pages/chapters/types.ts`, and the `neighbour()` controller helper belongs in a shared base or trait under `app/Http/Controllers/Chapters/`. The first task to touch them after this line was written must extract them from the chapters that already duplicate them. Twenty-six chapters copying the same two type declarations and the same private static method is the duplication the review rubric rejects, and it compounds with every chapter.
 
 **Step F. Run the suite and the gates, then commit.** One commit per chapter, subject line `Add chapter <order>: <slug>`.
 
