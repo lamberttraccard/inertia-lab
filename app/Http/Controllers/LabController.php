@@ -113,6 +113,10 @@ class LabController extends Controller
             'definition' => "A component assigned to a page's own layout property that the client keeps mounted across a visit to another page assigning that same component, rather than tearing it down and rebuilding it. Only the part of the tree it wraps is replaced.",
         ],
         [
+            'term' => 'Head component',
+            'definition' => 'The Head component exported by @inertiajs/react, which sets the document title and renders meta tags for the current page without a separate library to install or mount. More than one can be rendered on the same page; whichever one mounted last wins the title.',
+        ],
+        [
             'term' => 'Exception response',
             'definition' => "The object a callback registered with Inertia::handleExceptionsUsing() receives for a thrown exception: the exception itself, the request, and the framework's own already-rendered response, plus render(), withSharedData(), usingMiddleware() and rootView() to replace that response with a normal Inertia page instead.",
         ],

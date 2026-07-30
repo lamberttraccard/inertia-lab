@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { Term } from '@/lab/Term';
 import type { ChapterData, Neighbour } from './types';
 
 type HeadAndMetaProps = {
@@ -33,7 +34,9 @@ export default function HeadAndMeta({
                         />
                     </label>
                     <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                        Watch your browser tab, not this page, while you type.
+                        Watch your browser tab, not this page, while you type: a{' '}
+                        <Term term="Head component">Head component</Term>{' '}
+                        further down this page is bound to this input.
                     </p>
                 </div>
             }
