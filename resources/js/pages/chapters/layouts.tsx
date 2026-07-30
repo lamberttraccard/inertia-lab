@@ -89,9 +89,9 @@ export default function Layouts({ chapter, previous, next }: LayoutsProps) {
                     shows the client keeping the same React element tree across
                     the visit whenever the resolved layout stays the same
                     component: only the part of the tree the layout wraps gets
-                    replaced. The other thirty-two chapters in this lab never
-                    set this property at all, so none of them are affected by it
-                    existing here, and none of them go through this code path.
+                    replaced. No other chapter in this lab ever sets this
+                    property, so none of them are affected by it existing here,
+                    and none of them go through this code path.
                 </p>
             </section>
 
