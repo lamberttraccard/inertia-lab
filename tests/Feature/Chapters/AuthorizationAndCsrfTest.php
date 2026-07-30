@@ -17,7 +17,10 @@ beforeEach(function () {
 it('renders the chapter with the post, the policy-derived can props and the reused switcher props', function () {
     User::factory()->create();
 
-    $response = $this->get(route('chapters.authorization-and-csrf'));
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.authorization-and-csrf'));
 
     $response->assertOk();
 
@@ -31,6 +34,19 @@ it('renders the chapter with the post, the policy-derived can props and the reus
         ->and($page['props']['demoUser'])->toHaveKeys(['id', 'name', 'email'])
         ->and($page['props']['demoUserOptions'])->toBeArray()
         ->and($trace['props'])->toHaveKeys(['post', 'can', 'demoUser']);
+
+    // Same canonical-key-set rigour as FormsTest: chapter, previous and next are props
+    // like any other, wrapped in Lab::value() so they reach _lab too, and this fails the
+    // moment either the shared-prop list or this chapter's own props drift without the
+    // test noticing.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'post', 'can', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions',
+            'chapter', 'previous', 'next', 'post', 'can',
+        ]);
 });
 
 it('grants update and delete to the post that belongs to the default demo user', function () {

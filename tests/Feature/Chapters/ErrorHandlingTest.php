@@ -9,8 +9,11 @@ beforeEach(function () {
     config()->set('inertia.devtools.enabled', true);
 });
 
-it('renders the chapter with its status prop resolved', function () {
-    $response = $this->get(route('chapters.error-handling'));
+it('renders the chapter with its status prop resolved and no unexpected props', function () {
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.error-handling'));
 
     $response->assertOk();
 
@@ -22,6 +25,19 @@ it('renders the chapter with its status prop resolved', function () {
     expect($page['props']['chapter']['question'])->not->toBeEmpty()
         ->and($page['props']['status'])->toBeString()->not->toBeEmpty()
         ->and($trace['props'])->toHaveKey('status');
+
+    // Same canonical-key-set rigour as FormsTest: chapter, previous and next are props
+    // like any other, wrapped in Lab::value() so they reach _lab too, and this fails the
+    // moment either the shared-prop list or this chapter's own props drift without the
+    // test noticing.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'status', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions',
+            'chapter', 'previous', 'next', 'status',
+        ]);
 });
 
 it('answers a URL with no matching route with a rendered Inertia page carrying shared data', function () {

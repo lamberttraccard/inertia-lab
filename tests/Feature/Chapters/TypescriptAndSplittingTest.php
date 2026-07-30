@@ -7,7 +7,10 @@ beforeEach(function () {
 });
 
 it('renders the chapter with real build metadata for its own page chunk', function () {
-    $response = $this->get(route('chapters.typescript-and-splitting'));
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.typescript-and-splitting'));
 
     $response->assertOk();
 
@@ -26,4 +29,17 @@ it('renders the chapter with real build metadata for its own page chunk', functi
         ->and($page['props']['buildInfo']['bytes'])->toBeInt()->toBeGreaterThan(0)
         ->and($page['props']['buildInfo']['importsCount'])->toBeInt()
         ->and($trace['props'])->toHaveKey('buildInfo');
+
+    // Same canonical-key-set rigour as FormsTest: chapter, previous and next are props
+    // like any other, wrapped in Lab::value() so they reach _lab too, and this fails the
+    // moment either the shared-prop list or this chapter's own props drift without the
+    // test noticing.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'buildInfo', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions',
+            'chapter', 'previous', 'next', 'buildInfo',
+        ]);
 });

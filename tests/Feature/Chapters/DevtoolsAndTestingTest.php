@@ -7,7 +7,10 @@ beforeEach(function () {
 });
 
 it('renders the chapter with the live devtoolsEnabled prop resolved', function () {
-    $response = $this->get(route('chapters.devtools-and-testing'));
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.devtools-and-testing'));
 
     $response->assertOk();
 
@@ -20,6 +23,19 @@ it('renders the chapter with the live devtoolsEnabled prop resolved', function (
     expect($page['props']['chapter']['question'])->not->toBeEmpty()
         ->and($page['props']['devtoolsEnabled'])->toBeTrue()
         ->and($trace['props'])->toHaveKey('devtoolsEnabled');
+
+    // Same canonical-key-set rigour as FormsTest: chapter, previous and next are props
+    // like any other, wrapped in Lab::value() so they reach _lab too, and this fails the
+    // moment either the shared-prop list or this chapter's own props drift without the
+    // test noticing.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'devtoolsEnabled', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions',
+            'chapter', 'previous', 'next', 'devtoolsEnabled',
+        ]);
 });
 
 it('demonstrates assertInertia() failing on a full document load once devtools has rewritten the response', function () {
