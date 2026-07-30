@@ -230,19 +230,18 @@ export default function ErrorHandling({
                     HandleInertiaRequests included, because Laravel&apos;s
                     router throws before it ever builds that middleware
                     pipeline. Shared data is empty at that point, not merely
-                    unrequested. A wrong CSRF token fails for a related but
-                    different reason: the route does match, but
-                    PreventRequestForgery sits earlier than
-                    HandleInertiaRequests in the web group (bootstrap/app.php
-                    appends HandleInertiaRequests after it), so it throws before
-                    its turn too. A plain 500 thrown from inside this
-                    chapter&apos;s own crash() action is different again: its
-                    route already matched and ran past HandleInertiaRequests on
-                    the way in, so shared data already exists by the time the
-                    exception reaches this callback, and withSharedData() there
-                    only repeats work already done. Calling it every time is
-                    what makes all three renders consistent without having to
-                    remember which case needed it.
+                    unrequested. A wrong CSRF token and a plain 500 both fail
+                    further into the pipeline, after HandleInertiaRequests has
+                    already run: RequireCsrfTokenMatch, the middleware that
+                    actually rejects the bad token on this route (see below for
+                    why it is not PreventRequestForgery), sits after it in the
+                    resolved order, and crash() throws from inside a controller
+                    the router had already dispatched to. Shared data already
+                    exists by the time either exception reaches this callback,
+                    so withSharedData() there only repeats work already done.
+                    Calling it every time regardless is what makes all three
+                    renders consistent without having to remember which case
+                    needed it.
                 </p>
             </section>
 

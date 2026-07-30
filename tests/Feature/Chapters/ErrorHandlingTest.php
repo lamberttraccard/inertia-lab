@@ -142,6 +142,16 @@ it('has no shared data yet when the exception handler runs for an unmatched rout
     $this->get('/chapters/error-handling/nowhere');
     $this->post(route('chapters.error-handling.crash'));
 
+    // RequireCsrfTokenMatch, the middleware guarding this route (see routes/web.php),
+    // is applied after HandleInertiaRequests in the resolved order: shared data already
+    // exists by the time this throws, the same as the 500 case above and unlike the 404
+    // case, which is exactly what the chapter's own text now says.
+    $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->post(route('chapters.error-handling.protected'));
+
     expect($observed[404])->toBe([])
+        ->and($observed[419])->toHaveKey('demoUser')
         ->and($observed[500])->toHaveKey('demoUser');
 });
