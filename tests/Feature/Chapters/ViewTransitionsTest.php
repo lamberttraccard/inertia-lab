@@ -12,7 +12,10 @@ beforeEach(function () {
 });
 
 it('renders the chapter with three real posts to link to', function () {
-    $response = $this->get(route('chapters.view-transitions'));
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.view-transitions'));
 
     $response->assertOk();
 
@@ -21,9 +24,20 @@ it('renders the chapter with three real posts to link to', function () {
     $page = assertInertiaPage($response, 'chapters/view-transitions');
     $trace = labTrace($response);
 
-    expect($page['props']['posts'])->toHaveCount(3)
-        ->and($page['props']['posts'][0])->toHaveKeys(['id', 'title', 'excerpt'])
-        ->and($trace['props'])->toHaveKey('posts');
+    // Verified empirically against this exact route (see the debug trace taken from
+    // chapters/first-load-vs-visit for the shared baseline): errors, name, auth, demoUser,
+    // unreadNotifications and demoUserOptions are the platform's own shared props, added to
+    // every page regardless of this chapter; chapter, previous and next are the standard
+    // chapter metadata every chapter passes.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'posts', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions', 'chapter', 'previous', 'next', 'posts',
+        ])
+        ->and($page['props']['posts'])->toHaveCount(3)
+        ->and($page['props']['posts'][0])->toHaveKeys(['id', 'title', 'excerpt']);
 });
 
 it('renders the detail route normally, with its own post prop resolved', function () {
@@ -41,4 +55,10 @@ it('renders the detail route normally, with its own post prop resolved', functio
         'title' => $post->title,
         'excerpt' => $post->excerpt,
     ])->and($trace['props'])->toHaveKey('post');
+});
+
+it('answers 404 for a post id that does not exist', function () {
+    $response = $this->get('/chapters/view-transitions/999999');
+
+    $response->assertNotFound();
 });
