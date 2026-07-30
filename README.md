@@ -20,14 +20,14 @@ replaces the loading state and the client cache.
 ```bash
 git clone <this repository>
 cd inertia-lab
-composer install
-npm install
-cp .env.example .env
-php artisan key:generate
 touch database/database.sqlite
-php artisan migrate --seed
-npm run build
+composer run setup
 ```
+
+`composer run setup` installs the PHP dependencies, copies `.env.example` to `.env` if
+it is not already there, generates the application key, migrates and seeds the
+database, links `public/storage` to the disk the file-uploads chapter writes to,
+installs the JavaScript dependencies and builds the frontend once.
 
 Then either serve the build you just made:
 
@@ -41,9 +41,9 @@ or run everything live, server and Vite together, while you read:
 composer run dev
 ```
 
-Open `http://localhost:8000`. The home page lists every chapter; there is one so far,
-chapter 0. Two further plans add chapters 1 to 16 on top of this same platform, without
-changing anything described here.
+Open `http://localhost:8000`. The home page lists all 33 chapters, grouped into the
+parts below; each chapter's own previous and next links follow the same order, from
+chapter 0 to chapter 32.
 
 The seeder is deterministic: it always produces the same 8 authors, 15 tags, 120 posts,
 2000 comments and 30 notifications, so what you read here matches what this document
@@ -64,6 +64,81 @@ page. The glossary defines the recurring vocabulary once, and the "where did the
 page is a single reference table connecting every artefact an API first developer expects
 to write to whatever plays that role in Inertia, standing on its own if you only ever read
 one page of this application.
+
+## Chapters
+
+The chapter map on the home page groups the 33 chapters into six parts, in the order a
+reader is meant to follow them. The grouping lives in the chapter registry
+(`app/Lab/ChapterRegistry.php`, `app/Lab/Part.php`), not in the page, so a chapter added
+to the registry appears here without any other change.
+
+### The protocol
+
+What a visit sends and receives: the page object, redirects, links, the event lifecycle,
+and what happens once the server has moved on. Start here.
+
+0. Where did the API go?
+1. What actually travels on the wire
+2. From a controller to a component
+3. Redirects, and why a delete becomes a GET
+4. Links, visits, and the options that shape them
+5. The events a visit fires
+6. When the server has moved on
+
+### The prop taxonomy
+
+Every way a controller can hand data to a page: shared, partial, optional, deferred,
+always, merged, scrolled, sent once, or polled.
+
+7. What can be a prop
+8. Props every page gets
+9. Asking for less
+10. Props that are never sent unless asked for
+11. Render now, fetch the rest
+12. Props that ignore your instructions
+13. Appending instead of replacing
+14. Scrolling in both directions
+15. Sent once, then never again
+16. Keeping a number fresh
+
+### Forms
+
+Submitting a form, uploading a file, and validating before the real submission.
+
+17. Forms without a form library
+18. Files, progress, and multipart
+19. Validating before submitting
+
+### Speed and perception
+
+Making the next screen feel faster than the network allows: prefetching, instant
+visits, optimistic updates, and animated transitions.
+
+20. Fetching before the click
+21. Showing the next page before the server answers
+22. Updating before the server agrees
+23. Animating between pages
+
+### State and history
+
+What survives a visit and what does not: remembered state, encrypted history, a layout
+that stays mounted, a request that is not a visit, and the document title.
+
+24. State that survives the back button
+25. What stays in the browser after logout
+26. The parts that do not re-render
+27. Requests that are not visits
+28. The title bar
+
+### Errors and tooling
+
+What the reader sees when something goes wrong, who is allowed to do what, and the
+tools that keep the rest honest.
+
+29. When something goes wrong
+30. Who may do what
+31. The tools you actually use
+32. Types across the boundary
 
 ## A note on how the wire strip works
 
@@ -91,8 +166,8 @@ one subject.
 | Laravel | 13.23.0 | `^13.17` |
 | `inertiajs/inertia-laravel` | v3.2.1 | `^3.2` |
 | `@inertiajs/react` | 3.6.1 | `^3.6` |
-| React | 19.2.0 | 19, required by Inertia 3 |
-| Vite | 8.1.5 | 4, via `@inertiajs/vite` |
+| React | 19.2.8 | 19, required by Inertia 3 |
+| Vite | 8.1.5 | `^8.0`, via `@inertiajs/vite` |
 | Tailwind CSS | 4.3.3 | 4 |
 | Pest | 5.0.2 | 5 |
 | `laravel/wayfinder` | 0.1.20 | `^0.1` |
