@@ -36,10 +36,12 @@ class PrecognitionController
     }
 
     /**
-     * Only a genuine, non-precognitive request ever runs this far: the precognitive
-     * dispatcher (Illuminate\Foundation\Routing\PrecognitionControllerDispatcher) resolves
-     * PrecognitionPostRequest, which is where validation actually happens, then aborts
-     * before this method body ever runs, precognitive request or not.
+     * Only a genuine, non-precognitive request ever runs this far. Resolving
+     * PrecognitionPostRequest validates every request that reaches this route, precognitive
+     * or not, since that happens during parameter resolution; what actually gates the body
+     * is Illuminate\Foundation\Routing\PrecognitionControllerDispatcher, which aborts before
+     * calling it only when the request is precognitive, leaving a genuine request's own
+     * dispatcher to call it normally.
      */
     public function store(PrecognitionPostRequest $request): RedirectResponse
     {
