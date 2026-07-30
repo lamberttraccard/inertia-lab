@@ -74,10 +74,15 @@ export default function DeferredProps({
                 <p className="mt-2">
                     Set slow mode to 1.5s first, then reload this page from the
                     address bar: summary renders immediately, the stats panel
-                    and the tags panel below both show their fallback for about
-                    a second and a half, then fill in on their own, nobody
-                    clicked anything. Reload again with slow mode at 0 and the
-                    fallback is gone before you can see it, the lesson still
+                    and the tags panel below both show their fallback, then fill
+                    in on their own once their own follow-up request answers,
+                    nobody clicked anything. Each group&apos;s own query still
+                    carries the full 1.5 second delay; how long you actually see
+                    the fallback for also depends on how many requests your PHP
+                    server can run at once, since a single-worker development
+                    server answers these follow-up requests one at a time rather
+                    than truly in parallel. Reload again with slow mode at 0 and
+                    the fallback is gone before you can see it, the lesson still
                     holds, it is just fast now. The reload button above targets
                     postStats and commentStats by name: watch the stats panel
                     while it runs, it shows a refreshing note for exactly as
