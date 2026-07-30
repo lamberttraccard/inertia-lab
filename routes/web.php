@@ -5,6 +5,7 @@ use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
+use App\Http\Controllers\Chapters\PropsAndTypesController;
 use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
 use App\Http\Controllers\LabController;
@@ -37,4 +38,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/asset-versioning', [AssetVersioningController::class, 'show'])->name('asset-versioning');
     Route::post('/asset-versioning/bump', [AssetVersioningController::class, 'bump'])->name('asset-versioning.bump');
     Route::post('/asset-versioning/reset', [AssetVersioningController::class, 'reset'])->name('asset-versioning.reset');
+    Route::get('/props-and-types', [PropsAndTypesController::class, 'show'])->name('props-and-types');
 });

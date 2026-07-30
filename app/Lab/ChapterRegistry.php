@@ -109,6 +109,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 6,
             ),
+            new Chapter(
+                slug: 'props-and-types',
+                title: 'What can be a prop',
+                question: 'What exactly can you put in the array you hand to Inertia::render()?',
+                concept: 'Values, closures, backed enums, Eloquent models and objects that describe themselves are all valid props, and a nested structure can be addressed one leaf at a time by dot notation.',
+                routeName: 'chapters.props-and-types',
+                serverFile: 'app/Http/Controllers/Chapters/PropsAndTypesController.php',
+                clientFile: 'resources/js/pages/chapters/props-and-types.tsx',
+                translationFrom: 'A serializer or resource class that shapes the JSON before the client ever sees it.',
+                translationTo: 'The array you return from the controller, plus objects that know how to present themselves.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/responses',
+                wave: 1,
+                order: 7,
+            ),
         ];
     }
 
