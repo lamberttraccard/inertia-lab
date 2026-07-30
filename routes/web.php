@@ -15,6 +15,7 @@ use App\Http\Controllers\Chapters\OncePropsController;
 use App\Http\Controllers\Chapters\OptionalPropsController;
 use App\Http\Controllers\Chapters\PartialReloadsController;
 use App\Http\Controllers\Chapters\PollingController;
+use App\Http\Controllers\Chapters\PrecognitionController;
 use App\Http\Controllers\Chapters\PropsAndTypesController;
 use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
@@ -66,4 +67,8 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/forms', [FormsController::class, 'store'])->name('forms.store');
     Route::get('/file-uploads', [FileUploadsController::class, 'show'])->name('file-uploads');
     Route::post('/file-uploads', [FileUploadsController::class, 'store'])->name('file-uploads.store');
+    Route::get('/precognition', [PrecognitionController::class, 'show'])->name('precognition');
+    Route::post('/precognition', [PrecognitionController::class, 'store'])
+        ->middleware('precognitive')
+        ->name('precognition.store');
 });

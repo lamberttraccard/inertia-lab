@@ -78,6 +78,10 @@ class LabController extends Controller
             'term' => 'Multipart request',
             'definition' => "A request whose body is encoded as multipart/form-data instead of JSON, the encoding a file upload needs. Putting a File anywhere in a visit's data is what makes the visit send this way; nothing else about declaring or submitting the form changes.",
         ],
+        [
+            'term' => 'Precognition',
+            'definition' => "A request carrying a Precognition header, sent to the same route and with the same data a real submission would use. The server validates as usual, then stops before running the action that would actually change anything, so the client can ask the server's own rules whether a value is acceptable without duplicating them.",
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

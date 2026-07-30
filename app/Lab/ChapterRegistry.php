@@ -277,6 +277,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 18,
             ),
+            new Chapter(
+                slug: 'precognition',
+                title: 'Validating before submitting',
+                question: "How can the client validate with the server's rules without duplicating them?",
+                concept: 'A Precognition request carries the same data at the same route as the real submission, tagged with a header that makes the server run validation and stop there, never reaching the action that would actually create anything.',
+                routeName: 'chapters.precognition',
+                serverFile: 'app/Http/Controllers/Chapters/PrecognitionController.php',
+                clientFile: 'resources/js/pages/chapters/precognition.tsx',
+                translationFrom: "A client-side schema kept in sync with the server's validation rules by hand.",
+                translationTo: "The server's own rules, the same ones the real submission uses, run on demand and read back as they resolve.",
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/forms',
+                wave: 1,
+                order: 19,
+            ),
         ];
     }
 
