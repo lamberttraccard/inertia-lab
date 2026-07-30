@@ -19,8 +19,11 @@ beforeEach(function () {
     User::factory()->create();
 });
 
-it('renders the chapter with no cover recorded before any upload', function () {
-    $response = $this->get(route('chapters.file-uploads'));
+it('renders the chapter with no cover recorded before any upload and no unexpected props', function () {
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.file-uploads'));
 
     $response->assertOk();
 
@@ -30,8 +33,22 @@ it('renders the chapter with no cover recorded before any upload', function () {
     $trace = labTrace($response);
 
     expect($page['props']['coverPath'])->toBeNull()
-        ->and($page['props']['coverUrl'])->toBeNull()
-        ->and($trace['props'])->toHaveKeys(['coverPath', 'coverUrl']);
+        ->and($page['props']['coverUrl'])->toBeNull();
+
+    // Verified empirically against this exact route (see the debug trace taken from
+    // chapters/first-load-vs-visit for the shared baseline): errors, name, auth, demoUser,
+    // unreadNotifications and demoUserOptions are the platform's own shared props, added
+    // to every page regardless of this chapter; chapter, previous and next are the
+    // standard chapter metadata every chapter passes; coverPath and coverUrl are this
+    // chapter's own. Nothing else is added here.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'coverPath', 'coverUrl', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions',
+            'chapter', 'previous', 'next', 'coverPath', 'coverUrl',
+        ]);
 
     // Visiting the page is a GET and must not itself create the demo row.
     expect(Post::query()->count())->toBe(0);
