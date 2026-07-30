@@ -53,6 +53,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 2,
             ),
+            new Chapter(
+                slug: 'redirects',
+                title: 'Redirects, and why a delete becomes a GET',
+                question: 'After a POST or a DELETE, what does the browser end up showing?',
+                concept: "Inertia follows the server's redirect and renders the page it lands on; 303 is forced after PUT, PATCH and DELETE so the follow-up is a GET.",
+                routeName: 'chapters.redirects',
+                serverFile: 'app/Http/Controllers/Chapters/RedirectsController.php',
+                clientFile: 'resources/js/pages/chapters/redirects.tsx',
+                translationFrom: 'The client decides what to do after a mutation, then refetches.',
+                translationTo: 'The server redirects, and the response to that redirect is the next page.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/redirects',
+                wave: 1,
+                order: 3,
+            ),
         ];
     }
 

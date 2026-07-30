@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\MentalModelController;
+use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\SlowModeController;
@@ -21,4 +22,8 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/first-load-vs-visit', FirstLoadVsVisitController::class)->name('first-load-vs-visit');
     Route::get('/render-and-components', [RenderAndComponentsController::class, 'show'])->name('render-and-components');
     Route::get('/render-and-components/broken', [RenderAndComponentsController::class, 'broken'])->name('render-and-components.broken');
+    Route::get('/redirects', [RedirectsController::class, 'show'])->name('redirects');
+    Route::post('/redirects/post', [RedirectsController::class, 'post'])->name('redirects.post');
+    Route::delete('/redirects/delete', [RedirectsController::class, 'delete'])->name('redirects.delete');
+    Route::get('/redirects/location', [RedirectsController::class, 'location'])->name('redirects.location');
 });
