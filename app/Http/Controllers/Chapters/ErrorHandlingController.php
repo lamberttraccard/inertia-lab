@@ -32,11 +32,10 @@ class ErrorHandlingController
     }
 
     /**
-     * Reached only when the request carries a valid CSRF token: PreventRequestForgery sits
-     * earlier in the web middleware group than HandleInertiaRequests (verified in
-     * bootstrap/app.php, which appends HandleInertiaRequests after the framework's default
-     * web group), so a mismatched token throws before this action, or any Inertia-specific
-     * middleware, ever runs.
+     * Reached only when the request carries a valid CSRF token, but not through
+     * PreventRequestForgery: this route excludes it and runs RequireCsrfTokenMatch instead
+     * (see the route registration in routes/web.php for why), so a mismatched token throws
+     * from that middleware before this action ever runs.
      */
     public function protectedAction(): RedirectResponse
     {
