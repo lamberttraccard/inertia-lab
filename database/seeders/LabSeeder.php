@@ -10,14 +10,35 @@ use App\Models\Tag;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class LabSeeder extends Seeder
 {
     private const EPOCH = '2026-07-01 09:00:00';
 
+    /**
+     * Child tables first, so the deletes never fight a foreign key.
+     */
+    private const OWNED_TABLES = [
+        'post_tag',
+        'likes',
+        'comments',
+        'notifications',
+        'posts',
+        'tags',
+        'users',
+    ];
+
     public function run(): void
     {
+        // Seeding is deterministic, so a second run would insert the same
+        // user emails and hit the unique index. composer run setup passes
+        // --seed unconditionally, and migrate is a no-op once the database
+        // exists, so re-running setup on a provisioned clone lands here.
+        $this->clearOwnedTables();
+
         $epoch = CarbonImmutable::parse(self::EPOCH);
 
         // Anchors now() and Eloquent's created_at/updated_at stamps to a
@@ -76,6 +97,18 @@ class LabSeeder extends Seeder
                     'data' => ['post_id' => $posts->random()->id],
                     'read_at' => $i > 7 ? $epoch : null,
                 ]);
+            }
+        });
+    }
+
+    private function clearOwnedTables(): void
+    {
+        // Sqlite refuses a truncate while a foreign key still points at the
+        // row, and Postgres would need a cascade, so delete in child-first
+        // order and reset the sequences the ids are compared against.
+        Schema::withoutForeignKeyConstraints(function () {
+            foreach (self::OWNED_TABLES as $table) {
+                DB::table($table)->delete();
             }
         });
     }

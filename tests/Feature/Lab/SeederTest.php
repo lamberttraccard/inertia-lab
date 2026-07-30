@@ -22,16 +22,41 @@ it('seeds the same data on every run', function () {
     $this->seed(LabSeeder::class);
     $first = Post::orderBy('id')->pluck('title')->take(5)->all();
 
-    // migrate:fresh runs VACUUM on sqlite, which cannot execute inside the
-    // transaction RefreshDatabase wraps around this test, so the two runs
-    // are compared by truncating in dependency order instead.
-    foreach (['post_tag', 'likes', 'comments', 'notifications', 'posts', 'tags', 'users'] as $table) {
-        DB::table($table)->truncate();
-    }
-
     $this->seed(LabSeeder::class);
 
     expect(Post::orderBy('id')->pluck('title')->take(5)->all())->toBe($first);
+});
+
+it('can be seeded twice without hitting the unique index on user emails', function () {
+    // composer run setup passes --seed unconditionally, and migrate is a no-op
+    // once the database exists, so this is what re-running setup does.
+    $this->seed(LabSeeder::class);
+    $this->seed(LabSeeder::class);
+
+    expect(User::count())->toBe(8)
+        ->and(Tag::count())->toBe(15)
+        ->and(Post::count())->toBe(120)
+        ->and(Comment::count())->toBe(2000)
+        ->and(Notification::count())->toBe(30);
+});
+
+it('clears rows a reader created before reseeding', function () {
+    $this->seed(LabSeeder::class);
+
+    Post::create([
+        'user_id' => User::first()->id,
+        'title' => 'A row a reader created',
+        'slug' => 'a-row-a-reader-created',
+        'excerpt' => 'x',
+        'body' => 'x',
+    ]);
+
+    expect(Post::count())->toBe(121);
+
+    $this->seed(LabSeeder::class);
+
+    expect(Post::count())->toBe(120)
+        ->and(Post::where('slug', 'a-row-a-reader-created')->exists())->toBeFalse();
 });
 
 it('gives every post an author and at least one tag', function () {
