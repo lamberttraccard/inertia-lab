@@ -86,6 +86,10 @@ class LabController extends Controller
             'term' => 'Prefetch',
             'definition' => "Fetching a link's response before it is clicked, on hover, on mount or on the mouse-down before a click, into a client-side cache. A later visit to the same URL with the same options is served from that cache instead of sending a new request.",
         ],
+        [
+            'term' => 'Instant visit',
+            'definition' => 'A visit whose target component is named up front, on the link or the visit itself. The client renders that component immediately, with whatever shared props the current page already holds and every page-specific prop undefined, then swaps in the real page once its response arrives.',
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

@@ -8,6 +8,7 @@ use App\Http\Controllers\Chapters\FileUploadsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\FormsController;
 use App\Http\Controllers\Chapters\InfiniteScrollController;
+use App\Http\Controllers\Chapters\InstantVisitsController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
 use App\Http\Controllers\Chapters\MergingPropsController;
@@ -74,4 +75,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
         ->name('precognition.store');
     Route::get('/prefetching', [PrefetchingController::class, 'show'])->name('prefetching');
     Route::get('/prefetching/destination', [PrefetchingController::class, 'destination'])->name('prefetching.destination');
+    Route::get('/instant-visits', [InstantVisitsController::class, 'show'])->name('instant-visits');
+    Route::get('/instant-visits/{post}', [InstantVisitsController::class, 'detail'])->name('instant-visits.detail');
 });

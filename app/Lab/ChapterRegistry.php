@@ -305,6 +305,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 20,
             ),
+            new Chapter(
+                slug: 'instant-visits',
+                title: 'Showing the next page before the server answers',
+                question: 'Can the next screen appear before the response arrives?',
+                concept: 'A visit given a component name up front renders that component immediately, with only the shared props the current page already holds, then swaps in the real page once the response arrives.',
+                routeName: 'chapters.instant-visits',
+                serverFile: 'app/Http/Controllers/Chapters/InstantVisitsController.php',
+                clientFile: 'resources/js/pages/chapters/instant-visits.tsx',
+                translationFrom: 'An optimistic route transition built by hand with a skeleton screen and a loading flag.',
+                translationTo: 'The component named up front, rendered immediately while the request for its own data is still in flight.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/instant-visits',
+                wave: 1,
+                order: 21,
+            ),
         ];
     }
 
