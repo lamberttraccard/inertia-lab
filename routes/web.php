@@ -10,6 +10,7 @@ use App\Http\Controllers\Chapters\FormsController;
 use App\Http\Controllers\Chapters\HistoryEncryptionController;
 use App\Http\Controllers\Chapters\InfiniteScrollController;
 use App\Http\Controllers\Chapters\InstantVisitsController;
+use App\Http\Controllers\Chapters\LayoutsController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
 use App\Http\Controllers\Chapters\MergingPropsController;
@@ -90,4 +91,7 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/remembering-state/{post}', [RememberingStateController::class, 'detail'])->name('remembering-state.detail');
     Route::get('/history-encryption', [HistoryEncryptionController::class, 'show'])->name('history-encryption');
     Route::post('/history-encryption/clear', [HistoryEncryptionController::class, 'clear'])->name('history-encryption.clear');
+    Route::get('/layouts', [LayoutsController::class, 'show'])->name('layouts');
+    Route::get('/layouts/panel-one', [LayoutsController::class, 'panelOne'])->name('layouts.panel-one');
+    Route::get('/layouts/panel-two', [LayoutsController::class, 'panelTwo'])->name('layouts.panel-two');
 });

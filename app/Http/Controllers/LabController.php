@@ -106,6 +106,10 @@ class LabController extends Controller
             'term' => 'Encrypted history',
             'definition' => 'A history entry the client encrypted before storing it, because the route that rendered it called encryptHistory(). clearHistory() deletes the key those entries were encrypted with, so pressing back to one afterward can no longer be decrypted, not merely hidden.',
         ],
+        [
+            'term' => 'Persistent layout',
+            'definition' => "A component assigned to a page's own layout property that the client keeps mounted across a visit to another page assigning that same component, rather than tearing it down and rebuilding it. Only the part of the tree it wraps is replaced.",
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

@@ -375,6 +375,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 25,
             ),
+            new Chapter(
+                slug: 'layouts',
+                title: 'The parts that do not re-render',
+                question: 'Why does the sidebar keep its scroll position between pages?',
+                concept: 'A component assigned as a page\'s persistent layout stays mounted across a visit between two pages that both assign it; setLayoutProps hands it fresh data from whichever page is current, without a visit of its own.',
+                routeName: 'chapters.layouts',
+                serverFile: 'app/Http/Controllers/Chapters/LayoutsController.php',
+                clientFile: 'resources/js/pages/chapters/layouts.tsx',
+                translationFrom: 'A router outlet with layout components chosen per route.',
+                translationTo: 'A component that stays mounted across a visit, instead of being torn down and rebuilt with the page it wraps.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/layouts',
+                wave: 1,
+                order: 26,
+            ),
         ];
     }
 
