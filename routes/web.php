@@ -5,6 +5,7 @@ use App\Http\Controllers\Chapters\AssetVersioningController;
 use App\Http\Controllers\Chapters\DeferredPropsController;
 use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
+use App\Http\Controllers\Chapters\FormsController;
 use App\Http\Controllers\Chapters\InfiniteScrollController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
@@ -60,4 +61,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/once-props', [OncePropsController::class, 'show'])->name('once-props');
     Route::get('/polling', [PollingController::class, 'show'])->name('polling');
     Route::post('/polling/simulate', [PollingController::class, 'simulate'])->name('polling.simulate');
+    Route::get('/forms', [FormsController::class, 'show'])->name('forms');
+    Route::post('/forms', [FormsController::class, 'store'])->name('forms.store');
 });

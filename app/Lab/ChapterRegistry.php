@@ -249,6 +249,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 16,
             ),
+            new Chapter(
+                slug: 'forms',
+                title: 'Forms without a form library',
+                question: 'Where do validation errors come from if nobody fetched them?',
+                concept: 'The Form component and useForm both submit an ordinary visit; a failed validation redirects back with the errors flashed to the session, and Inertia\'s own shared errors prop, always included, is what a page reads to show them.',
+                routeName: 'chapters.forms',
+                serverFile: 'app/Http/Controllers/Chapters/FormsController.php',
+                clientFile: 'resources/js/pages/chapters/forms.tsx',
+                translationFrom: 'POST to an endpoint, read the 422 body yourself, and map its fields into form state by hand.',
+                translationTo: 'Submit the visit and read errors like any other prop; the framework already redirected back with it attached.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/forms',
+                wave: 1,
+                order: 17,
+            ),
         ];
     }
 
