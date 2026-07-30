@@ -20,7 +20,9 @@ type MergingPropsProps = {
     chapter: ChapterData;
     comments: CommentRow[];
     commentsHasMore: boolean;
+    commentsPerPage: number;
     postDigest: Digest;
+    digestPerPage: number;
     usingDeepMerge: boolean;
     previous: Neighbour | null;
     next: Neighbour | null;
@@ -30,7 +32,9 @@ export default function MergingProps({
     chapter,
     comments,
     commentsHasMore,
+    commentsPerPage,
     postDigest,
+    digestPerPage,
     usingDeepMerge,
     previous,
     next,
@@ -67,8 +71,11 @@ export default function MergingProps({
         const nextPage = digestPage + 1;
 
         setDigestPage(nextPage);
+        // usingDeepMerge rides along here on purpose: a partial reload resolves nothing it
+        // does not name, so without this the prose below would keep reporting whatever deep
+        // was on the very first load, no matter which factory this click actually used.
         router.reload({
-            only: ['postDigest'],
+            only: ['postDigest', 'usingDeepMerge'],
             data: { digestPage: nextPage, deep },
         });
     }
@@ -99,19 +106,20 @@ export default function MergingProps({
             watchFor={
                 <p className="mt-2">
                     Click &quot;Load more comments&quot; a few times: the count
-                    below grows by twenty rows each time rather than swapping to
-                    a fresh twenty, because comments is a{' '}
+                    below grows by {commentsPerPage} rows each time rather than
+                    swapping to a fresh {commentsPerPage}, because comments is a{' '}
                     <Term term="Merge prop">merge prop</Term> and the trace
                     shows its path listed under page.mergeProps on every one of
                     those responses. Click &quot;Reset comments&quot; and the
-                    list snaps back down to the first twenty: that request
-                    carries reset: [&apos;comments&apos;], and page.mergeProps
-                    no longer names comments on that one response, so the client
-                    replaces instead of appending. matchOn(&apos;id&apos;) is
-                    what makes it safe to click &quot;Load more comments&quot;
-                    then ask for commentsPage 1 again without a reset: the
-                    existing rows update in place instead of appearing twice,
-                    because page.matchPropsOn names comments.id.
+                    list snaps back down to the first {commentsPerPage}: that
+                    request carries reset: [&apos;comments&apos;], and
+                    page.mergeProps no longer names comments on that one
+                    response, so the client replaces instead of appending.
+                    matchOn(&apos;id&apos;) is what makes it safe to click
+                    &quot;Load more comments&quot; then ask for commentsPage 1
+                    again without a reset: the existing rows update in place
+                    instead of appearing twice, because page.matchPropsOn names
+                    comments.id.
                 </p>
             }
             whenToUse={
@@ -162,18 +170,25 @@ export default function MergingProps({
                     {usingDeepMerge
                         ? 'Inertia::deepMerge()'
                         : 'Inertia::merge()'}
-                    , because the last request you sent set deep to{' '}
-                    {String(usingDeepMerge)}. Flip the toggle, then click
+                    , because deep was {String(usingDeepMerge)} on whichever
+                    request last resolved usingDeepMerge, this page&apos;s own
+                    first load, or afterward, whichever &quot;Load more
+                    digest&quot; click named it. That click&apos;s only list
+                    names usingDeepMerge right alongside postDigest on purpose:
+                    a partial reload resolves nothing it does not name, so
+                    leaving it out would freeze this sentence at the first
+                    load&apos;s answer forever, no matter how many times you
+                    toggled the checkbox afterward. Flip the toggle, then click
                     &quot;Load more digest&quot;: with the toggle off, items
-                    resets to just the newest five posts every single click,
-                    because a plain merge on an object combines only at that
-                    object's own root, spreading {'{ items, fetchedAt }'} as a
-                    whole and letting the new items value win outright. With the
-                    toggle on, items keeps growing, because deepMerge recurses
-                    into the nested array the same way a root-level merge prop
-                    would. Switching mid-stream does not rewrite what already
-                    loaded, it only changes how the next response combines with
-                    whatever is on screen right now.
+                    resets to just the newest {digestPerPage} posts every single
+                    click, because a plain merge on an object combines only at
+                    that object's own root, spreading {'{ items, fetchedAt }'}{' '}
+                    as a whole and letting the new items value win outright.
+                    With the toggle on, items keeps growing, because deepMerge
+                    recurses into the nested array the same way a root-level
+                    merge prop would. Switching mid-stream does not rewrite what
+                    already loaded, it only changes how the next response
+                    combines with whatever is on screen right now.
                 </p>
                 <label className="mt-2 flex items-center gap-2 text-sm">
                     <input

@@ -22,9 +22,12 @@ it('renders the chapter with the first page of comments and the post digest reso
     $page = assertInertiaPage($response, 'chapters/merging-props');
     $trace = labTrace($response);
 
-    expect($page['props']['comments'])->toHaveCount(20)
+    expect($page['props']['chapter']['question'])->not->toBeEmpty()
+        ->and($page['props']['comments'])->toHaveCount(20)
         ->and($page['props']['commentsHasMore'])->toBeTrue()
+        ->and($page['props']['commentsPerPage'])->toBe(20)
         ->and($page['props']['postDigest']['items'])->toHaveCount(5)
+        ->and($page['props']['digestPerPage'])->toBe(5)
         ->and($page['props']['usingDeepMerge'])->toBeFalse()
         ->and($page['mergeProps'])->toContain('comments')
         ->and($page['mergeProps'])->toContain('postDigest')
@@ -73,6 +76,29 @@ it('drops the merge metadata for comments and returns the first page again when 
 });
 
 it('wraps the post digest with deepMerge instead of merge once the deep flag is set', function () {
+    // usingDeepMerge is named here too, matching what loadMoreDigest() actually sends: the
+    // chapter's own prose reads this prop back, so a request that forgets to name it would
+    // leave that prose reporting a stale answer, which is exactly the bug this test guards.
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+        'X-Inertia-Partial-Component' => 'chapters/merging-props',
+        'X-Inertia-Partial-Data' => 'postDigest,usingDeepMerge',
+    ])->get(route('chapters.merging-props', ['deep' => 1, 'digestPage' => 1]));
+
+    $response->assertOk();
+
+    $page = assertInertiaPage($response, 'chapters/merging-props');
+
+    expect($page['props']['usingDeepMerge'])->toBeTrue()
+        ->and($page['deepMergeProps'])->toContain('postDigest')
+        ->and($page['mergeProps'] ?? [])->not->toContain('postDigest');
+});
+
+it('leaves usingDeepMerge unresolved and absent from props when a reload does not name it', function () {
+    // This is the exact defect the fix round caught: without naming usingDeepMerge, the
+    // client keeps whatever value it already held for it, and the chapter's prose describing
+    // which factory is active would silently go stale after the very first load.
     $response = $this->withHeaders([
         'X-Inertia' => 'true',
         'X-Inertia-Version' => currentInertiaVersion(),
@@ -82,11 +108,10 @@ it('wraps the post digest with deepMerge instead of merge once the deep flag is 
 
     $response->assertOk();
 
-    // usingDeepMerge is not in this request's only list, so it is absent from props here
-    // the same way any unrequested prop would be; deepMergeProps is what actually proves
-    // the flag reached the server.
     $page = assertInertiaPage($response, 'chapters/merging-props');
+    $trace = labTrace($response);
 
-    expect($page['deepMergeProps'])->toContain('postDigest')
-        ->and($page['mergeProps'] ?? [])->not->toContain('postDigest');
+    expect($page['props'])->not->toHaveKey('usingDeepMerge')
+        ->and($page['deepMergeProps'])->toContain('postDigest')
+        ->and($trace['skipped']['usingDeepMerge']['reason'])->toBe('not requested by only');
 });
