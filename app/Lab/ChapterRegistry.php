@@ -95,6 +95,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 5,
             ),
+            new Chapter(
+                slug: 'asset-versioning',
+                title: 'When the server has moved on',
+                question: 'What happens to an open tab after you deploy?',
+                concept: 'The client sends the asset version it booted with; a mismatch makes the server answer 409 and the client hard reload.',
+                routeName: 'chapters.asset-versioning',
+                serverFile: 'app/Http/Controllers/Chapters/AssetVersioningController.php',
+                clientFile: 'resources/js/pages/chapters/asset-versioning.tsx',
+                translationFrom: 'A version banner you build yourself, or nothing at all.',
+                translationTo: 'A header on every visit and a 409 the client already knows how to handle.',
+                docsUrl: 'https://inertiajs.com/docs/v3/advanced/asset-versioning',
+                wave: 1,
+                order: 6,
+            ),
         ];
     }
 

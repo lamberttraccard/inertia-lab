@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Chapters\AssetVersioningController;
 use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
@@ -33,4 +34,7 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/events/unprocessable', [EventsController::class, 'unprocessable'])->name('events.unprocessable');
     Route::post('/events/server-error', [EventsController::class, 'serverError'])->name('events.server-error');
     Route::get('/events/non-inertia', [EventsController::class, 'nonInertia'])->name('events.non-inertia');
+    Route::get('/asset-versioning', [AssetVersioningController::class, 'show'])->name('asset-versioning');
+    Route::post('/asset-versioning/bump', [AssetVersioningController::class, 'bump'])->name('asset-versioning.bump');
+    Route::post('/asset-versioning/reset', [AssetVersioningController::class, 'reset'])->name('asset-versioning.reset');
 });
