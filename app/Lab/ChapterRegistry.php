@@ -431,6 +431,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 29,
             ),
+            new Chapter(
+                slug: 'authorization-and-csrf',
+                title: 'Who may do what',
+                question: 'Where do permissions live when the client has no token?',
+                concept: 'Authorization travels as props computed from a real policy on every request; the session cookie the browser already sends carries identity, and a stale or wrong CSRF token is rejected before the request reaches the action it would have performed.',
+                routeName: 'chapters.authorization-and-csrf',
+                serverFile: 'app/Http/Controllers/Chapters/AuthorizationAndCsrfController.php',
+                clientFile: 'resources/js/pages/chapters/authorization-and-csrf.tsx',
+                translationFrom: 'A bearer token, a CORS policy, and permission claims decoded from it on the client.',
+                translationTo: 'The session already established by earlier chapters, and permissions computed server-side on every request from a policy.',
+                docsUrl: 'https://inertiajs.com/docs/v3/security/authorization',
+                wave: 1,
+                order: 30,
+            ),
         ];
     }
 

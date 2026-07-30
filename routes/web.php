@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Chapters\AlwaysPropsController;
 use App\Http\Controllers\Chapters\AssetVersioningController;
+use App\Http\Controllers\Chapters\AuthorizationAndCsrfController;
 use App\Http\Controllers\Chapters\DeferredPropsController;
 use App\Http\Controllers\Chapters\ErrorHandlingController;
 use App\Http\Controllers\Chapters\EventsController;
@@ -108,4 +109,7 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/error-handling/protected', [ErrorHandlingController::class, 'protectedAction'])->name('error-handling.protected');
     Route::post('/error-handling/crash', [ErrorHandlingController::class, 'crash'])->name('error-handling.crash');
     Route::get('/error-handling/plain', [ErrorHandlingController::class, 'plain'])->name('error-handling.plain');
+    Route::get('/authorization-and-csrf', [AuthorizationAndCsrfController::class, 'show'])->name('authorization-and-csrf');
+    Route::patch('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'rename'])->name('authorization-and-csrf.rename');
+    Route::delete('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'destroy'])->name('authorization-and-csrf.destroy');
 });

@@ -114,6 +114,10 @@ class LabController extends Controller
             'term' => 'Exception response',
             'definition' => "The object a callback registered with Inertia::handleExceptionsUsing() receives for a thrown exception: the exception itself, the request, and the framework's own already-rendered response, plus render(), withSharedData(), usingMiddleware() and rootView() to replace that response with a normal Inertia page instead.",
         ],
+        [
+            'term' => 'Policy',
+            'definition' => 'A class Laravel resolves by naming convention (App\\Models\\X to App\\Policies\\XPolicy) that centralizes whether a given user may perform a given action on a given model instance, checked through the Gate facade rather than decoded from a token.',
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

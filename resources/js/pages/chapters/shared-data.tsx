@@ -1,11 +1,7 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
 import { Term } from '@/lab/Term';
-import type { ChapterData, Neighbour } from './types';
-
-type DemoUser = { id: number; name: string; email: string };
-
-type DemoUserOption = { id: number; name: string };
+import type { ChapterData, DemoUser, DemoUserOption, Neighbour } from './types';
 
 type SharedDataProps = {
     chapter: ChapterData;
