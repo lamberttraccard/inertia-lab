@@ -6,8 +6,11 @@ beforeEach(function () {
     config()->set('inertia.devtools.enabled', true);
 });
 
-it('renders the chapter with encryption on and its teaching metadata', function () {
-    $response = $this->get(route('chapters.history-encryption'));
+it('renders the chapter with encryption on, its teaching metadata and no unexpected props', function () {
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.history-encryption'));
 
     $response->assertOk();
 
@@ -24,6 +27,25 @@ it('renders the chapter with encryption on and its teaching metadata', function 
         ->and($page['encryptHistory'])->toBeTrue()
         ->and($page)->not->toHaveKey('clearHistory')
         ->and($trace['props'])->toHaveKey('renderedAt');
+
+    // Verified empirically against this exact route (see the debug trace taken from
+    // chapters/first-load-vs-visit for the shared baseline): errors, name, auth,
+    // demoUser, unreadNotifications and demoUserOptions are the platform's own shared
+    // props, added to every page regardless of this chapter; chapter, previous and next
+    // are the standard chapter metadata every chapter passes, wrapped through
+    // Lab::value() like renderedAt, this chapter's own prop. A controller that stopped
+    // wrapping chapter, previous or next would still pass a bare toBeEmpty() check on a
+    // nested field, but not this one, the same defect class chapters 17 and 18 needed a
+    // dedicated fix commit for. encryptHistory and clearHistory are top-level Page
+    // fields, not props, so they are asserted separately above rather than listed here.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'renderedAt', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions',
+            'chapter', 'previous', 'next', 'renderedAt',
+        ]);
 });
 
 it('clears history on the very next render, then stays quiet again', function () {

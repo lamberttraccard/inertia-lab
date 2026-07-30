@@ -9,7 +9,7 @@ beforeEach(function () {
     config()->set('inertia.devtools.enabled', true);
 });
 
-it('renders the chapter with the full list and its teaching metadata', function () {
+it('renders the chapter with the full list, its teaching metadata and no unexpected props', function () {
     $author = User::factory()->create();
     Post::create([
         'user_id' => $author->id,
@@ -30,7 +30,10 @@ it('renders the chapter with the full list and its teaching metadata', function 
         'views' => 5,
     ]);
 
-    $response = $this->get(route('chapters.remembering-state'));
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.remembering-state'));
 
     $response->assertOk();
 
@@ -41,8 +44,25 @@ it('renders the chapter with the full list and its teaching metadata', function 
 
     expect($page['props']['chapter']['question'])->not->toBeEmpty()
         ->and($page['props']['filter'])->toBe('')
-        ->and($page['props']['posts'])->toHaveCount(2)
-        ->and($trace['props'])->toHaveKeys(['posts', 'filter']);
+        ->and($page['props']['posts'])->toHaveCount(2);
+
+    // Verified empirically against this exact route (see the debug trace taken from
+    // chapters/first-load-vs-visit for the shared baseline): errors, name, auth,
+    // demoUser, unreadNotifications and demoUserOptions are the platform's own shared
+    // props, added to every page regardless of this chapter; chapter, previous and next
+    // are the standard chapter metadata every chapter passes; filter and posts are this
+    // chapter's own. A controller that stopped wrapping chapter, previous or next in
+    // Lab::value() would still pass a bare toBeEmpty() check on a nested field, but not
+    // this one, the same defect class chapters 17 and 18 needed a dedicated fix commit
+    // for.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'filter', 'posts', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions',
+            'chapter', 'previous', 'next', 'filter', 'posts',
+        ]);
 });
 
 it('filters the list server side when a filter query parameter is present', function () {
@@ -77,7 +97,7 @@ it('filters the list server side when a filter query parameter is present', func
         ->and($page['props']['posts'][0]['title'])->toBe('Learning Inertia the hard way');
 });
 
-it('renders the detail route normally, with its own post prop resolved', function () {
+it('renders the detail route normally, with its own post prop resolved and nothing else', function () {
     $author = User::factory()->create();
     $post = Post::create([
         'user_id' => $author->id,
@@ -89,7 +109,10 @@ it('renders the detail route normally, with its own post prop resolved', functio
         'views' => 10,
     ]);
 
-    $response = $this->get(route('chapters.remembering-state.detail', $post));
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.remembering-state.detail', $post));
 
     $response->assertOk();
 
@@ -100,5 +123,16 @@ it('renders the detail route normally, with its own post prop resolved', functio
         'id' => $post->id,
         'title' => $post->title,
         'excerpt' => $post->excerpt,
-    ])->and($trace['props'])->toHaveKey('post');
+    ]);
+
+    // Not a registered chapter (see the docblock on RememberingStateController::detail):
+    // it renders outside ChapterShell, so chapter, previous and next never reach it, the
+    // same as the two panel routes in the layouts chapter. post is its only own prop.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'post', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions', 'post',
+        ]);
 });
