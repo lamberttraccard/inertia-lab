@@ -4,8 +4,14 @@ type ChapterSummary = {
     slug: string;
     title: string;
     question: string;
-    wave: number;
     order: number;
+};
+
+type PartSummary = {
+    key: string;
+    label: string;
+    description: string;
+    chapters: ChapterSummary[];
 };
 
 type Versions = {
@@ -16,10 +22,10 @@ type Versions = {
 };
 
 export default function Home({
-    chapters,
+    parts,
     versions,
 }: {
-    chapters: ChapterSummary[];
+    parts: PartSummary[];
     versions: Versions;
 }) {
     return (
@@ -53,24 +59,41 @@ export default function Home({
                     <h2 id="chapters" className="text-lg font-semibold">
                         Chapters
                     </h2>
-                    <ol className="mt-2 space-y-3">
-                        {chapters.map((chapter) => (
-                            <li
-                                key={chapter.slug}
-                                className="border border-neutral-200 p-3 dark:border-neutral-800"
-                            >
-                                <Link
-                                    href={`/chapters/${chapter.slug}`}
-                                    className="font-medium underline"
-                                >
-                                    {chapter.order}. {chapter.title}
-                                </Link>
+                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                        The parts below run in the order they are listed, and
+                        the chapters within a part run in order too: each one
+                        builds on what came before it. Chapter 0 is where every
+                        reader starts.
+                    </p>
+
+                    <div className="mt-4 space-y-6">
+                        {parts.map((part) => (
+                            <div key={part.key}>
+                                <h3 className="font-semibold">{part.label}</h3>
                                 <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-                                    {chapter.question}
+                                    {part.description}
                                 </p>
-                            </li>
+                                <ol className="mt-2 space-y-3">
+                                    {part.chapters.map((chapter) => (
+                                        <li
+                                            key={chapter.slug}
+                                            className="border border-neutral-200 p-3 dark:border-neutral-800"
+                                        >
+                                            <Link
+                                                href={`/chapters/${chapter.slug}`}
+                                                className="font-medium underline"
+                                            >
+                                                {chapter.order}. {chapter.title}
+                                            </Link>
+                                            <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                                                {chapter.question}
+                                            </p>
+                                        </li>
+                                    ))}
+                                </ol>
+                            </div>
                         ))}
-                    </ol>
+                    </div>
                 </section>
 
                 <section aria-labelledby="versions">

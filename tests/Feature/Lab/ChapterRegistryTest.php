@@ -39,3 +39,18 @@ it('points every chapter at source files that exist', function () {
             ->and(file_exists(base_path($chapter->clientFile)))->toBeTrue("missing {$chapter->clientFile}");
     }
 });
+
+it('assigns every chapter to exactly one part, in the same order all() uses', function () {
+    $registry = app(ChapterRegistry::class);
+
+    $slugsInOrder = array_map(fn ($chapter) => $chapter->slug, $registry->all());
+
+    $slugsByPart = array_merge(
+        ...array_map(
+            fn (array $part) => array_map(fn ($chapter) => $chapter->slug, $part['chapters']),
+            $registry->partsWithChapters()
+        )
+    );
+
+    expect($slugsByPart)->toBe($slugsInOrder);
+});

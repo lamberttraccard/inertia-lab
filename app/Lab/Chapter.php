@@ -16,6 +16,7 @@ readonly class Chapter
         public string $translationTo,
         public string $docsUrl,
         public int $wave,
+        public Part $part,
         public int $order,
     ) {}
 

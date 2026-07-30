@@ -211,7 +211,15 @@ class LabController extends Controller
     public function home(ChapterRegistry $registry): Response
     {
         return Inertia::render('lab/home', [
-            'chapters' => array_map(fn (Chapter $chapter) => $chapter->toArray(), $registry->all()),
+            'parts' => array_map(
+                fn (array $part) => [
+                    'key' => $part['key'],
+                    'label' => $part['label'],
+                    'description' => $part['description'],
+                    'chapters' => array_map(fn (Chapter $chapter) => $chapter->toArray(), $part['chapters']),
+                ],
+                $registry->partsWithChapters()
+            ),
             'versions' => [
                 'inertiaLaravel' => self::installedPackageVersion('inertiajs/inertia-laravel'),
                 'inertiaReact' => self::installedReactVersion(),

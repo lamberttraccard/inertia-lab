@@ -23,6 +23,7 @@ class ChapterRegistry
                 translationTo: 'A route, a controller, and a props array. The component receives the data already resolved, as arguments.',
                 docsUrl: 'https://inertiajs.com/docs/v3/core-concepts/how-it-works',
                 wave: 1,
+                part: Part::Protocol,
                 order: 0,
             ),
             new Chapter(
@@ -37,6 +38,7 @@ class ChapterRegistry
                 translationTo: 'One response that carries both the page to render and the data to render it with.',
                 docsUrl: 'https://inertiajs.com/docs/v3/core-concepts/how-it-works',
                 wave: 1,
+                part: Part::Protocol,
                 order: 1,
             ),
             new Chapter(
@@ -51,6 +53,7 @@ class ChapterRegistry
                 translationTo: 'The controller names the component and passes it data in one step.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/responses',
                 wave: 1,
+                part: Part::Protocol,
                 order: 2,
             ),
             new Chapter(
@@ -65,6 +68,7 @@ class ChapterRegistry
                 translationTo: 'The server redirects, and the response to that redirect is the next page.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/redirects',
                 wave: 1,
+                part: Part::Protocol,
                 order: 3,
             ),
             new Chapter(
@@ -79,6 +83,7 @@ class ChapterRegistry
                 translationTo: 'A link is an HTTP request whose response replaces the page.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/links',
                 wave: 1,
+                part: Part::Protocol,
                 order: 4,
             ),
             new Chapter(
@@ -93,6 +98,7 @@ class ChapterRegistry
                 translationTo: 'A lifecycle you can subscribe to globally or per visit.',
                 docsUrl: 'https://inertiajs.com/docs/v3/advanced/events',
                 wave: 1,
+                part: Part::Protocol,
                 order: 5,
             ),
             new Chapter(
@@ -107,6 +113,7 @@ class ChapterRegistry
                 translationTo: 'A header on every visit and a 409 the client already knows how to handle.',
                 docsUrl: 'https://inertiajs.com/docs/v3/advanced/asset-versioning',
                 wave: 1,
+                part: Part::Protocol,
                 order: 6,
             ),
             new Chapter(
@@ -121,6 +128,7 @@ class ChapterRegistry
                 translationTo: 'The array you return from the controller, plus objects that know how to present themselves.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/responses',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 7,
             ),
             new Chapter(
@@ -135,6 +143,7 @@ class ChapterRegistry
                 translationTo: 'Props the server attaches to every response, recomputed on every request by default, or sent once and skipped afterward for a prop marked that way.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/shared-data',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 8,
             ),
             new Chapter(
@@ -149,6 +158,7 @@ class ChapterRegistry
                 translationTo: 'The same endpoint, told through a header which props you still need.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/partial-reloads',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 9,
             ),
             new Chapter(
@@ -163,6 +173,7 @@ class ChapterRegistry
                 translationTo: 'A prop on this same page that the server only computes once a partial reload asks for it by name.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/partial-reloads',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 10,
             ),
             new Chapter(
@@ -177,6 +188,7 @@ class ChapterRegistry
                 translationTo: 'Declare the prop deferred and wrap the panel in the Deferred component; the client requests it after the page has already rendered.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/deferred-props',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 11,
             ),
             new Chapter(
@@ -191,6 +203,7 @@ class ChapterRegistry
                 translationTo: 'Props the server marks as non-negotiable, included in every response regardless of what only or except named.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/partial-reloads',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 12,
             ),
             new Chapter(
@@ -205,6 +218,7 @@ class ChapterRegistry
                 translationTo: 'The server marks the prop mergeable and names the key the client matches existing items on.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/merging-props',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 13,
             ),
             new Chapter(
@@ -219,6 +233,7 @@ class ChapterRegistry
                 translationTo: 'A scroll prop and a component that already knows how to page in both directions.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/infinite-scroll',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 14,
             ),
             new Chapter(
@@ -233,6 +248,7 @@ class ChapterRegistry
                 translationTo: 'The client tells the server what it already holds, and the server trusts it.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/once-props',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 15,
             ),
             new Chapter(
@@ -247,6 +263,7 @@ class ChapterRegistry
                 translationTo: 'A hook that issues the same partial reload on a timer, and manages its own lifecycle.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/polling',
                 wave: 1,
+                part: Part::PropTaxonomy,
                 order: 16,
             ),
             new Chapter(
@@ -261,6 +278,7 @@ class ChapterRegistry
                 translationTo: 'Submit the visit and read errors like any other prop; the framework already redirected back with it attached.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/forms',
                 wave: 1,
+                part: Part::Forms,
                 order: 17,
             ),
             new Chapter(
@@ -275,6 +293,7 @@ class ChapterRegistry
                 translationTo: 'Put the File in the form data; the visit builds the multipart body and progress arrives as a prop of its own.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/file-uploads',
                 wave: 1,
+                part: Part::Forms,
                 order: 18,
             ),
             new Chapter(
@@ -289,6 +308,7 @@ class ChapterRegistry
                 translationTo: "The server's own rules, the same ones the real submission uses, run on demand and read back as they resolve.",
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/forms',
                 wave: 1,
+                part: Part::Forms,
                 order: 19,
             ),
             new Chapter(
@@ -303,6 +323,7 @@ class ChapterRegistry
                 translationTo: "An attribute on the link and a cache the router owns, cleared by one of the router's own functions.",
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/prefetching',
                 wave: 1,
+                part: Part::SpeedAndPerception,
                 order: 20,
             ),
             new Chapter(
@@ -317,6 +338,7 @@ class ChapterRegistry
                 translationTo: 'The component named up front, rendered immediately while the request for its own data is still in flight.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/instant-visits',
                 wave: 1,
+                part: Part::SpeedAndPerception,
                 order: 21,
             ),
             new Chapter(
@@ -331,6 +353,7 @@ class ChapterRegistry
                 translationTo: 'Declare the optimistic shape; the router remembers the previous value itself and restores it on failure.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/optimistic-updates',
                 wave: 1,
+                part: Part::SpeedAndPerception,
                 order: 22,
             ),
             new Chapter(
@@ -345,6 +368,7 @@ class ChapterRegistry
                 translationTo: 'One visit option, plus a CSS property on whichever element should carry itself across the change.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/view-transitions',
                 wave: 1,
+                part: Part::SpeedAndPerception,
                 order: 23,
             ),
             new Chapter(
@@ -359,6 +383,7 @@ class ChapterRegistry
                 translationTo: 'A hook that puts the same state into the history entry itself, restored automatically when that entry becomes current again.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/remembering-state',
                 wave: 1,
+                part: Part::StateAndHistory,
                 order: 24,
             ),
             new Chapter(
@@ -373,6 +398,7 @@ class ChapterRegistry
                 translationTo: 'A server instruction carried on the response, decrypted client-side, that a cleared key makes permanently unreadable.',
                 docsUrl: 'https://inertiajs.com/docs/v3/security/history-encryption',
                 wave: 1,
+                part: Part::StateAndHistory,
                 order: 25,
             ),
             new Chapter(
@@ -387,6 +413,7 @@ class ChapterRegistry
                 translationTo: 'A component that stays mounted across a visit, instead of being torn down and rebuilt with the page it wraps.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/layouts',
                 wave: 1,
+                part: Part::StateAndHistory,
                 order: 26,
             ),
             new Chapter(
@@ -401,6 +428,7 @@ class ChapterRegistry
                 translationTo: 'A hook that shares useForm\'s own shape, for the times a request should not touch the page at all.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/http-requests',
                 wave: 1,
+                part: Part::StateAndHistory,
                 order: 27,
             ),
             new Chapter(
@@ -415,6 +443,7 @@ class ChapterRegistry
                 translationTo: 'A component that ships with the adapter itself, used the same way any other component is.',
                 docsUrl: 'https://inertiajs.com/docs/v3/the-basics/title-and-meta',
                 wave: 1,
+                part: Part::StateAndHistory,
                 order: 28,
             ),
             new Chapter(
@@ -429,6 +458,7 @@ class ChapterRegistry
                 translationTo: "The framework's own exception handler, rendering a normal Inertia response instead of the client's fallback dialog.",
                 docsUrl: 'https://inertiajs.com/docs/v3/advanced/error-handling',
                 wave: 1,
+                part: Part::ErrorsAndTooling,
                 order: 29,
             ),
             new Chapter(
@@ -443,6 +473,7 @@ class ChapterRegistry
                 translationTo: 'The session already established by earlier chapters, and permissions computed server-side on every request from a policy.',
                 docsUrl: 'https://inertiajs.com/docs/v3/security/authorization',
                 wave: 1,
+                part: Part::ErrorsAndTooling,
                 order: 30,
             ),
             new Chapter(
@@ -457,6 +488,7 @@ class ChapterRegistry
                 translationTo: 'A panel that pairs each request with the props it resolved and where they came from, and a test that reads the same page object the browser does.',
                 docsUrl: 'https://inertiajs.com/docs/v3/advanced/devtools',
                 wave: 1,
+                part: Part::ErrorsAndTooling,
                 order: 31,
             ),
             new Chapter(
@@ -471,6 +503,7 @@ class ChapterRegistry
                 translationTo: 'A TypeScript type written by hand next to the component, and whatever discipline or generator a team adds to keep it matching the controller.',
                 docsUrl: 'https://inertiajs.com/docs/v3/advanced/typescript',
                 wave: 1,
+                part: Part::ErrorsAndTooling,
                 order: 32,
             ),
         ];
@@ -479,6 +512,28 @@ class ChapterRegistry
     public function find(string $slug): ?Chapter
     {
         return collect($this->all())->firstWhere('slug', $slug);
+    }
+
+    /**
+     * Groups chapters is registry-owned rather than page-owned, so the home page map
+     * renders whatever this returns instead of a list a future chapter could miss.
+     *
+     * @return array<int, array{key: string, label: string, description: string, chapters: array<int, Chapter>}>
+     */
+    public function partsWithChapters(): array
+    {
+        return array_map(
+            fn (Part $part) => [
+                'key' => $part->value,
+                'label' => $part->label(),
+                'description' => $part->description(),
+                'chapters' => array_values(array_filter(
+                    $this->all(),
+                    fn (Chapter $chapter): bool => $chapter->part === $part
+                )),
+            ],
+            Part::cases()
+        );
     }
 
     public function next(string $slug): ?Chapter

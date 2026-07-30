@@ -13,6 +13,7 @@ export type ChapterData = {
     translationTo: string;
     docsUrl: string;
     wave: number;
+    part: string;
     order: number;
 };
 

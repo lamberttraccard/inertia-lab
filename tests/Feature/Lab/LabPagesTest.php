@@ -1,14 +1,29 @@
 <?php
 
 use App\Lab\ChapterRegistry;
+use App\Lab\Part;
 use Inertia\Testing\AssertableInertia;
 
-it('lists every chapter on the home page', function () {
-    $this->get(route('lab.home'))->assertInertia(
-        fn (AssertableInertia $page) => $page
-            ->component('lab/home')
-            ->has('chapters', count(app(ChapterRegistry::class)->all()))
-    );
+it('lists every chapter on the home page, grouped into parts', function () {
+    $registry = app(ChapterRegistry::class);
+
+    $this->get(route('lab.home'))->assertInertia(function (AssertableInertia $page) use ($registry) {
+        $page->component('lab/home')->has('parts', count(Part::cases()));
+
+        $seen = [];
+
+        foreach ($page->toArray()['props']['parts'] as $part) {
+            expect($part)->toHaveKeys(['key', 'label', 'description', 'chapters']);
+
+            foreach ($part['chapters'] as $chapter) {
+                $seen[] = $chapter['slug'];
+            }
+        }
+
+        $allSlugs = array_map(fn ($chapter) => $chapter->slug, $registry->all());
+
+        expect($seen)->toBe($allSlugs);
+    });
 });
 
 it('links every row of the where-did-it-go page to a chapter that exists', function () {
