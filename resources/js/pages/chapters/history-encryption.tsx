@@ -47,8 +47,10 @@ export default function HistoryEncryption({
                     </button>
                     <p className="text-sm">
                         This page&apos;s own{' '}
-                        <code className="font-mono">encryptHistory</code> right
-                        now:{' '}
+                        <Term term="Encrypted history">
+                            <code className="font-mono">encryptHistory</code>
+                        </Term>{' '}
+                        right now:{' '}
                         <strong>{String(Boolean(page.encryptHistory))}</strong>.{' '}
                         <code className="font-mono">clearHistory</code>:{' '}
                         <strong>{String(Boolean(page.clearHistory))}</strong>.
@@ -78,7 +80,7 @@ export default function HistoryEncryption({
             }
             whenToUse={
                 <p>
-                    Turn <Term term="Encrypted history">encryptHistory</Term> on
+                    Turn <code className="font-mono">encryptHistory</code> on
                     for any route that ever shows data scoped to whoever is
                     signed in. Call{' '}
                     <code className="font-mono">clearHistory()</code> from the
