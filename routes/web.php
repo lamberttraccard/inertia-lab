@@ -7,6 +7,7 @@ use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FileUploadsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\FormsController;
+use App\Http\Controllers\Chapters\HistoryEncryptionController;
 use App\Http\Controllers\Chapters\InfiniteScrollController;
 use App\Http\Controllers\Chapters\InstantVisitsController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
@@ -87,4 +88,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/view-transitions/{post}', [ViewTransitionsController::class, 'detail'])->name('view-transitions.detail');
     Route::get('/remembering-state', [RememberingStateController::class, 'show'])->name('remembering-state');
     Route::get('/remembering-state/{post}', [RememberingStateController::class, 'detail'])->name('remembering-state.detail');
+    Route::get('/history-encryption', [HistoryEncryptionController::class, 'show'])->name('history-encryption');
+    Route::post('/history-encryption/clear', [HistoryEncryptionController::class, 'clear'])->name('history-encryption.clear');
 });

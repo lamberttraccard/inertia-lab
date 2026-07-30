@@ -361,6 +361,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 24,
             ),
+            new Chapter(
+                slug: 'history-encryption',
+                title: 'What stays in the browser after logout',
+                question: 'Pressing back after signing out can show the previous user\'s data. What stops that?',
+                concept: 'encryptHistory() encrypts every history entry a route builds this way; clearHistory() drops the key those entries were encrypted with, on the next response that carries it.',
+                routeName: 'chapters.history-encryption',
+                serverFile: 'app/Http/Controllers/Chapters/HistoryEncryptionController.php',
+                clientFile: 'resources/js/pages/chapters/history-encryption.tsx',
+                translationFrom: 'Clearing your client store on logout and hoping the back button obeys.',
+                translationTo: 'A server instruction carried on the response, decrypted client-side, that a cleared key makes permanently unreadable.',
+                docsUrl: 'https://inertiajs.com/docs/v3/security/history-encryption',
+                wave: 1,
+                order: 25,
+            ),
         ];
     }
 

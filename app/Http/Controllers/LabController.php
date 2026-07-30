@@ -102,6 +102,10 @@ class LabController extends Controller
             'term' => 'Remembered state',
             'definition' => 'Local component state saved into the current history entry by useRemember. A component rebuilt from that same entry, after a full remount rather than a mere reload, reads its initial value back out of it instead of starting over.',
         ],
+        [
+            'term' => 'Encrypted history',
+            'definition' => 'A history entry the client encrypted before storing it, because the route that rendered it called encryptHistory(). clearHistory() deletes the key those entries were encrypted with, so pressing back to one afterward can no longer be decrypted, not merely hidden.',
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */
