@@ -178,17 +178,34 @@ export default function RememberingState({
                     </code>
                     , not <code className="font-mono">data-scroll-region</code>.
                     Scroll it, then reload this same page with{' '}
-                    <code className="font-mono">preserveScroll</code> checked or
-                    not: checked keeps this region&apos;s scroll position (and
-                    the window&apos;s), unchecked resets both to the top.{' '}
-                    <code className="font-mono">preserveState</code> answers a
-                    different question: whether this component keeps its current
-                    instance across that same reload, which is why checking it
-                    also keeps the plain filter box above intact, for exactly
-                    this one kind of navigation. It cannot help the plain box
-                    survive a trip to a detail page and back, because that trip
-                    never reloads this component at all: it unmounts it, then
-                    builds a fresh one.
+                    <code className="font-mono">preserveScroll</code> and{' '}
+                    <code className="font-mono">preserveState</code> checked in
+                    every combination; the four results were observed directly,
+                    not assumed from either option&apos;s name.{' '}
+                    <code className="font-mono">preserveScroll</code> alone
+                    controls the window&apos;s own scroll position: checked
+                    keeps it, unchecked resets it to the top, regardless of{' '}
+                    <code className="font-mono">preserveState</code>. This
+                    region needs both checked to keep its own position: with{' '}
+                    <code className="font-mono">preserveState</code> unchecked,
+                    this whole component unmounts and remounts, so the boxed
+                    list below is a brand new element whose scroll starts at
+                    zero no matter what{' '}
+                    <code className="font-mono">preserveScroll</code> asked for;
+                    with <code className="font-mono">preserveState</code>{' '}
+                    checked but{' '}
+                    <code className="font-mono">preserveScroll</code> unchecked,
+                    the element survives but Inertia&apos;s own reset explicitly
+                    zeroes every{' '}
+                    <code className="font-mono">scroll-region</code> it finds,
+                    this one included. Only both checked together keep this
+                    region&apos;s position.{' '}
+                    <code className="font-mono">preserveState</code> is also why
+                    checking it keeps the plain filter box above intact across
+                    this same reload; it cannot help that box survive a trip to
+                    a detail page and back, because that trip never reloads this
+                    component at all, it unmounts it, then builds a fresh one
+                    regardless of either option.
                 </p>
                 <div className="mt-2 flex flex-wrap items-center gap-4 text-sm">
                     <label className="flex items-center gap-2">
