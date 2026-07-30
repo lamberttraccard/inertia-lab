@@ -137,6 +137,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 8,
             ),
+            new Chapter(
+                slug: 'partial-reloads',
+                title: 'Asking for less',
+                question: 'Sorting a table should not refetch the whole page. How do you ask for one prop?',
+                concept: 'The only, except and reset visit options send header lists the server uses to skip work it would otherwise do again.',
+                routeName: 'chapters.partial-reloads',
+                serverFile: 'app/Http/Controllers/Chapters/PartialReloadsController.php',
+                clientFile: 'resources/js/pages/chapters/partial-reloads.tsx',
+                translationFrom: 'A second endpoint that returns just the rows a table needs.',
+                translationTo: 'The same endpoint, told through a header which props you still need.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/partial-reloads',
+                wave: 1,
+                order: 9,
+            ),
         ];
     }
 

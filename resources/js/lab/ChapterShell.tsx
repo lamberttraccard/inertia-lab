@@ -30,6 +30,7 @@ export function ChapterShell({
     previous,
     next,
     children,
+    onWireEntry,
 }: PropsWithChildren<{
     chapter: ChapterMeta;
     tryThis: ReactNode;
@@ -37,10 +38,19 @@ export function ChapterShell({
     whenToUse: ReactNode;
     previous: { slug: string; title: string } | null;
     next: { slug: string; title: string } | null;
+    // Lets a chapter keep its own history of entries (partial-reloads compares payload
+    // sizes across several requests) without installing a second capture on top of
+    // WireStrip's: every entry the strip records is forwarded here too, if given.
+    onWireEntry?: (entry: WireEntry) => void;
 }>) {
     // Lifted here, not inside WireStrip, because RoundTrip needs the same latest entry:
     // this is the one place both the strip and the diagram can share it.
     const [entry, setEntry] = useState<WireEntry | null>(null);
+
+    function recordEntry(latest: WireEntry) {
+        setEntry(latest);
+        onWireEntry?.(latest);
+    }
 
     return (
         <article className="mx-auto max-w-4xl space-y-8 p-6 pb-[45vh]">
@@ -121,7 +131,7 @@ export function ChapterShell({
                 )}
             </footer>
 
-            <WireStrip onEntry={setEntry} />
+            <WireStrip onEntry={recordEntry} />
         </article>
     );
 }

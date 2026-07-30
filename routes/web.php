@@ -5,6 +5,7 @@ use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
+use App\Http\Controllers\Chapters\PartialReloadsController;
 use App\Http\Controllers\Chapters\PropsAndTypesController;
 use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
@@ -42,4 +43,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/props-and-types', [PropsAndTypesController::class, 'show'])->name('props-and-types');
     Route::get('/shared-data', [SharedDataController::class, 'show'])->name('shared-data');
     Route::post('/shared-data/switch-user', [SharedDataController::class, 'switchUser'])->name('shared-data.switch-user');
+    Route::get('/partial-reloads', [PartialReloadsController::class, 'show'])->name('partial-reloads');
 });
