@@ -20,7 +20,8 @@ it('sends tags on the first response and lists it under onceProps', function () 
     $page = assertInertiaPage($response, 'chapters/once-props');
     $trace = labTrace($response);
 
-    expect($page['props']['tags'])->toHaveCount(15)
+    expect($page['props']['chapter']['question'])->not->toBeEmpty()
+        ->and($page['props']['tags'])->toHaveCount(15)
         ->and($page['onceProps']['tags'])->toBe(['prop' => 'tags', 'expiresAt' => null])
         ->and($trace['props'])->toHaveKeys(['tags', 'visitedAt']);
 });
