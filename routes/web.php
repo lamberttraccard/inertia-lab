@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Chapters\AssetVersioningController;
+use App\Http\Controllers\Chapters\DeferredPropsController;
 use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
@@ -46,4 +47,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/shared-data/switch-user', [SharedDataController::class, 'switchUser'])->name('shared-data.switch-user');
     Route::get('/partial-reloads', [PartialReloadsController::class, 'show'])->name('partial-reloads');
     Route::get('/optional-props', [OptionalPropsController::class, 'show'])->name('optional-props');
+    Route::get('/deferred-props', [DeferredPropsController::class, 'show'])->name('deferred-props');
 });

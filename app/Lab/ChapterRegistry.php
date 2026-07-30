@@ -165,6 +165,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 10,
             ),
+            new Chapter(
+                slug: 'deferred-props',
+                title: 'Render now, fetch the rest',
+                question: 'How does the page appear instantly when one of its panels takes a second to compute?',
+                concept: 'Inertia::defer() sends the page immediately and lets the client fetch the deferred groups afterwards, on its own.',
+                routeName: 'chapters.deferred-props',
+                serverFile: 'app/Http/Controllers/Chapters/DeferredPropsController.php',
+                clientFile: 'resources/js/pages/chapters/deferred-props.tsx',
+                translationFrom: 'Render a spinner, fire a second request from an effect, and handle its loading and error states by hand.',
+                translationTo: 'Declare the prop deferred and wrap the panel in the Deferred component; the client requests it after the page has already rendered.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/deferred-props',
+                wave: 1,
+                order: 11,
+            ),
         ];
     }
 
