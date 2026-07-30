@@ -25,6 +25,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 0,
             ),
+            new Chapter(
+                slug: 'first-load-vs-visit',
+                title: 'What actually travels on the wire',
+                question: 'The first time you open a page you get HTML. What do you get the second time?',
+                concept: 'The initial request returns a document; every visit after it returns the page object as JSON.',
+                routeName: 'chapters.first-load-vs-visit',
+                serverFile: 'app/Http/Controllers/Chapters/FirstLoadVsVisitController.php',
+                clientFile: 'resources/js/pages/chapters/first-load-vs-visit.tsx',
+                translationFrom: 'An HTML shell that boots a client router, then a separate JSON API call for the data.',
+                translationTo: 'One response that carries both the page to render and the data to render it with.',
+                docsUrl: 'https://inertiajs.com/docs/v3/core-concepts/how-it-works',
+                wave: 1,
+                order: 1,
+            ),
         ];
     }
 

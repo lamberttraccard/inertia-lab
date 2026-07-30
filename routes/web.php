@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\MentalModelController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\SlowModeController;
@@ -16,4 +17,5 @@ Route::prefix('lab')->name('lab.')->group(function () {
 
 Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/mental-model', MentalModelController::class)->name('mental-model');
+    Route::get('/first-load-vs-visit', FirstLoadVsVisitController::class)->name('first-load-vs-visit');
 });
