@@ -333,7 +333,7 @@ export default function DevtoolsAndTesting({
                 </p>
                 <pre className="mt-1 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
                     {
-                        '{"tool":"pest","result":"passed","tests":3,"passed":3,"assertions":21,"duration_ms":223}'
+                        '{"tool":"pest","result":"passed","tests":3,"passed":3,"assertions":23,"duration_ms":223}'
                     }
                 </pre>
                 <PlatformSourceFile path="tests/Feature/Chapters/DevtoolsAndTestingTest.php" />
