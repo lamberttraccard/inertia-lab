@@ -58,6 +58,10 @@ class LabController extends Controller
             'term' => 'Always prop',
             'definition' => "A prop wrapped in Inertia::always(), included in every response even when a partial reload's only or except would otherwise have excluded it.",
         ],
+        [
+            'term' => 'Merge prop',
+            'definition' => 'A prop wrapped in Inertia::merge() or Inertia::deepMerge(), whose new value the client combines with what it already holds instead of replacing outright. A plain merge only combines at the root (or at a path named with append or prepend); deepMerge recurses into nested arrays and objects instead of overwriting them wholesale.',
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

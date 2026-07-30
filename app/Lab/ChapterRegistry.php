@@ -193,6 +193,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 12,
             ),
+            new Chapter(
+                slug: 'merging-props',
+                title: 'Appending instead of replacing',
+                question: '"Load more" adds to a list. Why does the new response not wipe the old rows?',
+                concept: 'Inertia::merge() and Inertia::deepMerge() mark a prop so the client combines its new value with what it already holds instead of replacing it outright, and matchOn names the key the client uses to update an item in place instead of duplicating it.',
+                routeName: 'chapters.merging-props',
+                serverFile: 'app/Http/Controllers/Chapters/MergingPropsController.php',
+                clientFile: 'resources/js/pages/chapters/merging-props.tsx',
+                translationFrom: 'Concatenate the arrays yourself in a reducer and deduplicate by id on every page that comes back.',
+                translationTo: 'The server marks the prop mergeable and names the key the client matches existing items on.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/merging-props',
+                wave: 1,
+                order: 13,
+            ),
         ];
     }
 

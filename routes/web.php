@@ -7,6 +7,7 @@ use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\LinksAndVisitsController;
 use App\Http\Controllers\Chapters\MentalModelController;
+use App\Http\Controllers\Chapters\MergingPropsController;
 use App\Http\Controllers\Chapters\OptionalPropsController;
 use App\Http\Controllers\Chapters\PartialReloadsController;
 use App\Http\Controllers\Chapters\PropsAndTypesController;
@@ -51,4 +52,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/deferred-props', [DeferredPropsController::class, 'show'])->name('deferred-props');
     Route::get('/always-props', [AlwaysPropsController::class, 'show'])->name('always-props');
     Route::post('/always-props/flash', [AlwaysPropsController::class, 'flash'])->name('always-props.flash');
+    Route::get('/merging-props', [MergingPropsController::class, 'show'])->name('merging-props');
 });
