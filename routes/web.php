@@ -12,6 +12,7 @@ use App\Http\Controllers\Chapters\MergingPropsController;
 use App\Http\Controllers\Chapters\OncePropsController;
 use App\Http\Controllers\Chapters\OptionalPropsController;
 use App\Http\Controllers\Chapters\PartialReloadsController;
+use App\Http\Controllers\Chapters\PollingController;
 use App\Http\Controllers\Chapters\PropsAndTypesController;
 use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
@@ -57,4 +58,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/merging-props', [MergingPropsController::class, 'show'])->name('merging-props');
     Route::get('/infinite-scroll', [InfiniteScrollController::class, 'show'])->name('infinite-scroll');
     Route::get('/once-props', [OncePropsController::class, 'show'])->name('once-props');
+    Route::get('/polling', [PollingController::class, 'show'])->name('polling');
+    Route::post('/polling/simulate', [PollingController::class, 'simulate'])->name('polling.simulate');
 });

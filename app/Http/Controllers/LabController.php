@@ -70,6 +70,10 @@ class LabController extends Controller
             'term' => 'Once prop',
             'definition' => 'A prop wrapped in Inertia::once(), sent to the client a single time. The client then names it in an X-Inertia-Except-Once-Props header on later requests, and the server skips resolving it again, unless a partial reload of the same page names that same prop explicitly.',
         ],
+        [
+            'term' => 'Polling',
+            'definition' => 'Reloading chosen props on a fixed interval through usePoll, instead of opening a persistent connection such as a websocket. Polling throttles sharply once the browser tab is hidden, unless keepAlive is set.',
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

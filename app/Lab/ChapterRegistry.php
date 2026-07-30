@@ -235,6 +235,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 15,
             ),
+            new Chapter(
+                slug: 'polling',
+                title: 'Keeping a number fresh',
+                question: 'How does a notification count update without a websocket?',
+                concept: 'usePoll issues the same partial reload on a fixed interval, and throttles sharply once the tab is hidden unless keepAlive is set.',
+                routeName: 'chapters.polling',
+                serverFile: 'app/Http/Controllers/Chapters/PollingController.php',
+                clientFile: 'resources/js/pages/chapters/polling.tsx',
+                translationFrom: 'A setInterval wrapped around a fetch, plus cleanup on unmount.',
+                translationTo: 'A hook that issues the same partial reload on a timer, and manages its own lifecycle.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/polling',
+                wave: 1,
+                order: 16,
+            ),
         ];
     }
 
