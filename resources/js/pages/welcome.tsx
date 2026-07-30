@@ -1,13 +1,19 @@
 import { Head, router } from '@inertiajs/react';
+import { useState } from 'react';
+import { RoundTrip } from '@/lab/RoundTrip';
+import type { WireEntry } from '@/lab/types';
 import { WireStrip } from '@/lab/WireStrip';
 
-// Mounted here only so Tasks 9-11 have somewhere to exercise the wire capture and the
-// strip before the chapter shell exists. The chapter shell task moves this mount point.
+// Mounted here only so Tasks 9-11 have somewhere to exercise the wire capture, the strip
+// and the diagram before the chapter shell exists. The chapter shell task moves all of
+// this: the WireStrip mount, the entry state lifted for RoundTrip, and the test button.
 export default function Welcome() {
+    const [entry, setEntry] = useState<WireEntry | null>(null);
+
     return (
         <>
             <Head title="Welcome" />
-            <WireStrip />
+            <WireStrip onEntry={setEntry} />
             {/* There is no second page component yet to link to, so this is the only way
                 to exercise a real Inertia visit before the chapter shell exists. Remove
                 once a real chapter link takes over that role. */}
@@ -18,6 +24,9 @@ export default function Welcome() {
             >
                 Reload (test visit)
             </button>
+            <div className="mx-auto max-w-2xl px-6 pt-6">
+                <RoundTrip entry={entry} />
+            </div>
             <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]">
                 <div className="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
                     <main className="flex w-full max-w-[335px] flex-col-reverse lg:max-w-4xl lg:flex-row">
