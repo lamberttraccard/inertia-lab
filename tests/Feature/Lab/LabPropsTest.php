@@ -3,6 +3,7 @@
 use App\Lab\Lab;
 use App\Lab\Trace\TraceCollector;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Route;
 use Inertia\AlwaysProp;
 use Inertia\DeferProp;
@@ -10,6 +11,7 @@ use Inertia\Inertia;
 use Inertia\MergeProp;
 use Inertia\OnceProp;
 use Inertia\OptionalProp;
+use Inertia\ScrollProp;
 
 it('returns genuine inertia prop objects', function () {
     $lab = app(Lab::class);
@@ -18,7 +20,39 @@ it('returns genuine inertia prop objects', function () {
         ->and($lab->defer('b', fn () => 1))->toBeInstanceOf(DeferProp::class)
         ->and($lab->always('c', 1))->toBeInstanceOf(AlwaysProp::class)
         ->and($lab->merge('d', [1]))->toBeInstanceOf(MergeProp::class)
-        ->and($lab->once('e', fn () => 1))->toBeInstanceOf(OnceProp::class);
+        ->and($lab->once('e', fn () => 1))->toBeInstanceOf(OnceProp::class)
+        ->and($lab->deepMerge('f', [1]))->toBeInstanceOf(MergeProp::class)
+        ->and($lab->scroll('g', fn () => 1))->toBeInstanceOf(ScrollProp::class);
+});
+
+it('marks a deep merge prop as such while a plain merge prop stays shallow', function () {
+    $lab = app(Lab::class);
+
+    expect($lab->merge('a', [1])->shouldDeepMerge())->toBeFalse()
+        ->and($lab->deepMerge('b', [1])->shouldDeepMerge())->toBeTrue();
+
+    $declared = app(TraceCollector::class)->declared();
+
+    expect($declared['a']['type'])->toBe('merge')
+        ->and($declared['b']['type'])->toBe('deepMerge');
+});
+
+it('wraps a paginator and exposes the scroll metadata Inertia derives from it', function () {
+    // A real paginator, not a stub: ScrollProp::metadata() calls ScrollMetadata::fromPaginator(),
+    // which throws InvalidArgumentException for anything that is not one of Laravel's own
+    // paginator classes (verified in vendor/inertiajs/inertia-laravel/src/ScrollMetadata.php).
+    $paginator = new LengthAwarePaginator(items: [1, 2, 3], total: 30, perPage: 10, currentPage: 2);
+
+    $prop = app(Lab::class)->scroll('posts', fn () => $paginator, 'rows');
+
+    expect($prop())->toBe($paginator)
+        ->and($prop->metadata())->toBe([
+            'pageName' => 'page',
+            'previousPage' => 1,
+            'nextPage' => 3,
+            'currentPage' => 2,
+        ])
+        ->and(app(TraceCollector::class)->declared()['posts']['meta'])->toBe(['wrapper' => 'rows']);
 });
 
 it('keeps the value the raw prop would have produced', function () {

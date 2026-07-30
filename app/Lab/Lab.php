@@ -10,6 +10,8 @@ use Inertia\Inertia;
 use Inertia\MergeProp;
 use Inertia\OnceProp;
 use Inertia\OptionalProp;
+use Inertia\ProvidesScrollMetadata;
+use Inertia\ScrollProp;
 
 class Lab
 {
@@ -55,6 +57,21 @@ class Lab
         $this->trace->declare($key, 'merge');
 
         return Inertia::merge($this->wrap($key, $value));
+    }
+
+    public function deepMerge(string $key, mixed $value): MergeProp
+    {
+        $this->trace->declare($key, 'deepMerge');
+
+        return Inertia::deepMerge($this->wrap($key, $value));
+    }
+
+    /** @return ScrollProp<mixed> */
+    public function scroll(string $key, mixed $value, string $wrapper = 'data', ProvidesScrollMetadata|callable|null $metadata = null): ScrollProp
+    {
+        $this->trace->declare($key, 'scroll', ['wrapper' => $wrapper]);
+
+        return Inertia::scroll($this->wrap($key, $value), $wrapper, $metadata);
     }
 
     public function once(string $key, callable $callback): OnceProp
