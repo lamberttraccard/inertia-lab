@@ -52,7 +52,8 @@ it('anchors every timestamp so two runs on different days produce the same rows'
 it('seeds the blog domain through the default database seeder, not just directly', function () {
     // php artisan migrate --seed and php artisan db:seed both run DatabaseSeeder with no
     // class named, so a clean clone only gets the blog domain if that seeder calls
-    // LabSeeder itself, the same thing the composer setup script and the README rely on.
+    // LabSeeder itself. composer.json's own setup script runs exactly that migrate --seed,
+    // and the README's setup steps do too, so both are only correct because this is true.
     $this->seed();
 
     expect(Post::count())->toBe(120);

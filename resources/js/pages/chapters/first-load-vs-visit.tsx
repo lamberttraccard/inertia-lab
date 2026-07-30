@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { Term } from '@/lab/Term';
 
 type ChapterData = {
     slug: string;
@@ -88,12 +89,13 @@ export default function FirstLoadVsVisit({
         >
             <section>
                 <h2 className="text-lg font-semibold">
-                    The page object, field by field
+                    The <Term term="Page object">page object</Term>, field by
+                    field
                 </h2>
                 <p className="mt-1">
                     Not a description: read live from this render with
-                    usePage(), the same object the client router keeps between
-                    visits.
+                    usePage(), the same object the client router keeps between{' '}
+                    <Term term="Visit">visits</Term>.
                 </p>
                 <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 text-sm sm:grid-cols-2">
                     <div>

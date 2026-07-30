@@ -13,11 +13,10 @@ it('renders the chapter with the component name and pages root as live props', f
 
     $response->assertOk();
 
-    $page = inertiaPage($response);
+    $page = assertInertiaPage($response, 'chapters/render-and-components');
     $trace = labTrace($response);
 
-    expect($page['component'])->toBe('chapters/render-and-components')
-        ->and($page['props']['chapter']['question'])->not->toBeEmpty()
+    expect($page['props']['chapter']['question'])->not->toBeEmpty()
         ->and($page['props']['resolvedComponent'])->toBe('chapters/render-and-components')
         ->and($page['props']['pagesRoot'])->toBe('resources/js/pages')
         ->and($trace['props'])->toHaveKeys(['resolvedComponent', 'pagesRoot']);

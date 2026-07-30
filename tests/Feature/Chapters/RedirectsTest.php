@@ -11,11 +11,10 @@ it('renders the chapter with the last action read from the session', function ()
 
     $response->assertOk();
 
-    $page = inertiaPage($response);
+    $page = assertInertiaPage($response, 'chapters/redirects');
     $trace = labTrace($response);
 
-    expect($page['component'])->toBe('chapters/redirects')
-        ->and($page['props']['chapter']['question'])->not->toBeEmpty()
+    expect($page['props']['chapter']['question'])->not->toBeEmpty()
         ->and($page['props']['lastAction'])->toBe('none')
         ->and($trace['props'])->toHaveKey('lastAction');
 });

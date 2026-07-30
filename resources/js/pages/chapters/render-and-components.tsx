@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { Term } from '@/lab/Term';
 
 type ChapterData = {
     slug: string;
@@ -54,12 +55,13 @@ export default function RenderAndComponents({
                 <p className="mt-2">
                     The response has no X-Inertia header at all, because the
                     exception is thrown before Inertia&apos;s middleware resumes
-                    past the controller call: nothing about it looks like a page
-                    object. The client treats that as a non-Inertia response to
-                    a visit and shows it full page, in a dialog element layered
-                    over this one. Click outside it to dismiss it. The Lifecycle
-                    tab of the wire strip still records the visit: look for
-                    httpException.
+                    past the controller call: nothing about it looks like a{' '}
+                    <Term term="Page object">page object</Term>. The client
+                    treats that as a non-Inertia response to a{' '}
+                    <Term term="Visit">visit</Term> and shows it full page, in a
+                    dialog element layered over this one. Click outside it to
+                    dismiss it. The Lifecycle tab of the wire strip still
+                    records the visit: look for httpException.
                 </p>
             }
             whenToUse={

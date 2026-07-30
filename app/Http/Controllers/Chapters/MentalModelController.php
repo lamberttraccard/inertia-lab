@@ -17,9 +17,9 @@ class MentalModelController
         $chapter = $registry->find('mental-model') ?? throw new RuntimeException('The mental-model chapter is not registered.');
 
         return Inertia::render('chapters/mental-model', [
-            'chapter' => $chapter->toArray(),
-            'previous' => self::neighbour($registry->previous('mental-model')),
-            'next' => self::neighbour($registry->next('mental-model')),
+            'chapter' => $lab->value('chapter', $chapter->toArray()),
+            'previous' => $lab->value('previous', self::neighbour($registry->previous('mental-model'))),
+            'next' => $lab->value('next', self::neighbour($registry->next('mental-model'))),
             'posts' => $lab->closure('posts', fn () => Post::query()
                 ->with('author:id,name')
                 ->latest('published_at')

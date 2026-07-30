@@ -97,6 +97,26 @@ function inertiaPage(TestResponse $response): array
 }
 
 /**
+ * The bootstrap assertions assertInertia() used to perform for free before inertiaPage()
+ * replaced it: that the page actually has a component, props, url and version. Verified
+ * against Inertia\Response::toResponse() rather than assumed: every response it builds,
+ * partial reload or not, JSON or the initial document, merges the same four keys into
+ * $page before anything else runs, so this holds for every response a chapter test reads,
+ * not only full loads. A partial reload changes what is inside props, never whether these
+ * four keys are there at all, so a regression serving the wrong component under a partial
+ * reload is caught here instead of passing silently.
+ */
+function assertInertiaPage(TestResponse $response, string $component): array
+{
+    $page = inertiaPage($response);
+
+    expect($page)->toHaveKeys(['component', 'props', 'url', 'version'])
+        ->and($page['component'])->toBe($component);
+
+    return $page;
+}
+
+/**
  * The lab's own prop resolution trace for an Inertia response: which props resolved, which
  * were skipped and why. Read from props._lab on a JSON response, or from the lab-trace
  * script tag InjectLabTrace appends to a full document load, whichever the response carries.

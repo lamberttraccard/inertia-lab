@@ -18,9 +18,9 @@ class RedirectsController
         $chapter = $registry->find('redirects') ?? throw new RuntimeException('The redirects chapter is not registered.');
 
         return Inertia::render('chapters/redirects', [
-            'chapter' => $chapter->toArray(),
-            'previous' => self::neighbour($registry->previous('redirects')),
-            'next' => self::neighbour($registry->next('redirects')),
+            'chapter' => $lab->value('chapter', $chapter->toArray()),
+            'previous' => $lab->value('previous', self::neighbour($registry->previous('redirects'))),
+            'next' => $lab->value('next', self::neighbour($registry->next('redirects'))),
             'lastAction' => $lab->value('lastAction', session('lab.last_action', 'none')),
         ]);
     }

@@ -16,9 +16,9 @@ class FirstLoadVsVisitController
         $chapter = $registry->find('first-load-vs-visit') ?? throw new RuntimeException('The first-load-vs-visit chapter is not registered.');
 
         return Inertia::render('chapters/first-load-vs-visit', [
-            'chapter' => $chapter->toArray(),
-            'previous' => self::neighbour($registry->previous('first-load-vs-visit')),
-            'next' => self::neighbour($registry->next('first-load-vs-visit')),
+            'chapter' => $lab->value('chapter', $chapter->toArray()),
+            'previous' => $lab->value('previous', self::neighbour($registry->previous('first-load-vs-visit'))),
+            'next' => $lab->value('next', self::neighbour($registry->next('first-load-vs-visit'))),
             'sample' => $lab->value('sample', [
                 'ingredients' => ['flour', 'water', 'salt'],
                 'note' => 'The same array on every visit; only the envelope around it changes.',

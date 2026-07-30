@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import { glossaryAnchor } from '@/lab/Term';
 
 type Term = { term: string; definition: string };
 
@@ -20,7 +21,14 @@ export default function Glossary({ terms }: { terms: Term[] }) {
 
                 <dl className="space-y-4">
                     {terms.map((entry) => (
-                        <div key={entry.term}>
+                        // scroll-mt gives the anchor breathing room above it, so a chapter's
+                        // Term link lands with the entry visible rather than flush against
+                        // the viewport edge.
+                        <div
+                            key={entry.term}
+                            id={glossaryAnchor(entry.term)}
+                            className="scroll-mt-6"
+                        >
                             <dt className="font-semibold">{entry.term}</dt>
                             <dd className="text-neutral-700 dark:text-neutral-300">
                                 {entry.definition}

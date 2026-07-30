@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { Term } from '@/lab/Term';
 
 const FAMILIAR = `function Posts() {
   const [posts, setPosts] = useState(null)
@@ -84,12 +85,12 @@ export default function MentalModel({
                     The strip below shows the request for this page. Its trace
                     lists posts as resolved and expensiveStats as skipped, with
                     the reason. A moment later a second entry appears on its
-                    own: deferred props resolve automatically once the initial
-                    page has rendered, without anyone asking for them. That
-                    request carries X-Inertia-Partial-Data: expensiveStats, and
-                    the trace on it moves expensiveStats from skipped to
-                    resolved. The button asks for the same thing again, on
-                    demand.
+                    own: <Term term="Deferred prop">deferred props</Term>{' '}
+                    resolve automatically once the initial page has rendered,
+                    without anyone asking for them. That request carries
+                    X-Inertia-Partial-Data: expensiveStats, and the trace on it
+                    moves expensiveStats from skipped to resolved. The button
+                    asks for the same thing again, on demand.
                 </p>
             }
             whenToUse={

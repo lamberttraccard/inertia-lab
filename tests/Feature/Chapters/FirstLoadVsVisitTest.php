@@ -11,11 +11,10 @@ it('renders the chapter with its teaching metadata and both prop kinds resolved'
 
     $response->assertOk();
 
-    $page = inertiaPage($response);
+    $page = assertInertiaPage($response, 'chapters/first-load-vs-visit');
     $trace = labTrace($response);
 
-    expect($page['component'])->toBe('chapters/first-load-vs-visit')
-        ->and($page['props']['chapter']['question'])->not->toBeEmpty()
+    expect($page['props']['chapter']['question'])->not->toBeEmpty()
         ->and($page['props']['chapter']['translationFrom'])->not->toBeEmpty()
         ->and($page['props']['sample'])->toBeArray()
         ->and($page['props']['renderedAt'])->toBeString()
@@ -43,7 +42,7 @@ it('returns the page object as json with the real top level key set for a genuin
     $response->assertOk();
     expect($response->headers->get('X-Inertia'))->toBe('true');
 
-    $page = inertiaPage($response);
+    $page = assertInertiaPage($response, 'chapters/first-load-vs-visit');
     $keys = array_keys($page);
     sort($keys);
 
@@ -55,17 +54,19 @@ it('returns the page object as json with the real top level key set for a genuin
 });
 
 it('changes the rendered timestamp between two visits but keeps the sample identical', function () {
-    $first = inertiaPage($this->withHeaders([
+    $firstResponse = $this->withHeaders([
         'X-Inertia' => 'true',
         'X-Inertia-Version' => currentInertiaVersion(),
-    ])->get(route('chapters.first-load-vs-visit')));
+    ])->get(route('chapters.first-load-vs-visit'));
+    $first = assertInertiaPage($firstResponse, 'chapters/first-load-vs-visit');
 
     $this->travel(1)->seconds();
 
-    $second = inertiaPage($this->withHeaders([
+    $secondResponse = $this->withHeaders([
         'X-Inertia' => 'true',
         'X-Inertia-Version' => currentInertiaVersion(),
-    ])->get(route('chapters.first-load-vs-visit')));
+    ])->get(route('chapters.first-load-vs-visit'));
+    $second = assertInertiaPage($secondResponse, 'chapters/first-load-vs-visit');
 
     expect($second['props']['renderedAt'])->not->toBe($first['props']['renderedAt'])
         ->and($second['props']['sample'])->toBe($first['props']['sample']);

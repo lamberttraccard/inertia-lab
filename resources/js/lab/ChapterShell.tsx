@@ -76,6 +76,11 @@ export function ChapterShell({
                 </h2>
                 <p>You would have written: {chapter.translationFrom}</p>
                 <p>Here: {chapter.translationTo}</p>
+                <p className="mt-2 text-sm">
+                    <Link href="/lab/where-did-it-go" className="underline">
+                        See every artefact this translates, on one page
+                    </Link>
+                </p>
             </section>
 
             <SourceView

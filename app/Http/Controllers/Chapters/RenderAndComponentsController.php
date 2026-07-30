@@ -16,9 +16,9 @@ class RenderAndComponentsController
         $chapter = $registry->find('render-and-components') ?? throw new RuntimeException('The render-and-components chapter is not registered.');
 
         return Inertia::render('chapters/render-and-components', [
-            'chapter' => $chapter->toArray(),
-            'previous' => self::neighbour($registry->previous('render-and-components')),
-            'next' => self::neighbour($registry->next('render-and-components')),
+            'chapter' => $lab->value('chapter', $chapter->toArray()),
+            'previous' => $lab->value('previous', self::neighbour($registry->previous('render-and-components'))),
+            'next' => $lab->value('next', self::neighbour($registry->next('render-and-components'))),
             'resolvedComponent' => $lab->value('resolvedComponent', 'chapters/render-and-components'),
             'pagesRoot' => $lab->value('pagesRoot', 'resources/js/pages'),
         ]);

@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
+import { Term } from '@/lab/Term';
 
 type ChapterData = {
     slug: string;
@@ -130,11 +131,12 @@ export default function Redirects({
                     <code className="font-mono">Inertia::location()</code> is
                     for a redirect Inertia cannot render as a page, because it
                     goes somewhere this application does not control. For a
-                    genuine visit it answers 409 with an empty body and an
-                    X-Inertia-Location header carrying the target; the client
-                    reads that as an instruction to set window.location itself,
-                    a full browser navigation rather than a visit. Outside of a
-                    visit, the exact same call is an ordinary redirect response.
+                    genuine <Term term="Visit">visit</Term> it answers 409 with
+                    an empty body and an X-Inertia-Location header carrying the
+                    target; the client reads that as an instruction to set
+                    window.location itself, a full browser navigation rather
+                    than a visit. Outside of a visit, the exact same call is an
+                    ordinary redirect response.
                 </p>
                 <p className="mt-4">
                     Last action recorded by this page:{' '}
