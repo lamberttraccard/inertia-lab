@@ -116,39 +116,49 @@ export default function PartialReloads({
                     </div>
 
                     {comparisons.length > 0 && (
-                        <table className="w-full border-collapse text-left text-sm">
-                            <thead>
-                                <tr className="border-b border-neutral-300 dark:border-neutral-700">
-                                    <th className="py-1 pr-3 font-medium">
-                                        Request
-                                    </th>
-                                    <th className="py-1 pr-3 font-medium">
-                                        Payload
-                                    </th>
-                                    <th className="py-1 font-medium">
-                                        Props in the response
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {comparisons.map((row) => (
-                                    <tr
-                                        key={row.id}
-                                        className="border-b border-neutral-100 dark:border-neutral-900"
-                                    >
-                                        <td className="py-1 pr-3 font-mono">
-                                            {row.label}
-                                        </td>
-                                        <td className="py-1 pr-3 font-mono">
-                                            {row.bytes} bytes
-                                        </td>
-                                        <td className="py-1 font-mono">
-                                            {row.propKeys.join(', ')}
-                                        </td>
+                        <>
+                            <table className="w-full border-collapse text-left text-sm">
+                                <thead>
+                                    <tr className="border-b border-neutral-300 dark:border-neutral-700">
+                                        <th className="py-1 pr-3 font-medium">
+                                            Request
+                                        </th>
+                                        <th className="py-1 pr-3 font-medium">
+                                            Payload
+                                        </th>
+                                        <th className="py-1 font-medium">
+                                            Props in the response
+                                        </th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {comparisons.map((row) => (
+                                        <tr
+                                            key={row.id}
+                                            className="border-b border-neutral-100 dark:border-neutral-900"
+                                        >
+                                            <td className="py-1 pr-3 font-mono">
+                                                {row.label}
+                                            </td>
+                                            <td className="py-1 pr-3 font-mono">
+                                                {row.bytes} bytes
+                                            </td>
+                                            <td className="py-1 font-mono">
+                                                {row.propKeys.join(', ')}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            <p className="text-xs text-neutral-500">
+                                except: stats can land on more bytes than a full
+                                reload despite excluding a real prop: a bare
+                                reload happens to skip demoUserOptions (shared
+                                once, and the client already holds it), while
+                                except still counts as a partial reload of this
+                                page and lets that same prop through again.
+                            </p>
+                        </>
                     )}
                 </div>
             }

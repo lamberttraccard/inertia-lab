@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Post;
+use App\Models\User;
 
 beforeEach(function () {
     // DevTools::enabled() defaults to app()->environment('local'), which the testing
@@ -9,6 +10,22 @@ beforeEach(function () {
 });
 
 it('renders the chapter with one example of every prop kind the taxonomy names', function () {
+    // A real, persisted row here, distinct from the id 0 the fallback in
+    // PropsAndTypesController::demoPost() uses: without this, every test in this file would
+    // exercise only the empty-table fallback branch, never the real Eloquent row it exists
+    // alongside.
+    $author = User::factory()->create();
+    Post::create([
+        'user_id' => $author->id,
+        'title' => 'A real seeded post',
+        'slug' => 'a-real-seeded-post',
+        'excerpt' => 'A real excerpt for the seeded post this test exercises.',
+        'body' => str_repeat('Real seeded body content for the word count check. ', 30),
+        'cover_path' => 'covers/example.jpg',
+        'published_at' => now(),
+        'views' => 4242,
+    ]);
+
     $response = $this->get(route('chapters.props-and-types'));
 
     $response->assertOk();
@@ -28,14 +45,20 @@ it('renders the chapter with one example of every prop kind the taxonomy names',
         // A backed enum: serialised to its bare scalar backing value, never an object.
         ->and($page['props']['status'])->toBeIn(['draft', 'published'])
         // An Eloquent model: serialised through Arrayable::toArray(), not a resource class.
+        // id not 0 and the title matching what was seeded above confirms this is the real
+        // query branch of demoPost(), not its unsaved fallback.
         ->and($page['props']['post'])->toBeArray()
         ->and($page['props']['post'])->toHaveKeys(['id', 'title', 'excerpt', 'views'])
+        ->and($page['props']['post']['id'])->not->toBe(0)
+        ->and($page['props']['post']['title'])->toBe('A real seeded post')
+        // A class implementing ProvidesInertiaProperties: contributes more than one top-level
+        // key. hasCoverImage true here, against false in the empty-table test below, covers
+        // both branches PostFacts can report.
+        ->and($page['props']['excerptLength'])->toBeInt()
+        ->and($page['props']['hasCoverImage'])->toBeTrue()
         // A small class implementing ProvidesInertiaProperty: one prop, self-describing output.
         ->and($page['props']['recency'])->toHaveKeys(['label', 'resolvedAsProp'])
         ->and($page['props']['recency']['resolvedAsProp'])->toBe('recency')
-        // A class implementing ProvidesInertiaProperties: contributes more than one top-level key.
-        ->and($page['props']['excerptLength'])->toBeInt()
-        ->and($page['props']['hasCoverImage'])->toBeBool()
         // A nested array reached by dot notation.
         ->and($page['props']['meta'])->toHaveKeys(['wordCount', 'readingMinutes'])
         ->and($page['props']['meta']['wordCount'])->toBeInt()

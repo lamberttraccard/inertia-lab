@@ -132,7 +132,7 @@ class ChapterRegistry
                 serverFile: 'app/Http/Controllers/Chapters/SharedDataController.php',
                 clientFile: 'resources/js/pages/chapters/shared-data.tsx',
                 translationFrom: 'A global store hydrated once at boot, then kept in sync by hand.',
-                translationTo: 'Props the server attaches to every response, recomputed on every single request.',
+                translationTo: 'Props the server attaches to every response, recomputed on every request by default, or sent once and skipped afterward for a prop marked that way.',
                 docsUrl: 'https://inertiajs.com/docs/v3/data-props/shared-data',
                 wave: 1,
                 order: 8,
