@@ -3,6 +3,8 @@
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 /*
@@ -60,4 +62,64 @@ function something()
 function currentInertiaVersion(): string
 {
     return (string) app(HandleInertiaRequests::class)->version(Request::create('/'));
+}
+
+/**
+ * The decoded page object of an Inertia response, read the same way a browser reads it
+ * rather than through assertInertia(). assertInertia() reads TestResponse::viewData('page'),
+ * which needs Response::original to still hold the view Inertia rendered. With the official
+ * DevTools recorder enabled, Inertia\Middleware::handle() calls respondedWith() for this
+ * response after InjectLabTrace has already run and restored $response->original, and that
+ * call injects its own devtools id tag through a second setContent(), clobbering original
+ * back to a plain string. A JSON response fails assertInertia() for a different reason:
+ * Inertia\Response::toResponse() returns a bare JsonResponse and never touches a view at all.
+ * So both cases are read from the response body itself: the script tag for a full document
+ * load, the JSON body directly for an Inertia visit.
+ */
+function inertiaPage(TestResponse $response): array
+{
+    if ($response->headers->get('Content-Type') === 'application/json') {
+        return $response->json();
+    }
+
+    $content = (string) $response->getContent();
+    $marker = '<script data-page="app" type="application/json">';
+
+    if (! str_contains($content, $marker)) {
+        throw new RuntimeException(
+            "No {$marker} tag found in the response. This was not a full Inertia HTML document."
+        );
+    }
+
+    $json = Str::betweenFirst($content, $marker, '</script>');
+
+    return json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+}
+
+/**
+ * The lab's own prop resolution trace for an Inertia response: which props resolved, which
+ * were skipped and why. Read from props._lab on a JSON response, or from the lab-trace
+ * script tag InjectLabTrace appends to a full document load, whichever the response carries.
+ */
+function labTrace(TestResponse $response): array
+{
+    $page = inertiaPage($response);
+
+    if (isset($page['props']['_lab'])) {
+        return $page['props']['_lab'];
+    }
+
+    $content = (string) $response->getContent();
+    $marker = '<script id="lab-trace" type="application/json">';
+
+    if (! str_contains($content, $marker)) {
+        throw new RuntimeException(
+            "No lab trace found on this response: neither props._lab nor a {$marker} tag. ".
+            'InjectLabTrace did not run, or the response carried no page at all.'
+        );
+    }
+
+    $json = Str::betweenFirst($content, $marker, '</script>');
+
+    return json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 }
