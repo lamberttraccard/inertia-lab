@@ -46,11 +46,13 @@ it('returns the page object as json with the real top level key set for a genuin
     $keys = array_keys($page);
     sort($keys);
 
-    // Verified empirically for this exact controller (no defer, merge or once props): the
-    // shared props HandleInertiaRequests::share() attaches (errors, name, auth) always
-    // populate the sharedProps metadata key via PropsResolver::buildMetadata(), so the real
-    // top level carries one key beyond the four named in the Inertia documentation.
-    expect($keys)->toBe(['component', 'props', 'sharedProps', 'url', 'version']);
+    // Verified empirically for this exact controller (no defer or merge props of its own):
+    // the shared props HandleInertiaRequests::share() attaches (errors, name, auth,
+    // demoUser, unreadNotifications) populate the sharedProps metadata key, and
+    // demoUserOptions, shared once through shareOnce(), populates onceProps, via
+    // PropsResolver::buildMetadata(). The real top level carries two keys beyond the four
+    // named in the Inertia documentation.
+    expect($keys)->toBe(['component', 'onceProps', 'props', 'sharedProps', 'url', 'version']);
 });
 
 it('changes the rendered timestamp between two visits but keeps the sample identical', function () {

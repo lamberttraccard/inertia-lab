@@ -123,6 +123,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 7,
             ),
+            new Chapter(
+                slug: 'shared-data',
+                title: 'Props every page gets',
+                question: 'How does the header know who is signed in on every single page?',
+                concept: 'Inertia::share() adds props to every response; a closure shared this way is still only evaluated when a response actually needs it.',
+                routeName: 'chapters.shared-data',
+                serverFile: 'app/Http/Controllers/Chapters/SharedDataController.php',
+                clientFile: 'resources/js/pages/chapters/shared-data.tsx',
+                translationFrom: 'A global store hydrated once at boot, then kept in sync by hand.',
+                translationTo: 'Props the server attaches to every response, recomputed on every single request.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/shared-data',
+                wave: 1,
+                order: 8,
+            ),
         ];
     }
 

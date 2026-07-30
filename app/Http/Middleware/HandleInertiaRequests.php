@@ -2,8 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Lab\Lab;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Inertia\OnceProp;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -15,6 +19,13 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    // Middleware::handle() calls $this->share($request) and $this->shareOnce($request)
+    // directly rather than through the container, so this constructor must stay
+    // compatible with that: Laravel still resolves HandleInertiaRequests itself through
+    // the container for every request, which is what lets Lab arrive here already scoped
+    // to the same request the controller's own Lab $lab parameter resolves to.
+    public function __construct(private readonly Lab $lab) {}
 
     /**
      * Determines the current asset version.
@@ -48,12 +59,79 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $demoUser = self::currentDemoUser();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),
             ],
+            // chapters/shared-data switches this session value and reads it back; every
+            // other chapter's test proves the switch reached it too, since this runs on
+            // every request regardless of which controller is about to handle it.
+            'demoUser' => $this->lab->value('demoUser', [
+                'id' => $demoUser->id,
+                'name' => $demoUser->name,
+                'email' => $demoUser->email,
+            ]),
+            // A shared prop is merged into the same array a controller's own props are,
+            // before any partial-reload filtering runs, so this closure is skipped, not
+            // evaluated, on a partial reload that does not name it, the same as any
+            // page-owned closure prop.
+            'unreadNotifications' => $this->lab->closure(
+                'unreadNotifications',
+                fn () => Notification::query()
+                    ->where('user_id', self::currentDemoUser()->id)
+                    ->whereNull('read_at')
+                    ->count(),
+            ),
         ];
+    }
+
+    /**
+     * Define the props that are shared once and remembered across navigations.
+     *
+     * @return array<string, callable|OnceProp>
+     */
+    public function shareOnce(Request $request): array
+    {
+        return [
+            // The switcher's own option list: who is available to switch to does not
+            // change from one request to the next, so it is sent once per client rather
+            // than recomputed on every single response the way demoUser itself is.
+            'demoUserOptions' => $this->lab->once(
+                'demoUserOptions',
+                fn () => User::query()->orderBy('id')->get(['id', 'name'])->all(),
+            ),
+        ];
+    }
+
+    /**
+     * The session holds only an id, the smallest thing that can go stale: the row itself,
+     * and whatever the reader sees for it, is always read fresh on every request.
+     */
+    public static function currentDemoUser(): User
+    {
+        $id = session('lab.demo_user_id');
+
+        if (is_int($id) || is_string($id)) {
+            $user = User::query()->find($id);
+
+            if ($user !== null) {
+                return $user;
+            }
+        }
+
+        $fallback = User::query()->orderBy('id')->first();
+
+        if ($fallback !== null) {
+            return $fallback;
+        }
+
+        $placeholder = new User(['name' => 'Demo Reader', 'email' => 'demo@example.test']);
+        $placeholder->id = 0;
+
+        return $placeholder;
     }
 }

@@ -110,6 +110,16 @@ export default function FirstLoadVsVisit({
                             </dd>
                         </div>
                     ) : null}
+                    {page.onceProps ? (
+                        <div>
+                            <dt className="font-medium">
+                                onceProps (metadata)
+                            </dt>
+                            <dd className="font-mono">
+                                {Object.keys(page.onceProps).join(', ')}
+                            </dd>
+                        </div>
+                    ) : null}
                 </dl>
                 <p className="mt-4">
                     sample travelled inside props, unchanged on every visit:{' '}

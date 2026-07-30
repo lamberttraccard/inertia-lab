@@ -8,6 +8,7 @@ use App\Http\Controllers\Chapters\MentalModelController;
 use App\Http\Controllers\Chapters\PropsAndTypesController;
 use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
+use App\Http\Controllers\Chapters\SharedDataController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\SlowModeController;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/asset-versioning/bump', [AssetVersioningController::class, 'bump'])->name('asset-versioning.bump');
     Route::post('/asset-versioning/reset', [AssetVersioningController::class, 'reset'])->name('asset-versioning.reset');
     Route::get('/props-and-types', [PropsAndTypesController::class, 'show'])->name('props-and-types');
+    Route::get('/shared-data', [SharedDataController::class, 'show'])->name('shared-data');
+    Route::post('/shared-data/switch-user', [SharedDataController::class, 'switchUser'])->name('shared-data.switch-user');
 });
