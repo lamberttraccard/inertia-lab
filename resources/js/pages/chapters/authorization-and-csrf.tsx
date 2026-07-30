@@ -142,14 +142,14 @@ export default function AuthorizationAndCsrf({
                     {post.authorName}. can.update is {String(can.update)},
                     can.delete is {String(can.delete)}: both false whenever
                     demoUser is not the author, both computed on this exact
-                    request by <Term term="Policy">a real policy</Term>, not
-                    hardcoded on this page. Switching demo user changes them
-                    immediately, because the buttons above read the props this
-                    request just received. Saving with a wrong token opens the
-                    client&apos;s own error dialog, the same one chapter 5 and
-                    chapter 29 show for a non-Inertia or thrown response:
-                    dismiss it by clicking outside it, then use the reload
-                    button to get a fresh, valid token before trying again.
+                    request by a real policy, not hardcoded on this page.
+                    Switching demo user changes them immediately, because the
+                    buttons above read the props this request just received.
+                    Saving with a wrong token opens the client&apos;s own error
+                    dialog, the same one chapter 5 and chapter 29 show for a
+                    non-Inertia or thrown response: dismiss it by clicking
+                    outside it, then use the reload button to get a fresh, valid
+                    token before trying again.
                 </p>
             }
             whenToUse={
@@ -174,9 +174,10 @@ export default function AuthorizationAndCsrf({
                     session (the same <Term term="Shared prop">shared</Term>{' '}
                     switcher chapter 8 introduced), and every request afterward,
                     including the rename and delete actions below, carries that
-                    session automatically through the browser&apos;s cookies.
-                    The policy this page checks reads whichever user the session
-                    currently names, not a claim decoded from a request header.
+                    session automatically through the browser&apos;s cookies.{' '}
+                    <Term term="Policy">The policy</Term> this page checks reads
+                    whichever user the session currently names, not a claim
+                    decoded from a request header.
                 </p>
             </section>
 
