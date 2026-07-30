@@ -158,14 +158,19 @@ export default function OptimisticUpdates({
                     props synchronously, in the same tick as the click. Set slow
                     mode above 0 first (any other chapter&apos;s slider reaches
                     the same session value) to stretch that gap wide enough to
-                    actually see: at 0 the round trip is fast enough that the
-                    confirmed count and the optimistic one are indistinguishable
-                    on screen. Click Like on the right card and the same thing
-                    happens, then the count falls back to where it started: that
-                    endpoint always answers 422, and once the visit finishes
-                    without succeeding, the rollback restores exactly the value
-                    this card held the moment you clicked, not a value read back
-                    from the server, since the server never sent one.
+                    actually see on this card: at 0 the round trip is fast
+                    enough that the confirmed count and the optimistic one are
+                    indistinguishable on screen. Slow mode will not do the same
+                    for the right card: likeUnreliable() calls abort(422) before
+                    resolving any prop Lab could slow down, so that round trip
+                    stays just as fast regardless of the slider, and the
+                    rollback still happens correctly, just too quickly to watch.
+                    Click Like on the right card and the optimistic count still
+                    applies for a moment, then falls back to where it started:
+                    that endpoint always answers 422, and once the visit
+                    finishes without succeeding, the rollback restores exactly
+                    the value this card held the moment you clicked, not a value
+                    read back from the server, since the server never sent one.
                 </p>
             }
             whenToUse={
