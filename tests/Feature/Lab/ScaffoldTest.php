@@ -3,7 +3,11 @@
 use Inertia\Testing\AssertableInertia;
 
 it('serves an inertia page at the root url', function () {
-    $this->get('/')->assertInertia(fn (AssertableInertia $page) => $page->component('welcome'));
+    // The root url used to serve the starter kit's own 'welcome' page. It now serves the
+    // lab's home page directly, so the reader sees the lab immediately rather than the
+    // scaffold splash; 'welcome' is kept only as a fixture component for the trace tests
+    // that predate the chapter shell.
+    $this->get('/')->assertInertia(fn (AssertableInertia $page) => $page->component('lab/home'));
 });
 
 it('meets the inertia version floors', function () {

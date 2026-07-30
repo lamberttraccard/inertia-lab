@@ -24,7 +24,7 @@ export default function WhereDidItGo({ rows }: { rows: Row[] }) {
                         to stand on its own, without the rest of the lab open
                         next to it.
                     </p>
-                    <Link href="/lab" className="text-sm underline">
+                    <Link href="/" className="text-sm underline">
                         Back to chapters
                     </Link>
                 </header>

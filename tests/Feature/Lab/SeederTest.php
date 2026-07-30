@@ -48,3 +48,12 @@ it('anchors every timestamp so two runs on different days produce the same rows'
         ->and(Post::max('published_at'))->toBe('2026-07-01 09:00:00')
         ->and(Post::whereDate('created_at', '2026-07-01')->count())->toBe(120);
 });
+
+it('seeds the blog domain through the default database seeder, not just directly', function () {
+    // php artisan migrate --seed and php artisan db:seed both run DatabaseSeeder with no
+    // class named, so a clean clone only gets the blog domain if that seeder calls
+    // LabSeeder itself, the same thing the composer setup script and the README rely on.
+    $this->seed();
+
+    expect(Post::count())->toBe(120);
+});

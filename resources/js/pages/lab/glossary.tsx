@@ -13,7 +13,7 @@ export default function Glossary({ terms }: { terms: Term[] }) {
                         The recurring vocabulary, defined once. Chapters link
                         terms here on first use.
                     </p>
-                    <Link href="/lab" className="text-sm underline">
+                    <Link href="/" className="text-sm underline">
                         Back to chapters
                     </Link>
                 </header>
