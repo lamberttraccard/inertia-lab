@@ -54,6 +54,10 @@ class LabController extends Controller
             'term' => 'Error bag',
             'definition' => "A named bucket for validation errors, used when a page can submit more than one form and needs to keep each form's errors separate.",
         ],
+        [
+            'term' => 'Always prop',
+            'definition' => "A prop wrapped in Inertia::always(), included in every response even when a partial reload's only or except would otherwise have excluded it.",
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

@@ -151,6 +151,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 9,
             ),
+            new Chapter(
+                slug: 'optional-props',
+                title: 'Props that are never sent unless asked for',
+                question: 'How do you attach expensive data to a page without paying for it on load?',
+                concept: 'Inertia::optional() is skipped on every request that does not name it explicitly, even a full page load.',
+                routeName: 'chapters.optional-props',
+                serverFile: 'app/Http/Controllers/Chapters/OptionalPropsController.php',
+                clientFile: 'resources/js/pages/chapters/optional-props.tsx',
+                translationFrom: 'A separate endpoint you call only when the panel that needs it actually opens.',
+                translationTo: 'A prop on this same page that the server only computes once a partial reload asks for it by name.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/partial-reloads',
+                wave: 1,
+                order: 10,
+            ),
         ];
     }
 
