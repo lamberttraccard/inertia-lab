@@ -16,6 +16,7 @@ use App\Http\Controllers\Chapters\OptionalPropsController;
 use App\Http\Controllers\Chapters\PartialReloadsController;
 use App\Http\Controllers\Chapters\PollingController;
 use App\Http\Controllers\Chapters\PrecognitionController;
+use App\Http\Controllers\Chapters\PrefetchingController;
 use App\Http\Controllers\Chapters\PropsAndTypesController;
 use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
@@ -71,4 +72,6 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::post('/precognition', [PrecognitionController::class, 'store'])
         ->middleware('precognitive')
         ->name('precognition.store');
+    Route::get('/prefetching', [PrefetchingController::class, 'show'])->name('prefetching');
+    Route::get('/prefetching/destination', [PrefetchingController::class, 'destination'])->name('prefetching.destination');
 });

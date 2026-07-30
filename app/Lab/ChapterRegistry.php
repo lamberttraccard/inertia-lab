@@ -291,6 +291,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 19,
             ),
+            new Chapter(
+                slug: 'prefetching',
+                title: 'Fetching before the click',
+                question: 'Why does that link feel instant?',
+                concept: 'A link can prefetch its target on hover, on mount or on click, into a cache the client keeps for a configurable duration, tagged and flushable on demand.',
+                routeName: 'chapters.prefetching',
+                serverFile: 'app/Http/Controllers/Chapters/PrefetchingController.php',
+                clientFile: 'resources/js/pages/chapters/prefetching.tsx',
+                translationFrom: 'A cache layer built by hand: keys, staleness rules and manual invalidation.',
+                translationTo: "An attribute on the link and a cache the router owns, cleared by one of the router's own functions.",
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/prefetching',
+                wave: 1,
+                order: 20,
+            ),
         ];
     }
 

@@ -82,6 +82,10 @@ class LabController extends Controller
             'term' => 'Precognition',
             'definition' => "A request carrying a Precognition header, sent to the same route and with the same data a real submission would use. The server validates as usual, then stops before running the action that would actually change anything, so the client can ask the server's own rules whether a value is acceptable without duplicating them.",
         ],
+        [
+            'term' => 'Prefetch',
+            'definition' => "Fetching a link's response before it is clicked, on hover, on mount or on the mouse-down before a click, into a client-side cache. A later visit to the same URL with the same options is served from that cache instead of sending a new request.",
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */
