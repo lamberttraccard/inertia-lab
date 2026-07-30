@@ -1,6 +1,7 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
 import { Term } from '@/lab/Term';
+import type { ChapterData, Neighbour } from './types';
 
 const FAMILIAR = `function Posts() {
   const [posts, setPosts] = useState(null)
@@ -23,21 +24,6 @@ const ACTUAL = `function Posts({ posts }) {
   return <List posts={posts} />
 }`;
 
-type ChapterData = {
-    slug: string;
-    title: string;
-    question: string;
-    concept: string;
-    routeName: string;
-    serverFile: string;
-    clientFile: string;
-    translationFrom: string;
-    translationTo: string;
-    docsUrl: string;
-    wave: number;
-    order: number;
-};
-
 type PostSummary = {
     id: number;
     user_id: number;
@@ -48,8 +34,6 @@ type PostSummary = {
 };
 
 type ExpensiveStats = { posts: number; views: number };
-
-type Neighbour = { slug: string; title: string };
 
 type MentalModelProps = {
     chapter: ChapterData;

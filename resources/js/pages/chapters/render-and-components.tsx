@@ -1,23 +1,7 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
 import { Term } from '@/lab/Term';
-
-type ChapterData = {
-    slug: string;
-    title: string;
-    question: string;
-    concept: string;
-    routeName: string;
-    serverFile: string;
-    clientFile: string;
-    translationFrom: string;
-    translationTo: string;
-    docsUrl: string;
-    wave: number;
-    order: number;
-};
-
-type Neighbour = { slug: string; title: string };
+import type { ChapterData, Neighbour } from './types';
 
 type RenderAndComponentsProps = {
     chapter: ChapterData;

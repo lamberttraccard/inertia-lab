@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Chapters;
 
-use App\Lab\Chapter;
+use App\Http\Controllers\Chapters\Concerns\ResolvesNeighbours;
 use App\Lab\ChapterRegistry;
 use App\Lab\Lab;
 use Inertia\Inertia;
@@ -11,6 +11,8 @@ use RuntimeException;
 
 class FirstLoadVsVisitController
 {
+    use ResolvesNeighbours;
+
     public function __invoke(Lab $lab, ChapterRegistry $registry): Response
     {
         $chapter = $registry->find('first-load-vs-visit') ?? throw new RuntimeException('The first-load-vs-visit chapter is not registered.');
@@ -25,11 +27,5 @@ class FirstLoadVsVisitController
             ]),
             'renderedAt' => $lab->closure('renderedAt', fn () => now()->toIso8601String()),
         ]);
-    }
-
-    /** @return array{slug: string, title: string}|null */
-    private static function neighbour(?Chapter $chapter): ?array
-    {
-        return $chapter === null ? null : ['slug' => $chapter->slug, 'title' => $chapter->title];
     }
 }

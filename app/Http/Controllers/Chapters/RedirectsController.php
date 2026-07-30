@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Chapters;
 
-use App\Lab\Chapter;
+use App\Http\Controllers\Chapters\Concerns\ResolvesNeighbours;
 use App\Lab\ChapterRegistry;
 use App\Lab\Lab;
 use Illuminate\Http\RedirectResponse;
@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class RedirectsController
 {
+    use ResolvesNeighbours;
+
     public function show(Lab $lab, ChapterRegistry $registry): Response
     {
         $chapter = $registry->find('redirects') ?? throw new RuntimeException('The redirects chapter is not registered.');
@@ -49,11 +51,5 @@ class RedirectsController
     public function location(): SymfonyResponse
     {
         return Inertia::location('https://inertiajs.com/docs/v3/the-basics/redirects');
-    }
-
-    /** @return array{slug: string, title: string}|null */
-    private static function neighbour(?Chapter $chapter): ?array
-    {
-        return $chapter === null ? null : ['slug' => $chapter->slug, 'title' => $chapter->title];
     }
 }

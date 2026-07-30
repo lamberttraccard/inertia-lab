@@ -1,28 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
 import { Term } from '@/lab/Term';
-
-type ChapterData = {
-    slug: string;
-    title: string;
-    question: string;
-    concept: string;
-    routeName: string;
-    serverFile: string;
-    clientFile: string;
-    translationFrom: string;
-    translationTo: string;
-    docsUrl: string;
-    wave: number;
-    order: number;
-};
+import type { ChapterData, Neighbour } from './types';
 
 type Sample = {
     ingredients: string[];
     note: string;
 };
-
-type Neighbour = { slug: string; title: string };
 
 type FirstLoadVsVisitProps = {
     chapter: ChapterData;

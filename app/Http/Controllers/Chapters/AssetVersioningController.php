@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Chapters;
 
-use App\Lab\Chapter;
+use App\Http\Controllers\Chapters\Concerns\ResolvesNeighbours;
 use App\Lab\ChapterRegistry;
 use App\Lab\Lab;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +13,8 @@ use RuntimeException;
 
 class AssetVersioningController
 {
+    use ResolvesNeighbours;
+
     public function show(Lab $lab, ChapterRegistry $registry): Response
     {
         $chapter = $registry->find('asset-versioning') ?? throw new RuntimeException('The asset-versioning chapter is not registered.');
@@ -50,11 +52,5 @@ class AssetVersioningController
         session()->forget('lab.asset_version_override');
 
         return response()->json(['version' => Inertia::getVersion()]);
-    }
-
-    /** @return array{slug: string, title: string}|null */
-    private static function neighbour(?Chapter $chapter): ?array
-    {
-        return $chapter === null ? null : ['slug' => $chapter->slug, 'title' => $chapter->title];
     }
 }

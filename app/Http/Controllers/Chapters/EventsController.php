@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Chapters;
 
-use App\Lab\Chapter;
+use App\Http\Controllers\Chapters\Concerns\ResolvesNeighbours;
 use App\Lab\ChapterRegistry;
 use App\Lab\Lab;
 use Inertia\Inertia;
@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class EventsController
 {
+    use ResolvesNeighbours;
+
     public function show(Lab $lab, ChapterRegistry $registry): Response
     {
         $chapter = $registry->find('events') ?? throw new RuntimeException('The events chapter is not registered.');
@@ -56,11 +58,5 @@ class EventsController
             200,
             ['Content-Type' => 'text/plain'],
         );
-    }
-
-    /** @return array{slug: string, title: string}|null */
-    private static function neighbour(?Chapter $chapter): ?array
-    {
-        return $chapter === null ? null : ['slug' => $chapter->slug, 'title' => $chapter->title];
     }
 }

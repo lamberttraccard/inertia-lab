@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Chapters;
 
-use App\Lab\Chapter;
+use App\Http\Controllers\Chapters\Concerns\ResolvesNeighbours;
 use App\Lab\ChapterRegistry;
 use App\Lab\Lab;
 use App\Models\Post;
@@ -12,6 +12,8 @@ use RuntimeException;
 
 class MentalModelController
 {
+    use ResolvesNeighbours;
+
     public function __invoke(Lab $lab, ChapterRegistry $registry): Response
     {
         $chapter = $registry->find('mental-model') ?? throw new RuntimeException('The mental-model chapter is not registered.');
@@ -30,11 +32,5 @@ class MentalModelController
                 'views' => Post::sum('views'),
             ]),
         ]);
-    }
-
-    /** @return array{slug: string, title: string}|null */
-    private static function neighbour(?Chapter $chapter): ?array
-    {
-        return $chapter === null ? null : ['slug' => $chapter->slug, 'title' => $chapter->title];
     }
 }
