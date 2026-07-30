@@ -44,7 +44,7 @@ class LabController extends Controller
         ],
         [
             'term' => 'Merge intent',
-            'definition' => "A signal carried in the page object that tells the client to append or combine a prop's new value with what it already holds, instead of replacing it outright.",
+            'definition' => "A header the client sends when InfiniteScroll fetches an adjacent page, X-Inertia-Infinite-Scroll-Merge-Intent, naming append for the next page and prepend for the previous one. Inertia::scroll()'s ScrollProp reads it server-side to decide which direction the resolved data merges into what the client already holds.",
         ],
         [
             'term' => 'Asset version',

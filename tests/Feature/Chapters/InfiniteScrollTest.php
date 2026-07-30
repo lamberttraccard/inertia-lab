@@ -22,7 +22,8 @@ it('renders the feed with scroll metadata for the first page on a full load', fu
     $page = assertInertiaPage($response, 'chapters/infinite-scroll');
     $trace = labTrace($response);
 
-    expect($page['props']['posts']['data'])->toHaveCount(12)
+    expect($page['props']['chapter']['question'])->not->toBeEmpty()
+        ->and($page['props']['posts']['data'])->toHaveCount(12)
         ->and($page['props']['posts']['current_page'])->toBe(1)
         ->and($page['scrollProps']['posts'])->toBe([
             'pageName' => 'page',

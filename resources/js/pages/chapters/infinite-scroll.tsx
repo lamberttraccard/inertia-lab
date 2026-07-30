@@ -103,41 +103,44 @@ export default function InfiniteScrollChapter({
                     the prop the client receives already looks like{' '}
                     {'{ data: [...], current_page, per_page, total, ... }'}.
                 </p>
-                <ul className="mt-3 max-h-96 divide-y divide-neutral-200 overflow-y-auto dark:divide-neutral-800">
-                    <InfiniteScroll
-                        data="posts"
-                        as="ul"
-                        buffer={300}
-                        previous={({ loading, hasPrevious }) => (
-                            <p className="py-2 text-center text-sm text-neutral-500">
-                                {loading
-                                    ? 'Loading earlier posts…'
-                                    : hasPrevious
-                                      ? ''
-                                      : 'Start of the feed.'}
+                {/* className lands on the "as" element itself (InfiniteScroll spreads any
+                    extra prop onto it), which is the actual <ul>: a separate wrapping <ul>
+                    around this component would put its own previous/next <div> slots inside
+                    a list, valid only for <li> children. */}
+                <InfiniteScroll
+                    data="posts"
+                    as="ul"
+                    buffer={300}
+                    className="mt-3 max-h-96 divide-y divide-neutral-200 overflow-y-auto dark:divide-neutral-800"
+                    previous={({ loading, hasPrevious }) => (
+                        <p className="py-2 text-center text-sm text-neutral-500">
+                            {loading
+                                ? 'Loading earlier posts…'
+                                : hasPrevious
+                                  ? ''
+                                  : 'Start of the feed.'}
+                        </p>
+                    )}
+                    next={({ loading, hasNext }) => (
+                        <p className="py-2 text-center text-sm text-neutral-500">
+                            {loading
+                                ? 'Loading more posts…'
+                                : hasNext
+                                  ? ''
+                                  : 'End of the feed.'}
+                        </p>
+                    )}
+                >
+                    {posts.data.map((post) => (
+                        <li key={post.id} className="py-2 text-sm">
+                            <p className="font-medium">{post.title}</p>
+                            <p className="text-neutral-500">
+                                {post.author?.name ?? 'Unknown'} ·{' '}
+                                {post.published_at}
                             </p>
-                        )}
-                        next={({ loading, hasNext }) => (
-                            <p className="py-2 text-center text-sm text-neutral-500">
-                                {loading
-                                    ? 'Loading more posts…'
-                                    : hasNext
-                                      ? ''
-                                      : 'End of the feed.'}
-                            </p>
-                        )}
-                    >
-                        {posts.data.map((post) => (
-                            <li key={post.id} className="py-2 text-sm">
-                                <p className="font-medium">{post.title}</p>
-                                <p className="text-neutral-500">
-                                    {post.author?.name ?? 'Unknown'} ·{' '}
-                                    {post.published_at}
-                                </p>
-                            </li>
-                        ))}
-                    </InfiniteScroll>
-                </ul>
+                        </li>
+                    ))}
+                </InfiniteScroll>
             </section>
 
             <section>
