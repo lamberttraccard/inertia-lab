@@ -73,13 +73,30 @@ export default function Precognition({
                     through the browser&apos;s fetch function rather than the
                     XMLHttpRequest every Inertia visit in this app uses. Because
                     it carries no X-Inertia header, this app&apos;s own wire
-                    strip below never records it, the same way it cannot show
-                    Inertia::location() in the redirects chapter. Open your
-                    browser&apos;s network tab to see it directly: an available
-                    slug answers 204 with a Precognition-Success header, a taken
-                    one answers 422 with the identical error shape a failed real
-                    submission would carry. Submitting for real, by contrast, is
-                    an ordinary Inertia visit, and does show up below.
+                    strip below never records it. Open your browser&apos;s
+                    network tab to see it directly: an available slug answers
+                    204 with a Precognition-Success header and an empty body,
+                    and a taken one answers 422 with{' '}
+                    <code className="font-mono">
+                        {
+                            '{"message":"The slug has already been taken.","errors":{"slug":["The slug has already been taken."]}}'
+                        }
+                    </code>
+                    , straight from the validator&apos;s own{' '}
+                    <code className="font-mono">MessageBag</code>. A failed real
+                    submission never reaches a 422 at all. Chapter 17 already
+                    covers why: this form&apos;s real POST is an ordinary
+                    Inertia visit, which asks for text/html rather than JSON, so
+                    Laravel redirects back instead of returning a body, and the
+                    errors prop that redirect eventually delivers holds{' '}
+                    <code className="font-mono">
+                        {'{"slug":"The slug has already been taken."}'}
+                    </code>
+                    , one plain string, because Inertia&apos;s own middleware
+                    keeps only the first message per field. Same rule, same
+                    message, a different shape depending only on which path
+                    produced it. Submitting for real, by contrast, is an
+                    ordinary Inertia visit, and does show up below.
                 </p>
             }
             whenToUse={
