@@ -68,12 +68,17 @@ export default function OnceProps({
                     already holds a value for it. The trace agrees: tags moves
                     to skipped, reason once prop already held by the client,
                     while visitedAt, an ordinary closure, refreshes to a new
-                    timestamp every time regardless. Click the third button and
-                    tags comes back: naming it inside only makes this request a
-                    partial reload of the current component, and the server only
-                    consults the except-once header when a request is not one of
-                    those, so the exclusion never gets a chance to run and tags
-                    resolves again, fresh.
+                    timestamp every time regardless. tags itself never blinks
+                    empty on screen either way: the client's own
+                    mergeOncePropsIntoResponse() quietly copies the value it
+                    already holds back into a response that skipped it, which is
+                    the entire point of once, continuity, not a missing update.
+                    Click the third button and tags comes back for real: naming
+                    it inside only makes this request a partial reload of the
+                    current component, and the server only consults the
+                    except-once header when a request is not one of those, so
+                    the exclusion never gets a chance to run and tags resolves
+                    again, fresh from the database.
                 </p>
             }
             whenToUse={
