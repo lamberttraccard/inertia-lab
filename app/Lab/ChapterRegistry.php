@@ -403,6 +403,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 27,
             ),
+            new Chapter(
+                slug: 'head-and-meta',
+                title: 'The title bar',
+                question: 'Who sets the document title when there is no full page load?',
+                concept: 'Head manages the document title and meta tags per page; a Head rendered by the page itself overrides one rendered further up the tree, such as the one every chapter shell already renders.',
+                routeName: 'chapters.head-and-meta',
+                serverFile: 'app/Http/Controllers/Chapters/HeadAndMetaController.php',
+                clientFile: 'resources/js/pages/chapters/head-and-meta.tsx',
+                translationFrom: 'A head-management library, pulled in and configured on top of the router.',
+                translationTo: 'A component that ships with the adapter itself, used the same way any other component is.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/title-and-meta',
+                wave: 1,
+                order: 28,
+            ),
         ];
     }
 

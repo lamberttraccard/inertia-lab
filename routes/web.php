@@ -7,6 +7,7 @@ use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FileUploadsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
 use App\Http\Controllers\Chapters\FormsController;
+use App\Http\Controllers\Chapters\HeadAndMetaController;
 use App\Http\Controllers\Chapters\HistoryEncryptionController;
 use App\Http\Controllers\Chapters\HttpRequestsController;
 use App\Http\Controllers\Chapters\InfiniteScrollController;
@@ -97,4 +98,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/layouts/panel-two', [LayoutsController::class, 'panelTwo'])->name('layouts.panel-two');
     Route::get('/http-requests', [HttpRequestsController::class, 'show'])->name('http-requests');
     Route::get('/http-requests/ping', [HttpRequestsController::class, 'ping'])->name('http-requests.ping');
+    Route::get('/head-and-meta', [HeadAndMetaController::class, 'show'])->name('head-and-meta');
 });
