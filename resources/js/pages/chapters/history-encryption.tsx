@@ -113,26 +113,45 @@ export default function HistoryEncryption({
 
             <section>
                 <h2 className="text-lg font-semibold">
-                    Pressing back afterward does not strand you
+                    What pressing back from here actually does
                 </h2>
                 <p className="mt-1">
-                    An entry that can no longer be decrypted is not shown broken
-                    or blank. Reading{' '}
-                    <code className="font-mono">handlePopstateEvent</code> and
-                    the <code className="font-mono">missingHistoryItem</code>{' '}
-                    handler it falls back to in{' '}
+                    Clicking the button above does not leave a stale encrypted
+                    copy of this page sitting one step back in your history:
+                    since the action redirects back to this exact URL, the
+                    client&apos;s own same-URL check (
+                    <code className="font-mono">isSameUrlWithoutHash</code> in{' '}
                     <code className="font-mono">
                         node_modules/@inertiajs/core/dist/index.js
-                    </code>{' '}
-                    shows the installed client catching that failure itself and
-                    issuing a fresh visit to whatever URL the browser had
-                    already navigated to, in place, rather than leaving the old
-                    encrypted snapshot on screen or showing nothing. The
-                    practical way back from this chapter, clearing included,
-                    stays what it is on every chapter: the previous and next
-                    links in the footer below, and the address bar, which still
-                    answers to this same URL on a plain reload regardless of
-                    anything a history entry did or did not keep.
+                    </code>
+                    ) forces a{' '}
+                    <code className="font-mono">history.replaceState</code>{' '}
+                    rather than a <code className="font-mono">pushState</code>,
+                    confirmed live by watching{' '}
+                    <code className="font-mono">window.history.length</code>{' '}
+                    stay unchanged across the click. Pressing back from here
+                    goes to whatever page you were on before you opened this
+                    chapter, not to a stale snapshot of it, because that
+                    snapshot was overwritten, not appended after.
+                </p>
+                <p className="mt-1">
+                    An entry that genuinely cannot be decrypted, because it sits
+                    further back in history than whatever this button just
+                    replaced, is still not shown broken or blank. Reading{' '}
+                    <code className="font-mono">handlePopstateEvent</code> and
+                    the <code className="font-mono">missingHistoryItem</code>{' '}
+                    handler it falls back to in the same file shows the
+                    installed client catching that failure itself and issuing a
+                    fresh visit to whatever URL the browser had already
+                    navigated to, in place, rather than leaving the old
+                    encrypted snapshot on screen or showing nothing. This
+                    page&apos;s own button does not manufacture that exact
+                    situation for you to click through; the practical way back
+                    from this chapter, clearing included, stays what it is on
+                    every chapter regardless: the previous and next links in the
+                    footer below, and the address bar, which still answers to
+                    this same URL on a plain reload no matter what any history
+                    entry did or did not keep.
                 </p>
             </section>
         </ChapterShell>
