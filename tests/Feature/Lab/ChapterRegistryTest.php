@@ -32,3 +32,10 @@ it('links chapters into a path', function () {
     expect($registry->previous($first->slug))->toBeNull()
         ->and($registry->find($first->slug)->slug)->toBe($first->slug);
 });
+
+it('points every chapter at source files that exist', function () {
+    foreach (app(ChapterRegistry::class)->all() as $chapter) {
+        expect(file_exists(base_path($chapter->serverFile)))->toBeTrue("missing {$chapter->serverFile}")
+            ->and(file_exists(base_path($chapter->clientFile)))->toBeTrue("missing {$chapter->clientFile}");
+    }
+});
