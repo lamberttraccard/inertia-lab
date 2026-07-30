@@ -9,3 +9,41 @@
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 }
+
+/* Shiki renders both themes into one token as CSS variables and leaves the light half
+   active; this activates the dark half on the same prefers-color-scheme query Tailwind
+   compiles dark: to here, since this application never toggles a class for it. */
+@media (prefers-color-scheme: dark) {
+    .lab-code .shiki,
+    .lab-code .shiki span {
+        color: var(--shiki-dark) !important;
+    }
+}
+
+/* The panel background belongs to the wrapper, the same bg-neutral-100/900 as every
+   other panel in this application, not to Shiki's own theme background. */
+.lab-code pre {
+    margin: 0;
+}
+
+.lab-code .shiki {
+    background-color: transparent !important;
+}
+
+/* A plain CSS counter, not a rendered index: it drives the gutter identically whether
+   the content below it is Shiki's markup or the plain-code fallback, since both use
+   the same one-span-per-line shape. */
+.lab-code-numbered code {
+    counter-reset: line;
+}
+
+.lab-code-numbered .line::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 2.25rem;
+    margin-right: 0.75rem;
+    text-align: right;
+    color: var(--color-neutral-500);
+    user-select: none;
+}
