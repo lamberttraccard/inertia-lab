@@ -207,6 +207,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 13,
             ),
+            new Chapter(
+                slug: 'infinite-scroll',
+                title: 'Scrolling in both directions',
+                question: 'What does an infinite list need beyond "append the next page"?',
+                concept: 'Inertia::scroll() carries the pagination metadata the InfiniteScroll component needs to fetch the next or previous page and merge it into what is already on screen, in either direction.',
+                routeName: 'chapters.infinite-scroll',
+                serverFile: 'app/Http/Controllers/Chapters/InfiniteScrollController.php',
+                clientFile: 'resources/js/pages/chapters/infinite-scroll.tsx',
+                translationFrom: 'An intersection observer, a page counter, and a request fired from an effect.',
+                translationTo: 'A scroll prop and a component that already knows how to page in both directions.',
+                docsUrl: 'https://inertiajs.com/docs/v3/data-props/infinite-scroll',
+                wave: 1,
+                order: 14,
+            ),
         ];
     }
 
