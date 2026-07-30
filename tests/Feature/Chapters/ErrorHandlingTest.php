@@ -1,0 +1,128 @@
+<?php
+
+use Inertia\ExceptionResponse;
+use Inertia\Inertia;
+
+beforeEach(function () {
+    // DevTools::enabled() defaults to app()->environment('local'), which the testing
+    // environment is not, so the trace stays off (and says so) unless a test opts in.
+    config()->set('inertia.devtools.enabled', true);
+});
+
+it('renders the chapter with its status prop resolved', function () {
+    $response = $this->get(route('chapters.error-handling'));
+
+    $response->assertOk();
+
+    // assertInertia() is deliberately not used here: see inertiaPage()'s docblock in
+    // tests/Pest.php for why it cannot survive devtools being enabled.
+    $page = assertInertiaPage($response, 'chapters/error-handling');
+    $trace = labTrace($response);
+
+    expect($page['props']['chapter']['question'])->not->toBeEmpty()
+        ->and($page['props']['status'])->toBeString()->not->toBeEmpty()
+        ->and($trace['props'])->toHaveKey('status');
+});
+
+it('answers a URL with no matching route with a rendered Inertia page carrying shared data', function () {
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get('/chapters/error-handling/nowhere');
+
+    $response->assertStatus(404);
+
+    $page = assertInertiaPage($response, 'chapters/error-handling-page');
+
+    expect($page['props']['status'])->toBe(404)
+        ->and($page['props']['requestPath'])->toBe('/chapters/error-handling/nowhere')
+        // The trap this chapter teaches, made concrete: without ExceptionResponse::
+        // withSharedData(), demoUser would be missing here, because no route matched
+        // this request at all and HandleInertiaRequests never ran for it.
+        ->and($page['props'])->toHaveKeys(['demoUser', 'unreadNotifications']);
+});
+
+it('answers a bad CSRF token with a rendered Inertia page carrying shared data', function () {
+    // PreventRequestForgery::runningUnitTests() short-circuits CSRF verification whenever
+    // app()->runningInConsole() && app()->runningUnitTests() both hold, which they do for
+    // every test in this suite by default (verified in vendor/laravel/framework/src/
+    // Illuminate/Foundation/Http/Middleware/PreventRequestForgery.php). Overriding the
+    // 'env' container binding is what disables that bypass for this one test, so the
+    // request below hits the real token check instead of skipping it.
+    app()->instance('env', 'local');
+
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->post(route('chapters.error-handling.protected'));
+
+    $response->assertStatus(419);
+
+    $page = assertInertiaPage($response, 'chapters/error-handling-page');
+
+    expect($page['props']['status'])->toBe(419)
+        ->and($page['props']['message'])->toBe('CSRF token mismatch.')
+        ->and($page['props'])->toHaveKeys(['demoUser', 'unreadNotifications']);
+});
+
+it('records a successful protected action and reflects it as the chapter status prop', function () {
+    // back() resolves against the Referer header (or the session's previous-url value)
+    // when one is present, and falls back to "/" otherwise: a real browser submitting
+    // this from the chapter page itself always sends one, which is what this reproduces.
+    // The testing environment's CSRF bypass applies here too, standing in for a real
+    // browser that sent a valid, matching token: this is the recovery path's contrast case.
+    $this->withHeaders(['referer' => route('chapters.error-handling')])
+        ->post(route('chapters.error-handling.protected'))
+        ->assertRedirect(route('chapters.error-handling'));
+
+    $reload = $this->get(route('chapters.error-handling'));
+    $page = assertInertiaPage($reload, 'chapters/error-handling');
+
+    expect($page['props']['status'])->toBe('The action succeeded: this request carried a valid CSRF token.');
+});
+
+it('answers a real exception thrown from inside a matched route with a rendered Inertia page carrying shared data', function () {
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->post(route('chapters.error-handling.crash'));
+
+    $response->assertStatus(500);
+
+    $page = assertInertiaPage($response, 'chapters/error-handling-page');
+
+    expect($page['props']['status'])->toBe(500)
+        ->and($page['props']['message'])->toBe('Deliberate 500 for the error-handling chapter.')
+        ->and($page['props'])->toHaveKeys(['demoUser', 'unreadNotifications']);
+});
+
+it('answers the non-Inertia route with a plain response and no X-Inertia header', function () {
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.error-handling.plain'));
+
+    $response->assertOk();
+    expect($response->headers->has('X-Inertia'))->toBeFalse()
+        ->and($response->headers->get('Content-Type'))->toContain('text/plain');
+});
+
+it('has no shared data yet when the exception handler runs for an unmatched route, unlike one thrown from inside a matched route', function () {
+    $observed = [];
+
+    // Replaces AppServiceProvider's own registration for this test only (respondUsing()
+    // keeps just the last callback registered): this is the mechanism the chapter's "why
+    // withSharedData() is not optional" section describes, observed directly rather than
+    // assumed, the same way it was verified while writing that section.
+    Inertia::handleExceptionsUsing(function (ExceptionResponse $exceptionResponse) use (&$observed) {
+        $observed[$exceptionResponse->statusCode()] = Inertia::getShared();
+
+        return null;
+    });
+
+    $this->get('/chapters/error-handling/nowhere');
+    $this->post(route('chapters.error-handling.crash'));
+
+    expect($observed[404])->toBe([])
+        ->and($observed[500])->toHaveKey('demoUser');
+});

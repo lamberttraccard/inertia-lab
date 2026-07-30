@@ -3,6 +3,7 @@
 use App\Http\Controllers\Chapters\AlwaysPropsController;
 use App\Http\Controllers\Chapters\AssetVersioningController;
 use App\Http\Controllers\Chapters\DeferredPropsController;
+use App\Http\Controllers\Chapters\ErrorHandlingController;
 use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FileUploadsController;
 use App\Http\Controllers\Chapters\FirstLoadVsVisitController;
@@ -99,4 +100,12 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/http-requests', [HttpRequestsController::class, 'show'])->name('http-requests');
     Route::get('/http-requests/ping', [HttpRequestsController::class, 'ping'])->name('http-requests.ping');
     Route::get('/head-and-meta', [HeadAndMetaController::class, 'show'])->name('head-and-meta');
+    Route::get('/error-handling', [ErrorHandlingController::class, 'show'])->name('error-handling');
+    // No route for a "missing" page here: the 404 control below relies on there being none,
+    // since a route that exists (even one calling abort(404) on purpose) would have already
+    // run through this app's own web middleware, including HandleInertiaRequests, before
+    // ever throwing. Only a URL with no matching route at all skips that middleware entirely.
+    Route::post('/error-handling/protected', [ErrorHandlingController::class, 'protectedAction'])->name('error-handling.protected');
+    Route::post('/error-handling/crash', [ErrorHandlingController::class, 'crash'])->name('error-handling.crash');
+    Route::get('/error-handling/plain', [ErrorHandlingController::class, 'plain'])->name('error-handling.plain');
 });

@@ -110,6 +110,10 @@ class LabController extends Controller
             'term' => 'Persistent layout',
             'definition' => "A component assigned to a page's own layout property that the client keeps mounted across a visit to another page assigning that same component, rather than tearing it down and rebuilding it. Only the part of the tree it wraps is replaced.",
         ],
+        [
+            'term' => 'Exception response',
+            'definition' => "The object a callback registered with Inertia::handleExceptionsUsing() receives for a thrown exception: the exception itself, the request, and the framework's own already-rendered response, plus render(), withSharedData(), usingMiddleware() and rootView() to replace that response with a normal Inertia page instead.",
+        ],
     ];
 
     /** @var array<int, array{artefact: string, inertiaEquivalent: string, disappears: bool, chapter: string}> */

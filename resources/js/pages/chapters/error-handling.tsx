@@ -1,0 +1,248 @@
+import { router } from '@inertiajs/react';
+import { ChapterShell } from '@/lab/ChapterShell';
+import { Term } from '@/lab/Term';
+import type { ChapterData, Neighbour } from './types';
+
+const REGISTRATION = `Inertia::handleExceptionsUsing(function (ExceptionResponse $exceptionResponse) {
+    if (! $exceptionResponse->request->is('chapters/error-handling/*')) {
+        return null;
+    }
+
+    return $exceptionResponse
+        ->render('chapters/error-handling-page', [
+            'status' => $exceptionResponse->statusCode(),
+            'message' => $exceptionResponse->exception->getMessage(),
+            'requestPath' => '/'.$exceptionResponse->request->path(),
+        ])
+        ->usingMiddleware(HandleInertiaRequests::class)
+        ->rootView('app')
+        ->withSharedData();
+});`;
+
+function triggerBadCsrfToken() {
+    // A real, working XSRF-TOKEN cookie is normally an encrypted string only the server
+    // can produce; overwriting it client-side with plain text is what makes the token
+    // wrong on purpose. The client still reads whatever is in the cookie and sends it as
+    // X-XSRF-TOKEN (verified in node_modules/@inertiajs/core/dist/index.js), so this is
+    // enough to make PreventRequestForgery::getTokenFromRequest() fail to decrypt it.
+    document.cookie = 'XSRF-TOKEN=deliberately-invalid-token; path=/';
+    router.post('/chapters/error-handling/protected');
+}
+
+type ErrorHandlingProps = {
+    chapter: ChapterData;
+    status: string;
+    previous: Neighbour | null;
+    next: Neighbour | null;
+};
+
+export default function ErrorHandling({
+    chapter,
+    status,
+    previous,
+    next,
+}: ErrorHandlingProps) {
+    return (
+        <ChapterShell
+            chapter={chapter}
+            previous={previous}
+            next={next}
+            tryThis={
+                <div className="space-y-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={() =>
+                                router.post(
+                                    '/chapters/error-handling/protected',
+                                )
+                            }
+                            className="rounded border border-neutral-400 px-3 py-1.5 text-sm dark:border-neutral-600"
+                        >
+                            Submit normally (valid token)
+                        </button>
+                        <button
+                            type="button"
+                            onClick={triggerBadCsrfToken}
+                            className="rounded border border-neutral-400 px-3 py-1.5 text-sm dark:border-neutral-600"
+                        >
+                            Submit with a wrong CSRF token (419)
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() =>
+                                router.get('/chapters/error-handling/nowhere')
+                            }
+                            className="rounded border border-neutral-400 px-3 py-1.5 text-sm dark:border-neutral-600"
+                        >
+                            Visit a URL with no route (404)
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() =>
+                                router.post('/chapters/error-handling/crash')
+                            }
+                            className="rounded border border-neutral-400 px-3 py-1.5 text-sm dark:border-neutral-600"
+                        >
+                            Trigger a real exception (500)
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() =>
+                                router.get('/chapters/error-handling/plain')
+                            }
+                            className="rounded border border-neutral-400 px-3 py-1.5 text-sm dark:border-neutral-600"
+                        >
+                            Visit a non-Inertia response
+                        </button>
+                    </div>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                        Last protected-action result: {status}
+                    </p>
+                </div>
+            }
+            watchFor={
+                <p className="mt-2">
+                    The first four buttons each throw inside the request cycle.
+                    All four land on a normal page with its own link back to
+                    this chapter, because the{' '}
+                    <Term term="Exception response">exception response</Term>{' '}
+                    registered below renders one for every request under
+                    chapters/error-handling/*. The last button is not an
+                    exception at all: nothing here throws, so it opens the same
+                    dialog chapter 5&apos;s non-Inertia route already showed,
+                    dismissed by clicking outside it. Watch the Wire tab: the
+                    three thrown responses each carry the X-Inertia header
+                    despite their error status, which is what tells the client
+                    to render the page instead of that dialog.
+                </p>
+            }
+            whenToUse={
+                <p>
+                    Register Inertia::handleExceptionsUsing() once, in a service
+                    provider&apos;s boot(), for any exception the reader of a
+                    deployed application should see as part of the application
+                    rather than as a framework error page. Scope the callback to
+                    the routes that need it, the way this one checks the request
+                    path first: a global, unscoped registration would change how
+                    every other exception in the application renders too.
+                </p>
+            }
+        >
+            <section>
+                <h2 className="text-lg font-semibold">
+                    The registration, in full
+                </h2>
+                <p className="mt-1">
+                    This lives in AppServiceProvider::boot(), not in this
+                    chapter&apos;s own controller: it applies to every request
+                    matching the path check inside it, not to one route.
+                    Verified method by method against{' '}
+                    <code className="font-mono">
+                        vendor/inertiajs/inertia-laravel/src/ExceptionResponse.php
+                    </code>
+                    .
+                </p>
+                <pre className="mt-2 overflow-x-auto rounded bg-neutral-100 p-3 text-xs dark:bg-neutral-900">
+                    {REGISTRATION}
+                </pre>
+                <dl className="mt-3 space-y-2 text-sm">
+                    <div>
+                        <dt className="font-mono font-medium">render()</dt>
+                        <dd>
+                            Names the component and props for the page this
+                            exception should produce, the same two arguments
+                            Inertia::render() takes anywhere else.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt className="font-mono font-medium">
+                            usingMiddleware()
+                        </dt>
+                        <dd>
+                            Names the Inertia middleware class to read
+                            version(), rootView(), share() and shareOnce() from.
+                            Left unset, ExceptionResponse looks for one on the
+                            matched route first, then falls back to scanning the
+                            kernel&apos;s own middleware groups for any class
+                            extending Inertia\Middleware, which is only reliable
+                            because this application&apos;s
+                            HandleInertiaRequests sits directly in the web group
+                            (bootstrap/app.php) rather than inside a route
+                            group.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt className="font-mono font-medium">rootView()</dt>
+                        <dd>
+                            Names the Blade view to wrap the page in on a full
+                            document load. Set here to &quot;app&quot;, the same
+                            default HandleInertiaRequests already uses, so this
+                            call changes nothing by itself; it exists to show
+                            the method is there when a chapter needed a
+                            different root view.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt className="font-mono font-medium">
+                            withSharedData()
+                        </dt>
+                        <dd>
+                            Runs the resolved middleware&apos;s share() and
+                            shareOnce(), the same calls HandleInertiaRequests
+                            performs on every ordinary request. Without it, the
+                            rendered page above would be missing demoUser,
+                            unreadNotifications and every other shared prop.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt className="font-mono font-medium">statusCode()</dt>
+                        <dd>
+                            Reads the status Laravel&apos;s own exception
+                            handler already chose for this exception (404, 419,
+                            500) off the response ExceptionResponse wraps, used
+                            above as a prop and to set the final response&apos;s
+                            own status code once render() builds it.
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section>
+                <h2 className="text-lg font-semibold">
+                    Why withSharedData() is not optional here
+                </h2>
+                <p className="mt-1">
+                    Confirmed by reading{' '}
+                    <code className="font-mono">
+                        Illuminate\Routing\Router::findRoute()
+                    </code>{' '}
+                    and{' '}
+                    <code className="font-mono">
+                        Inertia\Middleware::handle()
+                    </code>
+                    , then checked against this exact application by comparing
+                    Inertia::getShared() at the moment the exception handler
+                    runs: a URL with no matching route never runs any of this
+                    application&apos;s own web middleware at all,
+                    HandleInertiaRequests included, because Laravel&apos;s
+                    router throws before it ever builds that middleware
+                    pipeline. Shared data is empty at that point, not merely
+                    unrequested. A wrong CSRF token fails for a related but
+                    different reason: the route does match, but
+                    PreventRequestForgery sits earlier than
+                    HandleInertiaRequests in the web group (bootstrap/app.php
+                    appends HandleInertiaRequests after it), so it throws before
+                    its turn too. A plain 500 thrown from inside this
+                    chapter&apos;s own crash() action is different again: its
+                    route already matched and ran past HandleInertiaRequests on
+                    the way in, so shared data already exists by the time the
+                    exception reaches this callback, and withSharedData() there
+                    only repeats work already done. Calling it every time is
+                    what makes all three renders consistent without having to
+                    remember which case needed it.
+                </p>
+            </section>
+        </ChapterShell>
+    );
+}

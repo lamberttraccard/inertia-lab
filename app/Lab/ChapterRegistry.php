@@ -417,6 +417,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 28,
             ),
+            new Chapter(
+                slug: 'error-handling',
+                title: 'When something goes wrong',
+                question: 'A 500 during a visit is a JSON response the client cannot render. What does the reader see?',
+                concept: 'The client shows a non-Inertia error response in a dialog of its own regardless of environment; Inertia::handleExceptionsUsing() lets the server render a normal Inertia page for an exception instead, the same page a successful visit would have received.',
+                routeName: 'chapters.error-handling',
+                serverFile: 'app/Http/Controllers/Chapters/ErrorHandlingController.php',
+                clientFile: 'resources/js/pages/chapters/error-handling.tsx',
+                translationFrom: 'An error boundary component wrapping the tree, plus a catch block around every call.',
+                translationTo: "The framework's own exception handler, rendering a normal Inertia response instead of the client's fallback dialog.",
+                docsUrl: 'https://inertiajs.com/docs/v3/advanced/error-handling',
+                wave: 1,
+                order: 29,
+            ),
         ];
     }
 
