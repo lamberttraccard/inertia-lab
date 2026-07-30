@@ -63,6 +63,8 @@ export default function HeadAndMeta({
                 </p>
             }
         >
+            <Head title={title} />
+
             <section>
                 <h2 className="text-lg font-semibold">
                     Meta tags, not only the title
@@ -75,7 +77,14 @@ export default function HeadAndMeta({
                     <code className="font-mono">
                         node_modules/@inertiajs/react/types/Head.d.ts
                     </code>
-                    . This page also renders one meta tag through it:
+                    . The{' '}
+                    <code className="font-mono">
+                        {'<Head title={title} />'}
+                    </code>{' '}
+                    just above, bound to the input, is the one actually setting
+                    your tab title right now. This page also renders one meta
+                    tag through a separate{' '}
+                    <code className="font-mono">{'<Head>'}</code>:
                 </p>
                 <Head>
                     <meta
