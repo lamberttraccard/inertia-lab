@@ -18,8 +18,11 @@ beforeEach(function () {
     Tag::create(['name' => 'Testing', 'slug' => 'testing']);
 });
 
-it('renders the chapter with blank demo post defaults and the real tag options', function () {
-    $response = $this->get(route('chapters.forms'));
+it('renders the chapter with blank demo post defaults, the real tag options and no unexpected props', function () {
+    $response = $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => currentInertiaVersion(),
+    ])->get(route('chapters.forms'));
 
     $response->assertOk();
 
@@ -29,8 +32,22 @@ it('renders the chapter with blank demo post defaults and the real tag options',
     $trace = labTrace($response);
 
     expect($page['props']['post'])->toBe(['title' => '', 'excerpt' => '', 'body' => '', 'tags' => []])
-        ->and($page['props']['tagOptions'])->toHaveCount(2)
-        ->and($trace['props'])->toHaveKeys(['post', 'tagOptions']);
+        ->and($page['props']['tagOptions'])->toHaveCount(2);
+
+    // Verified empirically against this exact route (see the debug trace taken from
+    // chapters/first-load-vs-visit for the shared baseline): errors, name, auth, demoUser,
+    // unreadNotifications and demoUserOptions are the platform's own shared props, added
+    // to every page regardless of this chapter; chapter, previous and next are the
+    // standard chapter metadata every chapter passes; post and tagOptions are this
+    // chapter's own. Nothing else is added here.
+    expect(array_keys($page['props']))->toEqualCanonicalizing([
+        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'chapter', 'previous', 'next', 'post', 'tagOptions', '_lab',
+    ])
+        ->and(array_keys($trace['props']))->toEqualCanonicalizing([
+            'demoUser', 'unreadNotifications', 'demoUserOptions',
+            'chapter', 'previous', 'next', 'post', 'tagOptions',
+        ]);
 });
 
 it('creates no row and reports the validation errors on the next load when the submission is invalid', function () {
