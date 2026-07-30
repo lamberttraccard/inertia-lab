@@ -39,6 +39,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 1,
             ),
+            new Chapter(
+                slug: 'render-and-components',
+                title: 'From a controller to a component',
+                question: 'How does a string in a controller become a React component on screen?',
+                concept: 'Inertia::render() names a component; the client resolves that name to a module.',
+                routeName: 'chapters.render-and-components',
+                serverFile: 'app/Http/Controllers/Chapters/RenderAndComponentsController.php',
+                clientFile: 'resources/js/pages/chapters/render-and-components.tsx',
+                translationFrom: 'A controller returns JSON and the client router decides what to render.',
+                translationTo: 'The controller names the component and passes it data in one step.',
+                docsUrl: 'https://inertiajs.com/docs/v3/the-basics/responses',
+                wave: 1,
+                order: 2,
+            ),
         ];
     }
 
