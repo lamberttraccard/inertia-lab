@@ -4,6 +4,7 @@ use App\Http\Controllers\Chapters\AlwaysPropsController;
 use App\Http\Controllers\Chapters\AssetVersioningController;
 use App\Http\Controllers\Chapters\AuthorizationAndCsrfController;
 use App\Http\Controllers\Chapters\DeferredPropsController;
+use App\Http\Controllers\Chapters\DevtoolsAndTestingController;
 use App\Http\Controllers\Chapters\ErrorHandlingController;
 use App\Http\Controllers\Chapters\EventsController;
 use App\Http\Controllers\Chapters\FileUploadsController;
@@ -42,6 +43,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('/where-did-it-go', [LabController::class, 'whereDidItGo'])->name('where-did-it-go');
     Route::post('/slow-mode', [SlowModeController::class, 'update'])->name('slow-mode');
     Route::get('/source/{slug}', [LabController::class, 'source'])->name('source');
+    Route::get('/source-file', [LabController::class, 'sourceFile'])->name('source-file');
 });
 
 Route::prefix('chapters')->name('chapters.')->group(function () {
@@ -112,4 +114,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::get('/authorization-and-csrf', [AuthorizationAndCsrfController::class, 'show'])->name('authorization-and-csrf');
     Route::patch('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'rename'])->name('authorization-and-csrf.rename');
     Route::delete('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'destroy'])->name('authorization-and-csrf.destroy');
+    Route::get('/devtools-and-testing', [DevtoolsAndTestingController::class, 'show'])->name('devtools-and-testing');
 });

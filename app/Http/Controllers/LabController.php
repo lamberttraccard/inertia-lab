@@ -6,8 +6,10 @@ use App\Lab\Chapter;
 use App\Lab\ChapterRegistry;
 use App\Lab\SourceReader;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use InvalidArgumentException;
 use RuntimeException;
 
 class LabController extends Controller
@@ -267,5 +269,24 @@ class LabController extends Controller
             'server' => $reader->read($chapter->serverFile),
             'client' => $reader->read($chapter->clientFile),
         ]);
+    }
+
+    /**
+     * A single arbitrary platform file rather than a chapter's own server/client pair:
+     * chapters/devtools-and-testing points at tests/Pest.php and its own test file, neither
+     * of which is any chapter's serverFile or clientFile. SourceReader::read() still refuses
+     * anything outside its own allowlist, so this exposes no more than source() already does.
+     */
+    public function sourceFile(SourceReader $reader, Request $request): JsonResponse
+    {
+        $path = $request->query('path');
+
+        abort_if(! is_string($path) || $path === '', 404);
+
+        try {
+            return response()->json($reader->read($path));
+        } catch (InvalidArgumentException) {
+            abort(404);
+        }
     }
 }

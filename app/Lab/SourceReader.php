@@ -11,6 +11,10 @@ class SourceReader
         'app/Lab/Lab.php',
         'app/Lab/Trace/LabRecorder.php',
         'app/Http/Middleware/InjectLabTrace.php',
+        // Read by chapters/devtools-and-testing, whose whole subject is this pair: the
+        // helpers this suite uses instead of assertInertia(), and the test that uses them.
+        'tests/Pest.php',
+        'tests/Feature/Chapters/DevtoolsAndTestingTest.php',
     ];
 
     public function __construct(private readonly ChapterRegistry $registry) {}

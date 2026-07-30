@@ -445,6 +445,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 30,
             ),
+            new Chapter(
+                slug: 'devtools-and-testing',
+                title: 'The tools you actually use',
+                question: 'What do you reach for when a page sends the wrong props?',
+                concept: "The official DevTools browser extension records every request this application makes and pairs each one with the props it resolved; this application's own tests read the same page object a browser does, through helpers this codebase had to add once the extension's own recorder made assertInertia() unusable here.",
+                routeName: 'chapters.devtools-and-testing',
+                serverFile: 'app/Http/Controllers/Chapters/DevtoolsAndTestingController.php',
+                clientFile: 'resources/js/pages/chapters/devtools-and-testing.tsx',
+                translationFrom: 'The network tab, plus a mocking library standing in for the server in a test.',
+                translationTo: 'A panel that pairs each request with the props it resolved and where they came from, and a test that reads the same page object the browser does.',
+                docsUrl: 'https://inertiajs.com/docs/v3/advanced/devtools',
+                wave: 1,
+                order: 31,
+            ),
         ];
     }
 
