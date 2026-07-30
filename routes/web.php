@@ -31,6 +31,7 @@ use App\Http\Controllers\Chapters\RedirectsController;
 use App\Http\Controllers\Chapters\RememberingStateController;
 use App\Http\Controllers\Chapters\RenderAndComponentsController;
 use App\Http\Controllers\Chapters\SharedDataController;
+use App\Http\Controllers\Chapters\TypescriptAndSplittingController;
 use App\Http\Controllers\Chapters\ViewTransitionsController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\SlowModeController;
@@ -115,4 +116,5 @@ Route::prefix('chapters')->name('chapters.')->group(function () {
     Route::patch('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'rename'])->name('authorization-and-csrf.rename');
     Route::delete('/authorization-and-csrf/{post}', [AuthorizationAndCsrfController::class, 'destroy'])->name('authorization-and-csrf.destroy');
     Route::get('/devtools-and-testing', [DevtoolsAndTestingController::class, 'show'])->name('devtools-and-testing');
+    Route::get('/typescript-and-splitting', [TypescriptAndSplittingController::class, 'show'])->name('typescript-and-splitting');
 });

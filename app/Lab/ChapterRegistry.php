@@ -459,6 +459,20 @@ class ChapterRegistry
                 wave: 1,
                 order: 31,
             ),
+            new Chapter(
+                slug: 'typescript-and-splitting',
+                title: 'Types across the boundary',
+                question: 'What tells the editor the shape of the props?',
+                concept: "A TypeScript type written next to the component, kept in sync with the controller's props array by hand unless a generator is added; Vite gives every page component its own chunk by default, fetched only once a visit actually renders that page.",
+                routeName: 'chapters.typescript-and-splitting',
+                serverFile: 'app/Http/Controllers/Chapters/TypescriptAndSplittingController.php',
+                clientFile: 'resources/js/pages/chapters/typescript-and-splitting.tsx',
+                translationFrom: 'A client generated from an OpenAPI document, regenerated whenever the API changes.',
+                translationTo: 'A TypeScript type written by hand next to the component, and whatever discipline or generator a team adds to keep it matching the controller.',
+                docsUrl: 'https://inertiajs.com/docs/v3/advanced/typescript',
+                wave: 1,
+                order: 32,
+            ),
         ];
     }
 
