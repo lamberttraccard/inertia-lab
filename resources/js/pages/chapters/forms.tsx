@@ -104,28 +104,36 @@ export default function Forms({
                 </p>
             }
             watchFor={
-                <p className="mt-2">
-                    A blank title fails the server&apos;s own required rule.
-                    Nothing in this page ever reads a 422 body: the request that
-                    fails is an ordinary Inertia visit, and Laravel&apos;s
-                    default behaviour for a request that does not ask for JSON
-                    (Inertia visits ask for text/html) is to redirect back with
-                    the errors flashed to the session. XMLHttpRequest follows
-                    that redirect on its own, landing back on this same page,
-                    whose errors prop now carries them, shared by Inertia&apos;s
-                    own middleware and always included regardless of what a
-                    partial reload would otherwise have asked for. Submit
-                    whichever form you like: only that one shows the result,
-                    confirmed by trying it below. errors, processing, isDirty
-                    and wasSuccessful are state its own Form or useForm instance
-                    keeps, populated by its own submission, not a live mirror of
-                    the shared prop. Both forms happen to submit the same field
-                    names to the same route, so if their errors needed to stay
-                    apart on screen at the same time, a named{' '}
-                    <Term term="Error bag">error bag</Term> is what separates
-                    them; neither form here needs one, since each already shows
-                    only what it submitted.
-                </p>
+                <>
+                    <p className="mt-2">
+                        A blank title fails the server&apos;s own required rule,
+                        and neither form ever reads a 422 body to show it. The
+                        request that fails is an ordinary Inertia visit, and
+                        Laravel&apos;s default behaviour for a request that does
+                        not ask for JSON (Inertia visits ask for text/html) is
+                        to redirect back with the errors flashed to the session
+                        instead. XMLHttpRequest follows that redirect on its
+                        own, landing back on this same page, whose errors prop
+                        now carries them, shared by Inertia&apos;s own
+                        middleware and always included regardless of what a
+                        partial reload would otherwise have asked for.
+                    </p>
+                    <p className="mt-2">
+                        Submit whichever form you like: only that one shows the
+                        result, confirmed by trying it below. errors,
+                        processing, isDirty and wasSuccessful are state its own
+                        Form or useForm instance keeps, populated by its own
+                        submission, not a live mirror of the shared prop.
+                    </p>
+                    <p className="mt-2">
+                        Both forms happen to submit the same field names to the
+                        same route, so if their errors needed to stay apart on
+                        screen at the same time, a named{' '}
+                        <Term term="Error bag">error bag</Term> is what
+                        separates them; neither form here needs one, since each
+                        already shows only what it submitted.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
