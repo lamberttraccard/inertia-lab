@@ -65,11 +65,8 @@ export function SourceView({ slug, serverFile, clientFile }: SourceViewProps) {
     }, [slug]);
 
     return (
-        <section aria-labelledby="source">
-            <h2 id="source" className="text-lg font-semibold">
-                Source
-            </h2>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+        <section>
+            <p className="text-neutral-600 dark:text-neutral-400">
                 The server file and the client file that produced this page,
                 read from disk on this request.
             </p>

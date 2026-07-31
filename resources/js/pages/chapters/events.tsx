@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/react';
 import { ChapterShell } from '@/lab/ChapterShell';
 import { Term } from '@/lab/Term';
-import { CANCELABLE, EVENTS } from '@/lab/WireStrip';
+import { CANCELABLE, EVENTS } from '@/lab/useWireCapture';
 import type { ChapterData, Neighbour } from './types';
 
 type EventsProps = {

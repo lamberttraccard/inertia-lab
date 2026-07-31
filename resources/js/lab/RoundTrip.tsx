@@ -204,9 +204,14 @@ export function RoundTrip({ entry }: { entry: WireEntry | null }) {
                                 strokeWidth={2}
                                 strokeDasharray={active ? undefined : '6 4'}
                                 className={
+                                    // The same two accents as the inspector's Trace tab, applied to
+                                    // the same underlying idea at a different grain: a prop either
+                                    // resolved or was skipped, a pipeline segment either ran or
+                                    // didn't. The dashed stroke and the "active"/"inactive" text
+                                    // below repeat the distinction, so colour is never the only cue.
                                     active
                                         ? 'fill-emerald-50 stroke-emerald-600 dark:fill-emerald-950 dark:stroke-emerald-500'
-                                        : 'fill-neutral-800 stroke-neutral-600 dark:fill-neutral-900 dark:stroke-neutral-700'
+                                        : 'fill-sky-50 stroke-sky-600 dark:fill-sky-950 dark:stroke-sky-500'
                                 }
                             />
                             <text
@@ -218,7 +223,7 @@ export function RoundTrip({ entry }: { entry: WireEntry | null }) {
                                 className={
                                     active
                                         ? 'fill-emerald-900 dark:fill-emerald-100'
-                                        : 'fill-neutral-100 dark:fill-neutral-300'
+                                        : 'fill-sky-900 dark:fill-sky-100'
                                 }
                             >
                                 {segment}
@@ -231,7 +236,7 @@ export function RoundTrip({ entry }: { entry: WireEntry | null }) {
                                 className={
                                     active
                                         ? 'fill-emerald-700 dark:fill-emerald-300'
-                                        : 'fill-neutral-400'
+                                        : 'fill-sky-700 dark:fill-sky-300'
                                 }
                             >
                                 {active ? 'active' : 'inactive'}
