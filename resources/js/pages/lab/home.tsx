@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import { useVisitedChapters } from '@/lab/visited';
 
 type ChapterSummary = {
     slug: string;
@@ -28,6 +29,11 @@ export default function Home({
     parts: PartSummary[];
     versions: Versions;
 }) {
+    // Empty until the effect inside useVisitedChapters runs after mount, so the first
+    // paint (server-rendered or not) never claims a chapter is visited when the
+    // localStorage read that would prove it has not happened yet.
+    const visited = useVisitedChapters();
+
     return (
         <>
             <Head title="Inertia Lab" />
@@ -67,32 +73,56 @@ export default function Home({
                     </p>
 
                     <div className="mt-4 space-y-6">
-                        {parts.map((part) => (
-                            <div key={part.key}>
-                                <h3 className="font-semibold">{part.label}</h3>
-                                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-                                    {part.description}
-                                </p>
-                                <ol className="mt-2 space-y-3">
-                                    {part.chapters.map((chapter) => (
-                                        <li
-                                            key={chapter.slug}
-                                            className="border border-neutral-200 p-3 dark:border-neutral-800"
-                                        >
-                                            <Link
-                                                href={`/chapters/${chapter.slug}`}
-                                                className="font-medium underline"
+                        {parts.map((part) => {
+                            const visitedInPart = part.chapters.filter(
+                                (chapter) => visited.has(chapter.slug),
+                            ).length;
+
+                            return (
+                                <div key={part.key}>
+                                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                        <h3 className="font-semibold">
+                                            {part.label}
+                                        </h3>
+                                        <p className="font-mono text-xs text-neutral-500 tabular-nums dark:text-neutral-500">
+                                            {visitedInPart} of{' '}
+                                            {part.chapters.length} visited
+                                        </p>
+                                    </div>
+                                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                                        {part.description}
+                                    </p>
+                                    <ol className="mt-2 space-y-3">
+                                        {part.chapters.map((chapter) => (
+                                            <li
+                                                key={chapter.slug}
+                                                className="border border-neutral-200 p-3 dark:border-neutral-800"
                                             >
-                                                {chapter.order}. {chapter.title}
-                                            </Link>
-                                            <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-                                                {chapter.question}
-                                            </p>
-                                        </li>
-                                    ))}
-                                </ol>
-                            </div>
-                        ))}
+                                                <div className="flex flex-wrap items-center justify-between gap-x-3">
+                                                    <Link
+                                                        href={`/chapters/${chapter.slug}`}
+                                                        className="font-medium underline"
+                                                    >
+                                                        {chapter.order}.{' '}
+                                                        {chapter.title}
+                                                    </Link>
+                                                    {visited.has(
+                                                        chapter.slug,
+                                                    ) && (
+                                                        <span className="font-mono text-xs text-emerald-700 dark:text-emerald-400">
+                                                            Visited
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                                                    {chapter.question}
+                                                </p>
+                                            </li>
+                                        ))}
+                                    </ol>
+                                </div>
+                            );
+                        })}
                     </div>
                 </section>
 
