@@ -51,17 +51,15 @@ export default function FirstLoadVsVisit({
             }
             watchFor={
                 <p className="mt-2">
-                    Watch renderedAt for the Link, not the inspector: this visit
-                    swaps in a fresh copy of this very page without
-                    preserveState, so the inspector you are reading remounts as
-                    part of that same visit and starts over empty, missing its
-                    own entry (your browser&apos;s own network tab would show
-                    it: X-Inertia: true on the request, JSON back). The plain
-                    anchor is the clearer contrast to see directly here: a
-                    completely new page load, inspector and all, with no
-                    X-Inertia header anywhere. Either way, renderedAt changes,
-                    proving the controller ran again rather than the browser
-                    reusing what it already had.
+                    Watch renderedAt, not the inspector, once you click the
+                    Link: this visit remounts the whole page without
+                    preserveState, so the inspector restarts empty and misses
+                    its own entry (your browser&apos;s own network tab still
+                    shows it: X-Inertia: true on the request, JSON coming back).
+                    The plain anchor makes the contrast cleaner: a full page
+                    load, inspector and all, with no X-Inertia header anywhere.
+                    Either way, renderedAt changes, proof the controller ran
+                    again rather than the browser reusing what it already had.
                 </p>
             }
             whenToUse={
@@ -135,9 +133,9 @@ export default function FirstLoadVsVisit({
                 <p className="mt-1">
                     Both controls point at the exact same URL. The difference is
                     entirely in what the request asks for: a visit sends an
-                    X-Inertia header and wants JSON back; a normal browser
-                    navigation sends neither and gets the full document, with
-                    the page object embedded for the client to boot from.
+                    X-Inertia header and gets JSON back; a plain navigation
+                    sends no such header and gets the full document, with the
+                    page object embedded for the client to boot from.
                 </p>
             </section>
         </ChapterShell>
