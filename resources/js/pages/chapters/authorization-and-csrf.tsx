@@ -137,20 +137,25 @@ export default function AuthorizationAndCsrf({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    You are signed in as {demoUser.name}. This post belongs to{' '}
-                    {post.authorName}. can.update is {String(can.update)},
-                    can.delete is {String(can.delete)}: both false whenever
-                    demoUser is not the author, both computed on this exact
-                    request by a real policy, not hardcoded on this page.
-                    Switching demo user changes them immediately, because the
-                    buttons above read the props this request just received.
-                    Saving with a wrong token opens the client&apos;s own error
-                    dialog, the same one chapter 5 and chapter 29 show for a
-                    non-Inertia or thrown response: dismiss it by clicking
-                    outside it, then use the reload button to get a fresh, valid
-                    token before trying again.
-                </p>
+                <>
+                    <p className="mt-2">
+                        You are signed in as {demoUser.name}. This post belongs
+                        to {post.authorName}. can.update is {String(can.update)}
+                        , can.delete is {String(can.delete)}: both false
+                        whenever demoUser is not the author, both computed on
+                        this exact request by a real policy, not hardcoded on
+                        this page. Switching demo user changes them immediately,
+                        because the buttons above read the props this request
+                        just received.
+                    </p>
+                    <p className="mt-2">
+                        Saving with a wrong token opens the client&apos;s own
+                        error dialog, the same one chapter 5 and chapter 29 show
+                        for a non-Inertia or thrown response: dismiss it by
+                        clicking outside it, then use the reload button to get a
+                        fresh, valid token before trying again.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
