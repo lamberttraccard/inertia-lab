@@ -84,23 +84,27 @@ export default function InstantVisits({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    With slow mode at 1.5 seconds, &quot;Open normally&quot;
-                    keeps you on this page, footer and all, until the response
-                    arrives a second and a half later. &quot;Open
-                    instantly&quot; replaces this whole page with the detail
-                    component immediately: no inspector, no header nav, no
-                    ChapterShell at all, because that component was never
-                    wrapped in one. For 1.5 seconds it reads{' '}
-                    <em>post is undefined right now</em>, the detail page&apos;s
-                    own fallback text for exactly that state, not a loading
-                    spinner bolted on afterwards. Once the real response lands,
-                    the same component re-renders with post filled in, and the
-                    key list on that page grows from the shared-only set to
-                    include post. Reload this chapter from the address bar
-                    afterwards (a real navigation, not an instant one) to come
-                    back.
-                </p>
+                <>
+                    <p className="mt-2">
+                        With slow mode at 1.5 seconds, &quot;Open normally&quot;
+                        keeps you on this page, footer and all, until the
+                        response arrives a second and a half later. &quot;Open
+                        instantly&quot; replaces this whole page with the detail
+                        component immediately: no inspector, no header nav, no
+                        ChapterShell at all, because that component was never
+                        wrapped in one. For 1.5 seconds it reads{' '}
+                        <em>post is undefined right now</em>, the detail
+                        page&apos;s own fallback text for exactly that state,
+                        not a loading spinner bolted on afterwards.
+                    </p>
+                    <p className="mt-2">
+                        Once the real response lands, the same component
+                        re-renders with post filled in, and the key list on that
+                        page grows from the shared-only set to include post.
+                        Reload this chapter from the address bar afterwards (a
+                        real navigation, not an instant one) to come back.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
