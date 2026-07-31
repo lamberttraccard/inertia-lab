@@ -171,24 +171,38 @@ export default function MergingProps({
                         ? 'Inertia::deepMerge()'
                         : 'Inertia::merge()'}
                     , because deep was {String(usingDeepMerge)} on whichever
-                    request last resolved usingDeepMerge, this page&apos;s own
+                    request last resolved usingDeepMerge: this page&apos;s own
                     first load, or afterward, whichever &quot;Load more
-                    digest&quot; click named it. That click&apos;s only list
-                    names usingDeepMerge right alongside postDigest on purpose:
-                    a partial reload resolves nothing it does not name, so
-                    leaving it out would freeze this sentence at the first
-                    load&apos;s answer forever, no matter how many times you
-                    toggled the checkbox afterward. Flip the toggle, then click
-                    &quot;Load more digest&quot;: with the toggle off, items
-                    resets to just the newest {digestPerPage} posts every single
-                    click, because a plain merge on an object combines only at
-                    that object's own root, spreading {'{ items, fetchedAt }'}{' '}
-                    as a whole and letting the new items value win outright.
-                    With the toggle on, items keeps growing, because deepMerge
-                    recurses into the nested array the same way a root-level
-                    merge prop would. Switching mid-stream does not rewrite what
-                    already loaded, it only changes how the next response
-                    combines with whatever is on screen right now.
+                    digest&quot; click named it.
+                </p>
+                <p className="mt-2">
+                    That click&apos;s only list names usingDeepMerge right
+                    alongside postDigest on purpose: a partial reload resolves
+                    nothing it does not name, so leaving it out would freeze
+                    this sentence at the first load&apos;s answer forever, no
+                    matter how many times you toggled the checkbox afterward.
+                </p>
+                <p className="mt-2">
+                    Flip the toggle, then click &quot;Load more digest&quot;:
+                </p>
+                <ul className="mt-1 list-disc space-y-1 pl-5">
+                    <li>
+                        With the toggle off, items resets to just the newest{' '}
+                        {digestPerPage} posts every single click: a plain merge
+                        on an object combines only at that object&apos;s own
+                        root, spreading {'{ items, fetchedAt }'} as a whole and
+                        letting the new items value win outright.
+                    </li>
+                    <li>
+                        With the toggle on, items keeps growing: deepMerge
+                        recurses into the nested array the same way a root-level
+                        merge prop would.
+                    </li>
+                </ul>
+                <p className="mt-2">
+                    Switching mid-stream does not rewrite what already loaded:
+                    it only changes how the next response combines with whatever
+                    is on screen right now.
                 </p>
                 <label className="mt-2 flex items-center gap-2 text-sm">
                     <input
