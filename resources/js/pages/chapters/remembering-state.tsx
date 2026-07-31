@@ -133,19 +133,24 @@ export default function RememberingState({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    Both boxes filter the exact same posts array in the browser:
-                    neither keystroke sends a request, so the inspector stays
-                    quiet while you type. Coming back from a detail page through
-                    its own &quot;Go back&quot; button is what tells the
-                    difference: the plain box reads empty again, because the
-                    component that held its state was thrown away and rebuilt
-                    from nothing when you left this page and returned to it. The
-                    useRemember box keeps what you typed, because that value was
-                    written into the current history entry as you typed it, and
-                    read back out of that same entry when the component was
-                    rebuilt.
-                </p>
+                <>
+                    <p className="mt-2">
+                        Both boxes filter the exact same posts array in the
+                        browser: neither keystroke sends a request, so the
+                        inspector stays quiet while you type.
+                    </p>
+                    <p className="mt-2">
+                        Coming back from a detail page through its own &quot;Go
+                        back&quot; button is what tells the difference: the
+                        plain box reads empty again, because the component that
+                        held its state was thrown away and rebuilt from nothing
+                        when you left this page and returned to it. The
+                        useRemember box keeps what you typed, because that value
+                        was written into the current history entry as you typed
+                        it, and read back out of that same entry when the
+                        component was rebuilt.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
@@ -177,29 +182,50 @@ export default function RememberingState({
                         document.querySelectorAll(&apos;[scroll-region]&apos;)
                     </code>
                     , not <code className="font-mono">data-scroll-region</code>.
+                </p>
+                <p className="mt-2">
                     Scroll it, then reload this same page with{' '}
                     <code className="font-mono">preserveScroll</code> and{' '}
                     <code className="font-mono">preserveState</code> checked in
-                    every combination; the four results were observed directly,
-                    not assumed from either option&apos;s name.{' '}
+                    every combination; the four results below were observed
+                    directly, not assumed from either option&apos;s name.
+                </p>
+                <p className="mt-2">
                     <code className="font-mono">preserveScroll</code> alone
                     controls the window&apos;s own scroll position: checked
                     keeps it, unchecked resets it to the top, regardless of{' '}
-                    <code className="font-mono">preserveState</code>. This
-                    region needs both checked to keep its own position: with{' '}
-                    <code className="font-mono">preserveState</code> unchecked,
-                    this whole component unmounts and remounts, so the boxed
-                    list below is a brand new element whose scroll starts at
-                    zero no matter what{' '}
-                    <code className="font-mono">preserveScroll</code> asked for;
-                    with <code className="font-mono">preserveState</code>{' '}
-                    checked but{' '}
-                    <code className="font-mono">preserveScroll</code> unchecked,
-                    the element survives but Inertia&apos;s own reset explicitly
-                    zeroes every{' '}
-                    <code className="font-mono">scroll-region</code> it finds,
-                    this one included. Only both checked together keep this
-                    region&apos;s position.{' '}
+                    <code className="font-mono">preserveState</code>.
+                </p>
+                <p className="mt-2">
+                    This region needs both{' '}
+                    <code className="font-mono">preserveState</code> and{' '}
+                    <code className="font-mono">preserveScroll</code> checked to
+                    keep its own position:
+                </p>
+                <ul className="mt-1 list-disc space-y-1 pl-5">
+                    <li>
+                        <code className="font-mono">preserveState</code>{' '}
+                        unchecked: this whole component unmounts and remounts,
+                        so the boxed list below is a brand new element whose
+                        scroll starts at zero, no matter what{' '}
+                        <code className="font-mono">preserveScroll</code> asked
+                        for.
+                    </li>
+                    <li>
+                        <code className="font-mono">preserveState</code>{' '}
+                        checked,{' '}
+                        <code className="font-mono">preserveScroll</code>{' '}
+                        unchecked: the element survives, but Inertia&apos;s own
+                        reset explicitly zeroes every{' '}
+                        <code className="font-mono">scroll-region</code> it
+                        finds, this one included.
+                    </li>
+                    <li>
+                        Both checked: this is the only combination that keeps
+                        this region&apos;s position.
+                    </li>
+                </ul>
+                <p className="mt-2">
                     <code className="font-mono">preserveState</code> is also why
                     checking it keeps the plain filter box above intact across
                     this same reload; it cannot help that box survive a trip to
