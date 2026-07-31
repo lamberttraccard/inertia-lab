@@ -41,19 +41,25 @@ export default function HeadAndMeta({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    Every chapter in this lab already renders a{' '}
-                    <code className="font-mono">{'<Head title={...} />'}</code>:
-                    ChapterShell does it once, at the top, with the
-                    chapter&apos;s own title. This page renders a second one
-                    below it, bound to the input above, and that second one is
-                    what your tab shows: it mounts deeper in the tree than
-                    ChapterShell&apos;s own, and a later title always replaces
-                    an earlier one rather than the two competing. There is no
-                    request involved in any of this: nothing here is a visit, so
-                    the inspector has nothing to record no matter how much you
-                    type.
-                </p>
+                <>
+                    <p className="mt-2">
+                        Every chapter in this lab already renders a{' '}
+                        <code className="font-mono">
+                            {'<Head title={...} />'}
+                        </code>
+                        : ChapterShell does it once, at the top, with the
+                        chapter&apos;s own title. This page renders a second one
+                        below it, bound to the input above, and that second one
+                        is what your tab shows: it mounts deeper in the tree
+                        than ChapterShell&apos;s own, and a later title always
+                        replaces an earlier one rather than the two competing.
+                    </p>
+                    <p className="mt-2">
+                        There is no request involved in any of this: nothing
+                        here is a visit, so the inspector has nothing to record
+                        no matter how much you type.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
