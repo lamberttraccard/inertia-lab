@@ -139,12 +139,15 @@ export default function Prefetching({
                         tell 0 apart from leaving cacheFor unset entirely, so
                         both fall back to the 30 second default: pick 0, flush
                         the cache, hover the hover link, then press &quot;Check
-                        cache status&quot; below. It will report &quot;reusable
-                        until it expires&quot;, not single-use. The mount link
-                        only prefetches once, on this page&apos;s first load, so
-                        it cannot be retried against a different preset without
-                        a fresh page load, which resets this selector back to
-                        its own default anyway.
+                        cache status&quot; below.
+                    </p>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                        It will report &quot;reusable until it expires&quot;,
+                        not single-use. The mount link only prefetches once, on
+                        this page&apos;s first load, so it cannot be retried
+                        against a different preset without a fresh page load,
+                        which resets this selector back to its own default
+                        anyway.
                     </p>
                     <div className="flex flex-wrap items-center gap-3">
                         <Link
@@ -216,35 +219,54 @@ export default function Prefetching({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    The mount link starts{' '}
-                    <Term term="Prefetch">prefetching</Term> on its own the
-                    moment this page finishes loading, before you touch
-                    anything: watch the inspector&apos;s Wire tab for a request
-                    carrying a bare{' '}
-                    <code className="font-mono">Purpose: prefetch</code> header
-                    right after the page appears. Hover the hover link and,
-                    after 75 milliseconds (this installed version&apos;s real
-                    default, read from{' '}
-                    <code className="font-mono">
-                        config.get(&apos;prefetch.hoverDelay&apos;)
-                    </code>
-                    ), a second one appears the same way. Press the click link
-                    down (not up) and a third fires immediately, on mousedown,
-                    before the click that actually navigates ever completes.
-                    Whichever you trigger, the follow-up click itself records no
-                    new entry in the inspector at all: the response was already
-                    sitting in the cache, so the visit that lands on the
-                    destination page never leaves the browser. All four links
-                    point at the same URL with the same options, so they read
-                    and write one shared cache entry regardless of which one
-                    triggered it: prefetch a second link after the first already
-                    cached a response and nothing new is sent, since the entry
-                    has not gone stale yet. Changing the preset above only takes
-                    effect the next time this entry is actually populated; flush
-                    it first if one is already cached and you want to see a new
-                    preset apply.
-                </p>
+                <>
+                    <p className="mt-2">
+                        Each strategy fires at a different moment, each one
+                        showing up in the inspector&apos;s Wire tab as a request
+                        carrying a bare{' '}
+                        <code className="font-mono">Purpose: prefetch</code>{' '}
+                        header:
+                    </p>
+                    <ul className="mt-1 list-disc space-y-1 pl-5">
+                        <li>
+                            the mount link starts{' '}
+                            <Term term="Prefetch">prefetching</Term> on its own
+                            the moment this page finishes loading, before you
+                            touch anything.
+                        </li>
+                        <li>
+                            the hover link fires after 75 milliseconds of
+                            hovering (this installed version&apos;s real
+                            default, read from{' '}
+                            <code className="font-mono">
+                                config.get(&apos;prefetch.hoverDelay&apos;)
+                            </code>
+                            ).
+                        </li>
+                        <li>
+                            the click link fires immediately on mousedown: press
+                            it down (not up) and it fires before the click that
+                            actually navigates ever completes.
+                        </li>
+                    </ul>
+                    <p className="mt-2">
+                        All four links point at the same URL with the same
+                        options, so they read and write one shared cache entry
+                        regardless of which one triggered it. The follow-up
+                        click itself records no new entry in the inspector at
+                        all: the response was already sitting in the cache, so
+                        the visit that lands on the destination page never
+                        leaves the browser. Prefetch a second link after the
+                        first already cached a response and nothing new is sent
+                        either, since the entry has not gone stale yet.
+                    </p>
+                    <p className="mt-2">
+                        Changing the preset above only takes effect the next
+                        time this entry is actually populated; flush it first if
+                        one is already cached and you want to see a new preset
+                        apply.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
@@ -285,8 +307,10 @@ export default function Prefetching({
                         config.get(&apos;prefetch.cacheFor&apos;)
                     </code>
                     ), except for a link whose only strategy is{' '}
-                    <code className="font-mono">&quot;click&quot;</code>: the
-                    installed client&apos;s own{' '}
+                    <code className="font-mono">&quot;click&quot;</code>.
+                </p>
+                <p className="mt-2">
+                    The installed client&apos;s own{' '}
                     <code className="font-mono">Link</code> component
                     special-cases that combination to a cacheFor of 0, a single
                     use, since a response fetched on the mouse-down of the very
