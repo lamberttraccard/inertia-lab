@@ -24,7 +24,7 @@ class LinksAndVisitsController
             'items' => $lab->value('items', [
                 'Read the docs',
                 'Trigger a partial reload',
-                'Watch the wire strip',
+                'Watch the inspector',
             ]),
             'serverTime' => $lab->closure('serverTime', fn () => now()->toIso8601String()),
         ]);
