@@ -111,26 +111,37 @@ export default function Polling({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    <Term term="Polling">usePoll</Term> is issuing a partial
-                    reload naming only unreadNotifications every{' '}
-                    {interval / 1000} second{interval === 1000 ? '' : 's'}, and
-                    the count below the ticks counter proves it: it climbs on
-                    its own even if you never click anything. Click
-                    &quot;Simulate a new notification&quot; and the number
-                    updates right away, because that button&apos;s own visit is
-                    a normal one that happens to refresh everything,
-                    unreadNotifications included; the real proof polling is
-                    doing anything is the ticks counter climbing on a timer
-                    regardless. Changing the interval or keepAlive remounts the
-                    poller you see above, since usePoll fixes both at the moment
-                    it mounts and never re-reads them. To see keepAlive matter,
-                    switch to another browser tab for a while with it off:
-                    polling throttles to a tenth of its normal rate rather than
-                    stopping outright, verified in the installed core's own
-                    Poll.tick(). Switch keepAlive on first and it keeps ticking
-                    at full speed in the background instead.
-                </p>
+                <>
+                    <p className="mt-2">
+                        <Term term="Polling">usePoll</Term> is issuing a partial
+                        reload naming only unreadNotifications every{' '}
+                        {interval / 1000} second
+                        {interval === 1000 ? '' : 's'}, and the ticks counter
+                        below proves it: it climbs on its own even if you never
+                        click anything.
+                    </p>
+                    <p className="mt-2">
+                        Click &quot;Simulate a new notification&quot; and the
+                        number updates right away, but that is not proof polling
+                        is doing anything: that button&apos;s own visit is a
+                        normal one that happens to refresh everything,
+                        unreadNotifications included. The real proof is the
+                        ticks counter climbing on a timer regardless.
+                    </p>
+                    <p className="mt-2">
+                        Changing the interval or keepAlive remounts the poller
+                        you see above, since usePoll fixes both at the moment it
+                        mounts and never re-reads them.
+                    </p>
+                    <p className="mt-2">
+                        To see keepAlive matter, switch to another browser tab
+                        for a while with it off: polling throttles to a tenth of
+                        its normal rate rather than stopping outright, verified
+                        in the installed core&apos;s own Poll.tick(). Switch
+                        keepAlive on first and it keeps ticking at full speed in
+                        the background instead.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
