@@ -53,20 +53,20 @@ export default function Redirects({
             watchFor={
                 <p className="mt-2">
                     The first two buttons land back on this same page: watch
-                    lastAction below change once the follow-up GET renders. The
+                    lastAction change below once the follow-up GET renders. The
                     inspector&apos;s own entry for that click shows 200, not 302
-                    or 303: XMLHttpRequest follows a same-origin redirect on its
-                    own, so what reaches this app&apos;s capture is the final
-                    response, not the redirect itself. Your browser&apos;s own
-                    network tab does show the intermediate hop, or read this
-                    chapter&apos;s test file, which asserts the real number
-                    directly against the unfollowed response. The third button
-                    leaves this application entirely, for the URL of
-                    Inertia&apos;s own redirect documentation; if you want to
-                    see its 409 response and the X-Inertia-Location header
-                    rather than just the address bar changing, open your
-                    browser&apos;s network tab before clicking it, since this
-                    app&apos;s own inspector cannot survive the navigation away.
+                    or 303, because XMLHttpRequest follows a same-origin
+                    redirect on its own: what reaches this app&apos;s capture is
+                    the final response, not the redirect itself. Your
+                    browser&apos;s own network tab shows the intermediate hop
+                    directly; this chapter&apos;s own test file confirms the
+                    real numbers too, asserted against the unfollowed response.
+                    The third button leaves this application entirely, for the
+                    URL of Inertia&apos;s own redirect documentation. This
+                    app&apos;s inspector cannot survive that navigation, so open
+                    your browser&apos;s network tab before clicking it if you
+                    want to see the 409 response and the X-Inertia-Location
+                    header, rather than just the address bar changing.
                 </p>
             }
             whenToUse={
@@ -87,7 +87,7 @@ export default function Redirects({
                     router.post above gets an ordinary 302, the same status
                     Laravel&apos;s <code className="font-mono">back()</code>{' '}
                     always uses. router.delete gets 303. Two independent places
-                    in inertiajs/inertia-laravel agree on the rewrite:{' '}
+                    in inertiajs/inertia-laravel agree on that rewrite:{' '}
                     <code className="font-mono">
                         Inertia\Middleware::handle()
                     </code>{' '}
@@ -99,12 +99,14 @@ export default function Redirects({
                     (pushed onto every request by the package&apos;s own service
                     provider). Both rewrite a 302 to 303 only when the request
                     method was PUT, PATCH or DELETE and the request carried the
-                    X-Inertia header. POST is deliberately left out of that list
-                    in both places: browsers and XHR clients already turn a 302
-                    after POST into a GET on their own, so nothing needs
-                    forcing. Both numbers describe what the server actually
-                    sent, confirmed by this chapter&apos;s own test against the
-                    unfollowed response; the inspector cannot show them
+                    X-Inertia header; POST is deliberately left out, since
+                    browsers and XHR clients already turn a 302 after POST into
+                    a GET on their own, so nothing needs forcing.
+                </p>
+                <p className="mt-2">
+                    Both numbers describe what the server actually sent,
+                    confirmed by this chapter&apos;s own test against the
+                    unfollowed response: the inspector cannot show them
                     directly, for the reason explained under What to watch.
                 </p>
                 <h2 className="mt-4 text-lg font-semibold">
