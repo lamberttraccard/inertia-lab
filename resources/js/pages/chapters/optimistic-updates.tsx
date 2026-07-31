@@ -150,28 +150,36 @@ export default function OptimisticUpdates({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    Click Like on the left card: the count and the wording
-                    change immediately, before any request has answered, because{' '}
-                    <code className="font-mono">router.optimistic()</code>{' '}
-                    applies its callback&apos;s return value to the page&apos;s
-                    props synchronously, in the same tick as the click. Set slow
-                    mode above 0 first (any other chapter&apos;s slider reaches
-                    the same session value) to stretch that gap wide enough to
-                    actually see on this card: at 0 the round trip is fast
-                    enough that the confirmed count and the optimistic one are
-                    indistinguishable on screen. Slow mode will not do the same
-                    for the right card: likeUnreliable() calls abort(422) before
-                    resolving any prop Lab could slow down, so that round trip
-                    stays just as fast regardless of the slider, and the
-                    rollback still happens correctly, just too quickly to watch.
-                    Click Like on the right card and the optimistic count still
-                    applies for a moment, then falls back to where it started:
-                    that endpoint always answers 422, and once the visit
-                    finishes without succeeding, the rollback restores exactly
-                    the value this card held the moment you clicked, not a value
-                    read back from the server, since the server never sent one.
-                </p>
+                <>
+                    <p className="mt-2">
+                        Click Like on the left card: the count and the wording
+                        change immediately, before any request has answered,
+                        because{' '}
+                        <code className="font-mono">router.optimistic()</code>{' '}
+                        applies its callback&apos;s return value to the
+                        page&apos;s props synchronously, in the same tick as the
+                        click. Set slow mode above 0 first (any other
+                        chapter&apos;s slider reaches the same session value) to
+                        stretch that gap wide enough to actually see on this
+                        card: at 0 the round trip is fast enough that the
+                        confirmed count and the optimistic one are
+                        indistinguishable on screen.
+                    </p>
+                    <p className="mt-2">
+                        Slow mode will not do the same for the right card:
+                        likeUnreliable() calls abort(422) before resolving any
+                        prop Lab could slow down, so that round trip stays just
+                        as fast regardless of the slider, and the rollback still
+                        happens correctly, just too quickly to watch. Click Like
+                        on the right card and the optimistic count still applies
+                        for a moment, then falls back to where it started: that
+                        endpoint always answers 422, and once the visit finishes
+                        without succeeding, the rollback restores exactly the
+                        value this card held the moment you clicked, not a value
+                        read back from the server, since the server never sent
+                        one.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
@@ -205,16 +213,21 @@ export default function OptimisticUpdates({
                     <code className="font-mono">
                         node_modules/@inertiajs/core/types/types.d.ts
                     </code>
-                    . callback receives the page&apos;s current props and
-                    returns only the keys it wants to change; the client applies
-                    that partial object to the live page immediately, verified
-                    by reading{' '}
+                    .
+                </p>
+                <p className="mt-2">
+                    callback receives the page&apos;s current props and returns
+                    only the keys it wants to change; the client applies that
+                    partial object to the live page immediately, verified by
+                    reading{' '}
                     <code className="font-mono">applyOptimisticUpdate()</code>{' '}
                     in{' '}
                     <code className="font-mono">
                         node_modules/@inertiajs/core/dist/index.js
                     </code>
-                    .{' '}
+                    .
+                </p>
+                <p className="mt-2">
                     <code className="font-mono">
                         {'<Form optimistic={(props, data) => ...}>'}
                     </code>{' '}
@@ -240,16 +253,28 @@ export default function OptimisticUpdates({
                     each key the callback touched held at that exact moment, not
                     the page&apos;s original value from before any clicks at
                     all: like twice in a row and a failing second click rolls
-                    back to what the first click left behind, not to zero. That
-                    restore runs once the visit finishes, from the same{' '}
+                    back to what the first click left behind, not to zero.
+                </p>
+                <p className="mt-2">
+                    That restore runs once the visit finishes, from the same{' '}
                     <code className="font-mono">onFinish</code> callback every
                     visit already fires, and only if{' '}
                     <code className="font-mono">onSuccess</code> never ran
                     first. A visit fails this way whether the server answers
-                    with validation errors, a bare{' '}
-                    <code className="font-mono">httpException</code> such as the
-                    right card&apos;s deliberate 422, or a network error that
-                    never reaches the server at all: all three still reach{' '}
+                    with:
+                </p>
+                <ul className="mt-1 list-disc space-y-1 pl-5">
+                    <li>validation errors.</li>
+                    <li>
+                        a bare <code className="font-mono">httpException</code>,
+                        such as the right card&apos;s deliberate 422.
+                    </li>
+                    <li>
+                        a network error that never reaches the server at all.
+                    </li>
+                </ul>
+                <p className="mt-2">
+                    All three still reach{' '}
                     <code className="font-mono">onFinish</code>, verified by
                     reading <code className="font-mono">Request.send()</code>
                     &apos;s own <code className="font-mono">
