@@ -1,15 +1,15 @@
 # Inertia Lab
 
 A Laravel and Inertia application whose only subject is Inertia itself. There is no
-Equativ domain here, no product to demo: every screen exists to isolate one Inertia
+business domain here, no product to demo: every screen exists to isolate one Inertia
 concept, let you trigger it, and show both halves of what happened, the wire on the
 client side and the prop resolution on the server side.
 
 ## Who this is for
 
-Primarily an engineering manager evaluating the Inertia based monolith chosen for BKO
-V3, who wants to see how Inertia actually behaves rather than read about it. Secondarily,
-any developer on that team onboarding onto Inertia. The reader is assumed to arrive with
+Primarily someone evaluating an Inertia based monolith, who wants to see how Inertia
+actually behaves rather than read about it. Secondarily, any developer onboarding onto
+Inertia. The reader is assumed to arrive with
 a conventional API plus SPA mental model (a backend exposing endpoints, a frontend
 fetching them), and every chapter is built to answer the questions that model produces:
 where is the endpoint, how does the component get its data if it never fetches, what

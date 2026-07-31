@@ -7,7 +7,7 @@ Status: approved, pending implementation plan
 
 A Laravel + Inertia + React application whose only subject is Inertia itself. The reader clones it, runs one command, and walks through chapters. Each chapter isolates one Inertia concept, lets the reader trigger it, and shows both halves of what happened: the wire on the client side, and the prop resolution on the server side.
 
-Primary reader: an engineering manager who clones and runs the app, evaluating the Inertia monolith chosen in the BKO V3 ADR, section 3 (Confluence DEM 5575213079). Secondary reader: BKO V3 developers onboarding onto Inertia. Both may be English speakers, which is why the application is written in English.
+Primary reader: someone who clones and runs the app while evaluating an Inertia monolith against an API plus SPA alternative, and who wants to see how Inertia behaves rather than read about it. Secondary reader: developers onboarding onto Inertia on such a project.
 
 **The reader arrives with a specific mental model, and shifting it is the point of the project.** They are used to conventional applications: a backend exposing an API, a frontend consuming it. Every question they will ask is framed by that model. Where is the endpoint. How does the component get its data if it does not fetch. What replaces my loading state, my client cache, my API contract. A chapter that explains an Inertia feature without answering the question underneath it will be read as a trick rather than a mechanism.
 
@@ -20,7 +20,7 @@ The success criterion is narrow and testable: after an hour in the app, the read
 - No argued comparison against API + SPA: no benchmark, no scorecard, no "look how much less code" claim. The ADR already made that call and the lab does not relitigate it. This is distinct from the mental-model translation described in section 5.6, which is a teaching device: naming what an API-first developer would have written, so they can locate the equivalent here. Translating is in scope, arguing is not.
 - No SSR chapter. The target is an internal application with no SEO requirement. The README states this in one paragraph so the question does not resurface in review.
 - No production concerns: deployment, scaling, auth hardening, i18n.
-- No Equativ domain. The sample domain is deliberately generic so that domain knowledge is never a prerequisite.
+- No business domain. The sample domain is deliberately generic so that domain knowledge is never a prerequisite.
 - Not a component library, not a design system showcase.
 
 ## 3. Stack and version policy
