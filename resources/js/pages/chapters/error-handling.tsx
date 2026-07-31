@@ -105,20 +105,41 @@ export default function ErrorHandling({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    The first four buttons each throw inside the request cycle.
-                    All four land on a normal page with its own link back to
-                    this chapter, because the{' '}
-                    <Term term="Exception response">exception response</Term>{' '}
-                    registered below renders one for every request under
-                    chapters/error-handling/*. The last button is not an
-                    exception at all: nothing here throws, so it opens the same
-                    dialog chapter 5&apos;s non-Inertia route already showed,
-                    dismissed by clicking outside it. Watch the Wire tab: the
-                    three thrown responses each carry the X-Inertia header
-                    despite their error status, which is what tells the client
-                    to render the page instead of that dialog.
-                </p>
+                <>
+                    <p className="mt-2">
+                        The five buttons above fall into three outcomes:
+                    </p>
+                    <ul className="mt-1 list-disc space-y-1 pl-5">
+                        <li>
+                            Submit normally succeeds outright: no exception, no
+                            dialog, just the status line above updating in
+                            place.
+                        </li>
+                        <li>
+                            The middle three (419, 404, 500) each throw inside
+                            the request cycle, and all three land on the same
+                            normal page with its own link back to this chapter,
+                            because the{' '}
+                            <Term term="Exception response">
+                                exception response
+                            </Term>{' '}
+                            registered below renders one for every request under
+                            chapters/error-handling/*.
+                        </li>
+                        <li>
+                            The last button is not an exception at all: nothing
+                            here throws, so it opens the same dialog chapter
+                            5&apos;s non-Inertia route already showed, dismissed
+                            by clicking outside it.
+                        </li>
+                    </ul>
+                    <p className="mt-2">
+                        Watch the Wire tab: the three thrown responses each
+                        carry the X-Inertia header despite their error status,
+                        which is what tells the client to render the page
+                        instead of that dialog.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
@@ -233,18 +254,23 @@ export default function ErrorHandling({
                     HandleInertiaRequests included, because Laravel&apos;s
                     router throws before it ever builds that middleware
                     pipeline. Shared data is empty at that point, not merely
-                    unrequested. A wrong CSRF token and a plain 500 both fail
-                    further into the pipeline, after HandleInertiaRequests has
-                    already run: RequireCsrfTokenMatch, the middleware that
-                    actually rejects the bad token on this route (see below for
-                    why it is not PreventRequestForgery), sits after it in the
-                    resolved order, and crash() throws from inside a controller
-                    the router had already dispatched to. Shared data already
-                    exists by the time either exception reaches this callback,
-                    so withSharedData() there only repeats work already done.
-                    Calling it every time regardless is what makes all three
-                    renders consistent without having to remember which case
-                    needed it.
+                    unrequested.
+                </p>
+                <p className="mt-2">
+                    A wrong CSRF token and a plain 500 both fail further into
+                    the pipeline, after HandleInertiaRequests has already run:
+                    RequireCsrfTokenMatch, the middleware that actually rejects
+                    the bad token on this route (see below for why it is not
+                    PreventRequestForgery), sits after it in the resolved order,
+                    and crash() throws from inside a controller the router had
+                    already dispatched to.
+                </p>
+                <p className="mt-2">
+                    Shared data already exists by the time either exception
+                    reaches this callback, so withSharedData() there only
+                    repeats work already done. Calling it every time regardless
+                    is what makes all three renders consistent without having to
+                    remember which case needed it.
                 </p>
             </section>
 
