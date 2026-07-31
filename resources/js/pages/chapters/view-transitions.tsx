@@ -82,25 +82,40 @@ export default function ViewTransitions({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    With the checkbox on, in a browser that supports the API,
-                    clicking a card cross-fades the whole page into the detail
-                    view while the clicked card&apos;s own title visibly moves
-                    and resizes into the detail page&apos;s heading, rather than
-                    the two just swapping. Switch the checkbox off and the same
-                    click replaces the page instantly, exactly like any other
-                    visit in every earlier chapter, since that is genuinely all
-                    a visit without viewTransition ever does. If this browser
-                    does not support the API at all, the checkbox makes no
-                    visible difference either way: the line above already says
-                    so, and <code className="font-mono">Page.swap()</code> in
-                    the installed core falls back to the same plain swap on its
-                    own, silently, whenever{' '}
-                    <code className="font-mono">
-                        document.startViewTransition
-                    </code>{' '}
-                    does not exist, or the tab is not currently visible.
-                </p>
+                <>
+                    <p className="mt-2">
+                        What you see depends on the checkbox above and this
+                        browser&apos;s own support for the API:
+                    </p>
+                    <ul className="mt-1 list-disc space-y-1 pl-5">
+                        <li>
+                            Checkbox on, in a browser that supports the API:
+                            clicking a card cross-fades the whole page into the
+                            detail view while the clicked card&apos;s own title
+                            visibly moves and resizes into the detail
+                            page&apos;s heading, rather than the two just
+                            swapping.
+                        </li>
+                        <li>
+                            Checkbox off: the same click replaces the page
+                            instantly, exactly like any other visit in every
+                            earlier chapter, since that is genuinely all a visit
+                            without viewTransition ever does.
+                        </li>
+                        <li>
+                            This browser does not support the API at all: the
+                            checkbox makes no visible difference either way. The
+                            line above already says so, and{' '}
+                            <code className="font-mono">Page.swap()</code> in
+                            the installed core falls back to the same plain swap
+                            on its own, silently, whenever{' '}
+                            <code className="font-mono">
+                                document.startViewTransition
+                            </code>{' '}
+                            does not exist, or the tab is not currently visible.
+                        </li>
+                    </ul>
+                </>
             }
             whenToUse={
                 <p>
@@ -180,19 +195,27 @@ export default function ViewTransitions({
                 <p className="mt-1">
                     <code className="font-mono">Page.swap()</code> checks three
                     things before it ever calls{' '}
-                    <code className="font-mono">startViewTransition()</code>:
-                    the visit actually asked for one, the current browser
-                    exposes the function at all, and the document is currently
-                    visible. Any one of those failing falls straight through to
-                    the same plain swap a visit without viewTransition performs,
-                    with no warning and no error: verified directly in that
-                    function&apos;s own source rather than assumed from the
-                    option existing. The Chromium engine (Chrome, Edge and other
-                    browsers built on it) shipped same-document view transitions
-                    first, in 2023; other engines have added support since, at
-                    their own pace, which is exactly why this page checks the
-                    browser it is running in directly above rather than naming
-                    versions that would go stale.
+                    <code className="font-mono">startViewTransition()</code>,
+                    verified directly in that function&apos;s own source rather
+                    than assumed from the option existing:
+                </p>
+                <ul className="mt-1 list-disc space-y-1 pl-5">
+                    <li>the visit actually asked for one.</li>
+                    <li>the current browser exposes the function at all.</li>
+                    <li>the document is currently visible.</li>
+                </ul>
+                <p className="mt-2">
+                    Any one of those failing falls straight through to the same
+                    plain swap a visit without viewTransition performs, with no
+                    warning and no error.
+                </p>
+                <p className="mt-2">
+                    The Chromium engine (Chrome, Edge and other browsers built
+                    on it) shipped same-document view transitions first, in
+                    2023; other engines have added support since, at their own
+                    pace, which is exactly why this page checks the browser it
+                    is running in directly above rather than naming versions
+                    that would go stale.
                 </p>
             </section>
         </ChapterShell>
