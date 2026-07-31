@@ -67,16 +67,16 @@ export default function MentalModel({
             }
             watchFor={
                 <p className="mt-2">
-                    Open the inspector and watch its Wire and Trace tabs: the
-                    first entry is the request for this page, and its trace
-                    lists posts as resolved and expensiveStats as skipped, with
-                    the reason. A moment later a second entry appears on its
-                    own: <Term term="Deferred prop">deferred props</Term>{' '}
-                    resolve automatically once the initial page has rendered,
-                    without anyone asking for them. That request carries
-                    X-Inertia-Partial-Data: expensiveStats, and the trace on it
-                    moves expensiveStats from skipped to resolved. The button
-                    asks for the same thing again, on demand.
+                    Watch the inspector&apos;s Wire and Trace tabs: two entries
+                    appear, the second one without you doing anything. The first
+                    is this page&apos;s own request, its trace listing posts as
+                    resolved and expensiveStats as skipped, with the reason
+                    given. The second follows on its own once the page has
+                    rendered: <Term term="Deferred prop">deferred props</Term>{' '}
+                    resolve automatically, no request from you needed. It
+                    carries X-Inertia-Partial-Data: expensiveStats, and the
+                    trace now shows expensiveStats moved from skipped to
+                    resolved. The button repeats that same request, on demand.
                 </p>
             }
             whenToUse={
