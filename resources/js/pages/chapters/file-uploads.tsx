@@ -53,19 +53,26 @@ export default function FileUploads({
                 </p>
             }
             watchFor={
-                <p className="mt-2">
-                    The data this form submits is a single field, cover, holding
-                    a File. Nothing here builds a FormData object or sets a
-                    Content-Type: putting a File anywhere in the data is what
-                    makes the visit send as{' '}
-                    <Term term="Multipart request">multipart/form-data</Term>{' '}
-                    instead of the JSON body every other chapter&apos;s visits
-                    use. While the upload is in flight, form.progress is not
-                    null, and its percentage field is what the bar below reads;
-                    both go back to null and false once the upload finishes and
-                    the redirect this chapter&apos;s controller sends lands back
-                    here.
-                </p>
+                <>
+                    <p className="mt-2">
+                        The data this form submits is a single field, cover,
+                        holding a File. Nothing here builds a FormData object or
+                        sets a Content-Type: putting a File anywhere in the data
+                        is what makes the visit send as{' '}
+                        <Term term="Multipart request">
+                            multipart/form-data
+                        </Term>{' '}
+                        instead of the JSON body every other chapter&apos;s
+                        visits use.
+                    </p>
+                    <p className="mt-2">
+                        While the upload is in flight, form.progress is not
+                        null, and its percentage field is what the bar below
+                        reads; both go back to null and false once the upload
+                        finishes and the redirect this chapter&apos;s controller
+                        sends lands back here.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
