@@ -237,6 +237,8 @@ export default function DevtoolsAndTesting({
                     headers; the inspector&apos;s Trace tab and the
                     DevTools&apos; Props tab both come from watching the same
                     props resolve. Past that, they exist for different reasons.
+                </p>
+                <p className="mt-2">
                     The inspector is this lab&apos;s own teaching device: it is
                     bundled with this application specifically so a reader never
                     has to install anything before seeing the first request, and
@@ -245,10 +247,13 @@ export default function DevtoolsAndTesting({
                         App\Http\Middleware\InjectLabTrace
                     </code>{' '}
                     is removed, which nothing about a real Inertia application
-                    requires. The DevTools are the tool a team actually reaches
-                    for: installed once per developer, working across every
-                    Inertia application on their machine, with a persistent
-                    history on disk (
+                    requires.
+                </p>
+                <p className="mt-2">
+                    The DevTools are the tool a team actually reaches for:
+                    installed once per developer, working across every Inertia
+                    application on their machine, with a persistent history on
+                    disk (
                     <code className="font-mono">storage/inertia-devtools</code>,
                     pruned on a timer) that survives a page reload, which this
                     lab&apos;s own in-memory inspector does not.
@@ -264,12 +269,15 @@ export default function DevtoolsAndTesting({
                     application is serving would coincide, by construction, with
                     the dev server that served the page the button is on: there
                     is no way to click this button without that server already
-                    running. This project has already had to work around exactly
-                    that combination (a concurrent run, or the SSR dev server
-                    left running) producing spurious failures when running the
-                    real suite from a terminal; putting the same combination
-                    behind a button on a live page rather than removing it would
-                    be choosing the least reliable way to demonstrate a testing
+                    running.
+                </p>
+                <p className="mt-2">
+                    This project has already had to work around exactly that
+                    combination (a concurrent run, or the SSR dev server left
+                    running) producing spurious failures when running the real
+                    suite from a terminal; putting the same combination behind a
+                    button on a live page rather than removing it would be
+                    choosing the least reliable way to demonstrate a testing
                     chapter. Showing the test file and the result of actually
                     running it, below, carries the same information without that
                     risk.
@@ -281,6 +289,13 @@ export default function DevtoolsAndTesting({
                     Why assertInertia() does not appear in this suite
                 </h2>
                 <p className="mt-1">
+                    The test below confirms both directions on this exact route:
+                    assertInertia() fails once devtools is on, and passes on the
+                    same route with devtools off, which is what isolates
+                    devtools, not this application&apos;s own middleware, as the
+                    cause.
+                </p>
+                <p className="mt-2">
                     assertInertia() and the official inertiaProps()/
                     inertiaPage() macros all resolve through{' '}
                     <code className="font-mono">
@@ -302,24 +317,29 @@ export default function DevtoolsAndTesting({
                     through a second{' '}
                     <code className="font-mono">setContent()</code>, which
                     overwrites <code className="font-mono">$original</code> back
-                    to a plain string. This application&apos;s own{' '}
+                    to a plain string.
+                </p>
+                <p className="mt-2">
+                    This application&apos;s own{' '}
                     <code className="font-mono">InjectLabTrace</code> middleware
                     does the same kind of content swap for its own trace script
                     tag, and survives it only because it deliberately restores{' '}
                     <code className="font-mono">$original</code> right
                     afterward, a step the extension&apos;s recorder has no
-                    reason to take. The test below confirms both directions on
-                    this exact route: assertInertia() fails once devtools is on,
-                    and passes on the same route with devtools off, which is
-                    what isolates devtools, not this application&apos;s own
-                    middleware, as the cause. On a partial reload the same
-                    assertion fails for an unrelated, permanent reason: those
-                    responses are a bare JSON body that never touches a view at
-                    all, with or without devtools. tests/Pest.php adds
-                    inertiaPage(), assertInertiaPage() and labTrace() to read a
-                    page object and this lab&apos;s own prop trace directly from
-                    the response body instead, and every chapter test in this
-                    application, including this one, uses them.
+                    reason to take.
+                </p>
+                <p className="mt-2">
+                    On a partial reload the same assertion fails for an
+                    unrelated, permanent reason: those responses are a bare JSON
+                    body that never touches a view at all, with or without
+                    devtools.
+                </p>
+                <p className="mt-2">
+                    tests/Pest.php adds inertiaPage(), assertInertiaPage() and
+                    labTrace() to read a page object and this lab&apos;s own
+                    prop trace directly from the response body instead, and
+                    every chapter test in this application, including this one,
+                    uses them.
                 </p>
             </section>
 
