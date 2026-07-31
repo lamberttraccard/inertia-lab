@@ -67,7 +67,8 @@ export default function MentalModel({
             }
             watchFor={
                 <p className="mt-2">
-                    The strip below shows the request for this page. Its trace
+                    Open the inspector and watch its Wire and Trace tabs: the
+                    first entry is the request for this page, and its trace
                     lists posts as resolved and expensiveStats as skipped, with
                     the reason. A moment later a second entry appears on its
                     own: <Term term="Deferred prop">deferred props</Term>{' '}

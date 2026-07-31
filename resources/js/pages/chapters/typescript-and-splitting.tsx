@@ -57,7 +57,7 @@ export default function TypescriptAndSplitting({
             }
             watchFor={
                 <p className="mt-2">
-                    No wire-strip trick either. The one thing to watch is below,
+                    No inspector trick either. The one thing to watch is below,
                     in the build info section: it is read from the real Vite
                     manifest for this exact page on this exact build, not a
                     description of what code splitting usually does.

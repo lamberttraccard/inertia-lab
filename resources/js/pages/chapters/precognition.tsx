@@ -85,11 +85,11 @@ export default function Precognition({
                     node_modules/@inertiajs/react/package.json), which sends it
                     through the browser&apos;s fetch function rather than the
                     XMLHttpRequest every Inertia visit in this app uses. Because
-                    it carries no X-Inertia header, this app&apos;s own wire
-                    strip below never records it. Open your browser&apos;s
-                    network tab to see it directly: an available slug answers
-                    204 with a Precognition-Success header and an empty body,
-                    and a taken one answers 422 with{' '}
+                    it carries no X-Inertia header, this app&apos;s own
+                    inspector never records it. Open your browser&apos;s network
+                    tab to see it directly: an available slug answers 204 with a
+                    Precognition-Success header and an empty body, and a taken
+                    one answers 422 with{' '}
                     <code className="font-mono">
                         {
                             '{"message":"The slug has already been taken.","errors":{"slug":["The slug has already been taken."]}}'

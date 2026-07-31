@@ -44,8 +44,8 @@ export default function RenderAndComponents({
                     treats that as a non-Inertia response to a{' '}
                     <Term term="Visit">visit</Term> and shows it full page, in a
                     dialog element layered over this one. Click outside it to
-                    dismiss it. The Lifecycle tab of the wire strip still
-                    records the visit: look for httpException.
+                    dismiss it. The inspector&apos;s Lifecycle tab still records
+                    the visit: look for httpException.
                 </p>
             }
             whenToUse={

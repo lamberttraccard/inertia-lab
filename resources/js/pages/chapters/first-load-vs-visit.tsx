@@ -51,17 +51,17 @@ export default function FirstLoadVsVisit({
             }
             watchFor={
                 <p className="mt-2">
-                    Watch renderedAt for the Link, not the wire strip: this
-                    visit swaps in a fresh copy of this very page without
-                    preserveState, so the strip you are reading remounts as part
-                    of that same visit and starts over empty, missing its own
-                    entry (your browser&apos;s own network tab would show it:
-                    X-Inertia: true on the request, JSON back). The plain anchor
-                    is the clearer contrast to see directly here: a completely
-                    new page load, wire strip and all, with no X-Inertia header
-                    anywhere. Either way, renderedAt changes, proving the
-                    controller ran again rather than the browser reusing what it
-                    already had.
+                    Watch renderedAt for the Link, not the inspector: this visit
+                    swaps in a fresh copy of this very page without
+                    preserveState, so the inspector you are reading remounts as
+                    part of that same visit and starts over empty, missing its
+                    own entry (your browser&apos;s own network tab would show
+                    it: X-Inertia: true on the request, JSON back). The plain
+                    anchor is the clearer contrast to see directly here: a
+                    completely new page load, inspector and all, with no
+                    X-Inertia header anywhere. Either way, renderedAt changes,
+                    proving the controller ran again rather than the browser
+                    reusing what it already had.
                 </p>
             }
             whenToUse={

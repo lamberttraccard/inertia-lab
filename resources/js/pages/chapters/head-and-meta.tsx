@@ -51,8 +51,8 @@ export default function HeadAndMeta({
                     ChapterShell&apos;s own, and a later title always replaces
                     an earlier one rather than the two competing. There is no
                     request involved in any of this: nothing here is a visit, so
-                    the wire strip below has nothing to record no matter how
-                    much you type.
+                    the inspector has nothing to record no matter how much you
+                    type.
                 </p>
             }
             whenToUse={

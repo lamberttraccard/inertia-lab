@@ -54,7 +54,7 @@ export default function Layouts({ chapter, previous, next }: LayoutsProps) {
                     comes from setLayoutProps, called by a button on each panel,
                     and it goes back to its unset state every time you switch
                     panels, until the panel you land on calls setLayoutProps
-                    again itself. This lab&apos;s own wire strip does not appear
+                    again itself. This lab&apos;s own inspector does not appear
                     on either panel: they are deliberately minimal pages, not
                     full chapters, so there is nothing here to render it into.
                 </p>

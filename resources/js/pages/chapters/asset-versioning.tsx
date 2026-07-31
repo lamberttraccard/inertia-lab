@@ -137,16 +137,16 @@ export default function AssetVersioning({
                     Inertia-processed response updates this tab&apos;s own
                     remembered version immediately, which would resynchronise it
                     before the mismatch below ever had a chance to happen, and
-                    for the same reason neither one shows up in the wire
-                    strip&apos;s Wire tab either. Bump, then click &quot;Visit
-                    this page again&quot;: the request still carries the version
-                    this tab booted with, the server now answers with a
-                    different one, and{' '}
+                    for the same reason neither one shows up in the
+                    inspector&apos;s Wire tab either. Bump, then click
+                    &quot;Visit this page again&quot;: the request still carries
+                    the version this tab booted with, the server now answers
+                    with a different one, and{' '}
                     <code className="font-mono">
                         Inertia\Middleware::handle()
                     </code>{' '}
                     turns that GET into a 409 with X-Inertia-Location. Watch the
-                    address bar, not the wire strip: the client&apos;s own
+                    address bar, not the inspector: the client&apos;s own
                     response to a 409 is{' '}
                     <code className="font-mono">locationVisit(url)</code>, which
                     checks{' '}
@@ -160,9 +160,9 @@ export default function AssetVersioning({
                     runs here:{' '}
                     <code className="font-mono">window.location.reload()</code>,
                     a full browser navigation away from this Inertia session
-                    entirely, so the strip has nothing left to record and the
-                    page you land on is a fresh document load, this time booted
-                    with the bumped version. Chapter 3&apos;s{' '}
+                    entirely, so the inspector has nothing left to record and
+                    the page you land on is a fresh document load, this time
+                    booted with the bumped version. Chapter 3&apos;s{' '}
                     <code className="font-mono">Inertia::location()</code>{' '}
                     control exercises the other branch, since it targets a URL
                     outside this application entirely. Click &quot;Restore the

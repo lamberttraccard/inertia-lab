@@ -16,9 +16,9 @@ export default function HistoryEncryption({
     previous,
     next,
 }: HistoryEncryptionProps) {
-    // Read directly from the live page object, the same one the wire strip's "Page
-    // object" details panel below shows for this exact response: encryptHistory and
-    // clearHistory are top-level Page fields, verified in
+    // Read directly from the live page object, the same one the inspector's Wire tab
+    // shows in its own "Page object" details for this exact response: encryptHistory
+    // and clearHistory are top-level Page fields, verified in
     // node_modules/@inertiajs/core/types/types.d.ts, not props.
     const page = usePage();
 
@@ -60,7 +60,7 @@ export default function HistoryEncryption({
             watchFor={
                 <p className="mt-2">
                     Click the button, then open the Page object details in the
-                    wire strip below for that request: it carries{' '}
+                    inspector&apos;s Wire tab for that request: it carries{' '}
                     <code className="font-mono">clearHistory: true</code>, and
                     the line above updates to match. Every render of this route,
                     including that one, also carries{' '}

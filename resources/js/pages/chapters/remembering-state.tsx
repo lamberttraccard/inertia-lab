@@ -135,7 +135,7 @@ export default function RememberingState({
             watchFor={
                 <p className="mt-2">
                     Both boxes filter the exact same posts array in the browser:
-                    neither keystroke sends a request, so the wire strip stays
+                    neither keystroke sends a request, so the inspector stays
                     quiet while you type. Coming back from a detail page through
                     its own &quot;Go back&quot; button is what tells the
                     difference: the plain box reads empty again, because the

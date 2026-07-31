@@ -52,19 +52,19 @@ export default function HttpRequests({
             }
             watchFor={
                 <p className="mt-2">
-                    Click the button, then look at the wire strip below: it
-                    stays exactly as empty as it was before you clicked. That is
-                    not the strip failing to notice the request; the response
-                    above is proof the request reached the server and came back.
-                    Every capture this lab installs keys off the X-Inertia
-                    header, and useHttp&apos;s own request never sets it,
-                    verified directly in the submit() function inside{' '}
+                    Click the button, then open the inspector&apos;s Wire tab:
+                    it stays exactly as empty as it was before you clicked. That
+                    is not the inspector failing to notice the request; the
+                    response above is proof the request reached the server and
+                    came back. Every capture this lab installs keys off the
+                    X-Inertia header, and useHttp&apos;s own request never sets
+                    it, verified directly in the submit() function inside{' '}
                     <code className="font-mono">
                         node_modules/@inertiajs/react/dist/index.js
                     </code>
                     , which builds its headers from only Accept and, when the
                     body is JSON, Content-Type. Your browser&apos;s own network
-                    tab would show this request; this lab&apos;s wire strip is
+                    tab would show this request; this lab&apos;s inspector is
                     built to show visits, and deliberately will not show this,
                     because it is not one.
                 </p>

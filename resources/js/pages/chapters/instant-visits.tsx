@@ -89,9 +89,9 @@ export default function InstantVisits({
                     keeps you on this page, footer and all, until the response
                     arrives a second and a half later. &quot;Open
                     instantly&quot; replaces this whole page with the detail
-                    component immediately: no wire strip, no footer, no
-                    ChapterShell, because that component was never wrapped in
-                    one. For 1.5 seconds it reads{' '}
+                    component immediately: no inspector, no header nav, no
+                    ChapterShell at all, because that component was never
+                    wrapped in one. For 1.5 seconds it reads{' '}
                     <em>post is undefined right now</em>, the detail page&apos;s
                     own fallback text for exactly that state, not a loading
                     spinner bolted on afterwards. Once the real response lands,

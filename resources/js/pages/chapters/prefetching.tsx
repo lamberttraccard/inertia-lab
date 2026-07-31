@@ -220,11 +220,12 @@ export default function Prefetching({
                     The mount link starts{' '}
                     <Term term="Prefetch">prefetching</Term> on its own the
                     moment this page finishes loading, before you touch
-                    anything: watch the wire strip below for a request carrying
-                    a bare <code className="font-mono">Purpose: prefetch</code>{' '}
-                    header right after the page appears. Hover the hover link
-                    and, after 75 milliseconds (this installed version&apos;s
-                    real default, read from{' '}
+                    anything: watch the inspector&apos;s Wire tab for a request
+                    carrying a bare{' '}
+                    <code className="font-mono">Purpose: prefetch</code> header
+                    right after the page appears. Hover the hover link and,
+                    after 75 milliseconds (this installed version&apos;s real
+                    default, read from{' '}
                     <code className="font-mono">
                         config.get(&apos;prefetch.hoverDelay&apos;)
                     </code>
@@ -232,7 +233,7 @@ export default function Prefetching({
                     down (not up) and a third fires immediately, on mousedown,
                     before the click that actually navigates ever completes.
                     Whichever you trigger, the follow-up click itself records no
-                    new entry in the wire strip at all: the response was already
+                    new entry in the inspector at all: the response was already
                     sitting in the cache, so the visit that lands on the
                     destination page never leaves the browser. All four links
                     point at the same URL with the same options, so they read
@@ -317,8 +318,8 @@ export default function Prefetching({
                     <code className="font-mono">
                         node_modules/@inertiajs/core/dist/index.js
                     </code>
-                    . The wire strip&apos;s round-trip diagram already keys its
-                    browser and render segments off exactly this header.
+                    . The inspector&apos;s Diagram tab already keys its browser
+                    and render segments off exactly this header.
                 </p>
             </section>
 

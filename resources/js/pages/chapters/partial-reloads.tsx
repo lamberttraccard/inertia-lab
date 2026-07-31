@@ -32,9 +32,9 @@ type Comparison = {
 
 let nextComparisonId = 1;
 
-// Read back from the same request headers the wire strip already displays, rather than
-// tracked separately: this is the one true record of what this exact request asked for,
-// so the label can never drift from what actually left the browser.
+// Read back from the same request headers the inspector's Wire tab already displays,
+// rather than tracked separately: this is the one true record of what this exact
+// request asked for, so the label can never drift from what actually left the browser.
 function labelFor(entry: WireEntry): string {
     const only = entry.requestHeaders['x-inertia-partial-data'];
     const except = entry.requestHeaders['x-inertia-partial-except'];
@@ -169,13 +169,13 @@ export default function PartialReloads({
                     tags and stats disappear from &quot;Props in the
                     response&quot; and the payload shrinks to a fraction of the
                     full reload&apos;s. except keeps everything but stats. The
-                    trace below tells you why each miss happened: only marks
-                    tags and stats &quot;not requested by only&quot;, except
-                    marks stats &quot;excluded by except&quot;, a different
-                    SkipReason for a different header. Turn on slow mode from
-                    the round-trip diagram above and click except again: stats
-                    is the slow one, so skipping it saves real time, not only
-                    bytes.
+                    inspector&apos;s Trace tab tells you why each miss happened:
+                    only marks tags and stats &quot;not requested by only&quot;,
+                    except marks stats &quot;excluded by except&quot;, a
+                    different SkipReason for a different header. Turn on slow
+                    mode (the same control the deferred-props chapter uses) and
+                    click except again: stats is the slow one, so skipping it
+                    saves real time, not only bytes.
                 </p>
             }
             whenToUse={

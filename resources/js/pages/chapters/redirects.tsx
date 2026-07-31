@@ -54,11 +54,11 @@ export default function Redirects({
                 <p className="mt-2">
                     The first two buttons land back on this same page: watch
                     lastAction below change once the follow-up GET renders. The
-                    wire strip&apos;s own entry for that click shows 200, not
-                    302 or 303: XMLHttpRequest follows a same-origin redirect on
-                    its own, so what reaches this app&apos;s capture is the
-                    final response, not the redirect itself. Your browser&apos;s
-                    own network tab does show the intermediate hop, or read this
+                    inspector&apos;s own entry for that click shows 200, not 302
+                    or 303: XMLHttpRequest follows a same-origin redirect on its
+                    own, so what reaches this app&apos;s capture is the final
+                    response, not the redirect itself. Your browser&apos;s own
+                    network tab does show the intermediate hop, or read this
                     chapter&apos;s test file, which asserts the real number
                     directly against the unfollowed response. The third button
                     leaves this application entirely, for the URL of
@@ -66,8 +66,7 @@ export default function Redirects({
                     see its 409 response and the X-Inertia-Location header
                     rather than just the address bar changing, open your
                     browser&apos;s network tab before clicking it, since this
-                    app&apos;s own wire strip cannot survive the navigation
-                    away.
+                    app&apos;s own inspector cannot survive the navigation away.
                 </p>
             }
             whenToUse={
@@ -105,7 +104,7 @@ export default function Redirects({
                     after POST into a GET on their own, so nothing needs
                     forcing. Both numbers describe what the server actually
                     sent, confirmed by this chapter&apos;s own test against the
-                    unfollowed response; the wire strip below cannot show them
+                    unfollowed response; the inspector cannot show them
                     directly, for the reason explained under What to watch.
                 </p>
                 <h2 className="mt-4 text-lg font-semibold">

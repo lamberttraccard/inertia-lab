@@ -169,14 +169,14 @@ export default function LinksAndVisits({
                 <p className="mt-2">
                     Without preserveState checked, clicking either button above
                     remounts this whole page as a fresh component instance: the
-                    toggles you just set reset to their defaults, and the wire
-                    strip below goes back to empty too, since it is part of the
+                    toggles you just set reset to their defaults, and the
+                    inspector goes back to empty too, since it is part of the
                     same instance. The entry for the very request that caused
                     this was recorded a moment earlier, into the instance that
                     no longer exists, so it never appears. Check preserveState
                     first and click again: the same instance survives, the
-                    toggles stay exactly as you left them, and the strip keeps
-                    every earlier entry and adds this one on top.
+                    toggles stay exactly as you left them, and the inspector
+                    keeps every earlier entry and adds this one on top.
                 </p>
             }
             whenToUse={

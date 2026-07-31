@@ -119,9 +119,9 @@ export default function DevtoolsAndTesting({
             }
             watchFor={
                 <p className="mt-2">
-                    This chapter has no wire-strip trick to watch: it is about
-                    the two tools that replace watching the wire strip once you
-                    leave this lab. Everything below is either something to
+                    This chapter has no inspector trick to watch: it is about
+                    the two tools that replace this lab&apos;s own inspector
+                    once you leave it. Everything below is either something to
                     install (the browser extension) or something already running
                     (this suite).
                 </p>
@@ -129,9 +129,9 @@ export default function DevtoolsAndTesting({
             whenToUse={
                 <p>
                     Install the DevTools extension for any real Inertia
-                    application you work on; this lab&apos;s wire strip exists
-                    only because a teaching app cannot ask you to install a
-                    browser extension before its first page loads. Reach for
+                    application you work on; this lab&apos;s own inspector
+                    exists only because a teaching app cannot ask you to install
+                    a browser extension before its first page loads. Reach for
                     inertiaPage()/assertInertiaPage() (or plain assertInertia(),
                     in an application where it works) in every feature test that
                     hits an Inertia route.
@@ -225,19 +225,19 @@ export default function DevtoolsAndTesting({
 
             <section>
                 <h2 className="text-lg font-semibold">
-                    The wire strip is not a smaller DevTools
+                    The inspector is not a smaller DevTools
                 </h2>
                 <p className="mt-1">
                     Both watch the same requests, and both read data this exact
-                    codebase produces: the strip&apos;s Wire tab and the
+                    codebase produces: the inspector&apos;s Wire tab and the
                     DevTools&apos; HTTP tab both show request and response
-                    headers; the strip&apos;s per-prop resolved/skipped list and
-                    the DevTools&apos; Props tab both come from watching the
-                    same props resolve. Past that, they exist for different
-                    reasons. The strip is this lab&apos;s own teaching device:
-                    it is bundled with this application specifically so a reader
-                    never has to install anything before seeing the first
-                    request, and it disappears the moment{' '}
+                    headers; the inspector&apos;s Trace tab and the
+                    DevTools&apos; Props tab both come from watching the same
+                    props resolve. Past that, they exist for different reasons.
+                    The inspector is this lab&apos;s own teaching device: it is
+                    bundled with this application specifically so a reader never
+                    has to install anything before seeing the first request, and
+                    it disappears the moment{' '}
                     <code className="font-mono">
                         App\Http\Middleware\InjectLabTrace
                     </code>{' '}
@@ -248,7 +248,7 @@ export default function DevtoolsAndTesting({
                     history on disk (
                     <code className="font-mono">storage/inertia-devtools</code>,
                     pruned on a timer) that survives a page reload, which this
-                    lab&apos;s own in-memory strip does not.
+                    lab&apos;s own in-memory inspector does not.
                 </p>
             </section>
 
@@ -323,8 +323,8 @@ export default function DevtoolsAndTesting({
             <section>
                 <h2 className="text-lg font-semibold">The test itself</h2>
                 <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-                    Read from disk on this request, the same way the chapter
-                    shell&apos;s own Source section reads a chapter&apos;s
+                    Read from disk on this request, the same way the
+                    inspector&apos;s own Source tab reads a chapter&apos;s
                     controller and page.
                 </p>
                 <p className="mt-2 text-sm">
