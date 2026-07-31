@@ -18,7 +18,7 @@ type SourceViewProps = {
 };
 
 // A plain, unheaded fetch, deliberately outside Inertia's visit lifecycle: this reads a
-// source file for display, not a page navigation, so it must not appear in the wire strip
+// source file for display, not a page navigation, so it must not appear in the inspector's wire tab
 // next to the chapter's own lesson (the capture only records requests carrying an
 // X-Inertia header, so a plain fetch never reaches it).
 export function SourceView({ slug, serverFile, clientFile }: SourceViewProps) {

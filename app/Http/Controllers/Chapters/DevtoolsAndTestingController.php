@@ -23,7 +23,7 @@ class DevtoolsAndTestingController
             'previous' => $lab->value('previous', self::neighbour($registry->previous('devtools-and-testing'))),
             'next' => $lab->value('next', self::neighbour($registry->next('devtools-and-testing'))),
             // Read live rather than assumed: reflects whatever this exact request actually
-            // resolved, the same call the wire strip's own "trace is off" message reads.
+            // resolved, the same call the inspector's own "trace is off" message reads.
             'devtoolsEnabled' => $lab->value('devtoolsEnabled', DevTools::enabled()),
         ]);
     }
