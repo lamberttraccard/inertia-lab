@@ -163,20 +163,25 @@ export default function Events({ chapter, note, previous, next }: EventsProps) {
                 <p className="mt-1">
                     Watched directly in the Lifecycle tab for the button above,
                     not assumed: before, start, beforeUpdate, success, finish,
-                    in that order. No navigate appears, which is itself worth
-                    explaining rather than a gap in the list.{' '}
+                    in that order.
+                </p>
+                <p className="mt-2">
+                    navigate does not appear, and that absence is itself worth
+                    explaining: this button reloads the exact URL you are
+                    already on, and{' '}
                     <code className="font-mono">
                         node_modules/@inertiajs/core/dist/index.js
                     </code>{' '}
-                    forces a same-URL visit to replace history rather than push
-                    a new entry, and the function that fires navigate skips
-                    doing so whenever the visit replaces: this button reloads
-                    the exact URL you are already on, so it always takes that
-                    path. A visit to a different URL, such as the next or
-                    previous chapter link at the bottom of this page, does fire
-                    navigate, at the cost of leaving this page, and its
-                    Lifecycle tab, behind. progress never appears here either:
-                    the client only fires it for a request whose body is{' '}
+                    always forces a same-URL visit to replace history rather
+                    than push a new entry, and the function that fires navigate
+                    skips doing so whenever the visit replaces. A visit to a
+                    different URL, such as the next or previous chapter link at
+                    the bottom of this page, does fire navigate, at the cost of
+                    leaving this page, and its Lifecycle tab, behind.
+                </p>
+                <p className="mt-2">
+                    progress does not appear either: the client only fires it
+                    for a request whose body is{' '}
                     <code className="font-mono">FormData</code>, which a plain
                     GET never carries.
                 </p>
@@ -184,28 +189,31 @@ export default function Events({ chapter, note, previous, next }: EventsProps) {
                     One event, three unrelated causes
                 </h2>
                 <p className="mt-1">
-                    The 422 and the 500 both come from{' '}
+                    All three buttons fire the same event: httpException, not
+                    three different ones. The 422 and the 500 both come from{' '}
                     <code className="font-mono">abort()</code>, thrown before
                     the controller ever calls{' '}
-                    <code className="font-mono">Inertia::render()</code>. The
+                    <code className="font-mono">Inertia::render()</code>; the
                     exception unwinds past{' '}
                     <code className="font-mono">
                         Inertia\Middleware::handle()
                     </code>
                     &apos;s own post-processing, the same mechanism chapter 2
                     observed for its broken component name, so neither response
-                    carries the X-Inertia header Inertia sets only inside{' '}
+                    carries the X-Inertia header that Inertia sets only inside{' '}
                     <code className="font-mono">Response::toResponse()</code>.
                     The client&apos;s own check for whether a response is an{' '}
                     <Term term="Page object">Inertia response</Term> reads that
                     header, not the status code, so a 422, a 500 and a plain 200
-                    that simply never called{' '}
+                    that never called{' '}
                     <code className="font-mono">Inertia::render()</code> are
-                    indistinguishable to it: all three fire httpException, not
-                    three different events. The dialogs still look different
-                    from each other, for a reason that has nothing to do with
-                    Inertia: Laravel ships its own generic view for a handful of
-                    status codes, 500 among them, and{' '}
+                    indistinguishable to it.
+                </p>
+                <p className="mt-2">
+                    The dialogs still look different from each other, for a
+                    reason that has nothing to do with Inertia: Laravel ships
+                    its own generic view for a handful of status codes, 500
+                    among them, and{' '}
                     <code className="font-mono">
                         Handler::renderHttpException()
                     </code>{' '}
