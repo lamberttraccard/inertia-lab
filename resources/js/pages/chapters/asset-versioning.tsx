@@ -131,51 +131,61 @@ export default function AssetVersioning({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    Bump and reset are plain fetch calls rather than{' '}
-                    <code className="font-mono">router.post</code>: any
-                    Inertia-processed response updates this tab&apos;s own
-                    remembered version immediately, which would resynchronise it
-                    before the mismatch below ever had a chance to happen, and
-                    for the same reason neither one shows up in the
-                    inspector&apos;s Wire tab either. Bump, then click
-                    &quot;Visit this page again&quot;: the request still carries
-                    the version this tab booted with, the server now answers
-                    with a different one, and{' '}
-                    <code className="font-mono">
-                        Inertia\Middleware::handle()
-                    </code>{' '}
-                    turns that GET into a 409 with X-Inertia-Location. Watch the
-                    address bar, not the inspector: the client&apos;s own
-                    response to a 409 is{' '}
-                    <code className="font-mono">locationVisit(url)</code>, which
-                    checks{' '}
-                    <code className="font-mono">
-                        isSameUrlWithoutHash(window.location, url)
-                    </code>{' '}
-                    and either reloads when the URL is unchanged or assigns{' '}
-                    <code className="font-mono">window.location.href</code> when
-                    it differs. This button always revisits the exact page you
-                    are already on, so the unchanged-URL branch is what actually
-                    runs here:{' '}
-                    <code className="font-mono">window.location.reload()</code>,
-                    a full browser navigation away from this Inertia session
-                    entirely, so the inspector has nothing left to record and
-                    the page you land on is a fresh document load, this time
-                    booted with the bumped version. Chapter 3&apos;s{' '}
-                    <code className="font-mono">Inertia::location()</code>{' '}
-                    control exercises the other branch, since it targets a URL
-                    outside this application entirely. Click &quot;Restore the
-                    real asset version&quot; when you are done: it clears the
-                    override this app stored in your session, and is the only
-                    way back to the build&apos;s own version once you have
-                    bumped it. Restoring does not resynchronise this tab by
-                    itself, though, for the same reason bumping did not: it is a
-                    plain fetch too. Click &quot;Visit this page again&quot;
-                    once more and you will see one last 409, in the opposite
-                    direction this time, before this tab is fully back to
-                    normal.
-                </p>
+                <>
+                    <p className="mt-2">
+                        Bump and reset are plain fetch calls rather than{' '}
+                        <code className="font-mono">router.post</code>: any
+                        Inertia-processed response updates this tab&apos;s own
+                        remembered version immediately, which would
+                        resynchronise it before the mismatch below ever had a
+                        chance to happen, and for the same reason neither one
+                        shows up in the inspector&apos;s Wire tab either.
+                    </p>
+                    <p className="mt-2">
+                        Bump, then click &quot;Visit this page again&quot;: the
+                        request still carries the version this tab booted with,
+                        the server now answers with a different one, and{' '}
+                        <code className="font-mono">
+                            Inertia\Middleware::handle()
+                        </code>{' '}
+                        turns that GET into a 409 with X-Inertia-Location.
+                    </p>
+                    <p className="mt-2">
+                        Watch the address bar, not the inspector, for what
+                        happens next: the client&apos;s own response to a 409 is{' '}
+                        <code className="font-mono">locationVisit(url)</code>,
+                        which checks{' '}
+                        <code className="font-mono">
+                            isSameUrlWithoutHash(window.location, url)
+                        </code>{' '}
+                        and either reloads when the URL is unchanged or assigns{' '}
+                        <code className="font-mono">window.location.href</code>{' '}
+                        when it differs. This button always revisits the exact
+                        page you are already on, so the unchanged-URL branch
+                        runs:{' '}
+                        <code className="font-mono">
+                            window.location.reload()
+                        </code>
+                        , a full browser navigation away from this Inertia
+                        session entirely. The inspector has nothing left to
+                        record, and the page you land on is a fresh document
+                        load, booted with the bumped version. Chapter 3&apos;s{' '}
+                        <code className="font-mono">Inertia::location()</code>{' '}
+                        control exercises the other branch instead, since it
+                        targets a URL outside this application entirely.
+                    </p>
+                    <p className="mt-2">
+                        Click &quot;Restore the real asset version&quot; when
+                        you are done: it clears the override this app stored in
+                        your session, and is the only way back to the
+                        build&apos;s own version once you have bumped it.
+                        Restoring does not resynchronise this tab by itself, for
+                        the same reason bumping did not: it is a plain fetch
+                        too. Click &quot;Visit this page again&quot; once more
+                        and you will see one last 409, in the opposite direction
+                        this time, before this tab is fully back to normal.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
@@ -224,8 +234,8 @@ export default function AssetVersioning({
                     </code>{' '}
                     checks a session key first and only falls back to that hash
                     when the key is absent. Bump writes a random value there;
-                    reset removes it entirely, and is the visible way back this
-                    session cannot do without.
+                    reset removes it entirely, and is the only way back this
+                    session has.
                 </p>
             </section>
         </ChapterShell>
