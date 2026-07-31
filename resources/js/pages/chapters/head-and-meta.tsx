@@ -33,7 +33,7 @@ export default function HeadAndMeta({
                             className="mt-1 block w-full rounded border border-neutral-400 px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-900"
                         />
                     </label>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300">
                         Watch your browser tab, not this page, while you type: a{' '}
                         <Term term="Head component">Head component</Term>{' '}
                         further down this page is bound to this input.

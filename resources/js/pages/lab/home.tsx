@@ -40,7 +40,7 @@ export default function Home({
             <div className="mx-auto max-w-3xl space-y-8 p-6">
                 <header>
                     <h1 className="text-2xl font-semibold">Inertia Lab</h1>
-                    <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+                    <p className="mt-2 text-neutral-600 dark:text-neutral-300">
                         A Laravel and Inertia application whose only subject is
                         Inertia itself. Each chapter isolates one concept, lets
                         you trigger it, and shows both halves of what happened:
@@ -65,7 +65,7 @@ export default function Home({
                     <h2 id="chapters" className="text-lg font-semibold">
                         Chapters
                     </h2>
-                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                         The parts below run in the order they are listed, and
                         the chapters within a part run in order too: each one
                         builds on what came before it. Chapter 0 is where every
@@ -84,12 +84,12 @@ export default function Home({
                                         <h3 className="font-semibold">
                                             {part.label}
                                         </h3>
-                                        <p className="font-mono text-xs text-neutral-500 tabular-nums dark:text-neutral-500">
+                                        <p className="font-mono text-xs text-neutral-500 tabular-nums dark:text-neutral-400">
                                             {visitedInPart} of{' '}
                                             {part.chapters.length} visited
                                         </p>
                                     </div>
-                                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                                         {part.description}
                                     </p>
                                     <ol className="mt-2 space-y-3">
@@ -114,7 +114,7 @@ export default function Home({
                                                         </span>
                                                     )}
                                                 </div>
-                                                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                                                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                                                     {chapter.question}
                                                 </p>
                                             </li>
@@ -132,21 +132,25 @@ export default function Home({
                     </h2>
                     <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-4">
                         <div>
-                            <dt className="text-neutral-500">Laravel</dt>
+                            <dt className="text-neutral-500 dark:text-neutral-400">
+                                Laravel
+                            </dt>
                             <dd>{versions.laravel}</dd>
                         </div>
                         <div>
-                            <dt className="text-neutral-500">PHP</dt>
+                            <dt className="text-neutral-500 dark:text-neutral-400">
+                                PHP
+                            </dt>
                             <dd>{versions.php}</dd>
                         </div>
                         <div>
-                            <dt className="text-neutral-500">
+                            <dt className="text-neutral-500 dark:text-neutral-400">
                                 inertiajs/inertia-laravel
                             </dt>
                             <dd>{versions.inertiaLaravel}</dd>
                         </div>
                         <div>
-                            <dt className="text-neutral-500">
+                            <dt className="text-neutral-500 dark:text-neutral-400">
                                 @inertiajs/react
                             </dt>
                             <dd>{versions.inertiaReact}</dd>

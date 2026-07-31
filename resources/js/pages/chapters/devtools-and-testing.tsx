@@ -65,7 +65,10 @@ function PlatformSourceFile({ path }: { path: string }) {
 
     if (state.status === 'loading') {
         return (
-            <p role="status" className="mt-2 text-neutral-500">
+            <p
+                role="status"
+                className="mt-2 text-neutral-500 dark:text-neutral-400"
+            >
                 Loading {path}.
             </p>
         );
@@ -84,7 +87,7 @@ function PlatformSourceFile({ path }: { path: string }) {
 
     return (
         <div className="mt-2">
-            <p className="font-mono text-xs text-neutral-500">
+            <p className="font-mono text-xs text-neutral-500 dark:text-neutral-400">
                 {state.data.path} ({state.data.lines} lines)
             </p>
             <CodeBlock
@@ -322,7 +325,7 @@ export default function DevtoolsAndTesting({
 
             <section>
                 <h2 className="text-lg font-semibold">The test itself</h2>
-                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                     Read from disk on this request, the same way the
                     inspector&apos;s own Source tab reads a chapter&apos;s
                     controller and page.
@@ -341,7 +344,7 @@ export default function DevtoolsAndTesting({
                     className="mt-1 overflow-x-auto"
                 />
                 <PlatformSourceFile path="tests/Feature/Chapters/DevtoolsAndTestingTest.php" />
-                <p className="mt-3 text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="mt-3 text-sm text-neutral-600 dark:text-neutral-300">
                     And the helpers it, and every other chapter test, calls:
                 </p>
                 <PlatformSourceFile path="tests/Pest.php" />

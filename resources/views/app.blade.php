@@ -16,7 +16,7 @@
             <title>{{ config('app.name', 'Laravel') }}</title>
         </x-inertia::head>
     </head>
-    <body class="font-sans antialiased">
+    <body class="bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
         <x-inertia::app />
     </body>
 </html>

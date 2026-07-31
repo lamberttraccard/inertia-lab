@@ -34,7 +34,7 @@ function TagCheckboxes({
 }) {
     return (
         <fieldset className="mt-2 flex flex-wrap gap-3">
-            <legend className="text-sm text-neutral-600 dark:text-neutral-400">
+            <legend className="text-sm text-neutral-600 dark:text-neutral-300">
                 Tags
             </legend>
             {tagOptions.map((tag) => (
@@ -141,7 +141,7 @@ export default function Forms({
                 <h2 id="form-component" className="text-lg font-semibold">
                     Using the Form component
                 </h2>
-                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                     Plain named inputs; no onChange handlers, no local state.
                 </p>
                 <Form
@@ -204,7 +204,7 @@ export default function Forms({
                             >
                                 Save with Form
                             </button>
-                            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                            <p className="text-sm text-neutral-600 dark:text-neutral-300">
                                 processing: {String(processing)}, isDirty:{' '}
                                 {String(isDirty)}, wasSuccessful:{' '}
                                 {String(wasSuccessful)}
@@ -218,7 +218,7 @@ export default function Forms({
                 <h2 id="use-form" className="text-lg font-semibold">
                     Using useForm
                 </h2>
-                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                     Controlled inputs backed by the hook&apos;s own data and
                     setData.
                 </p>
@@ -283,7 +283,7 @@ export default function Forms({
                     >
                         Save with useForm
                     </button>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300">
                         processing: {String(hookForm.processing)}, isDirty:{' '}
                         {String(hookForm.isDirty)}, wasSuccessful:{' '}
                         {String(hookForm.wasSuccessful)}

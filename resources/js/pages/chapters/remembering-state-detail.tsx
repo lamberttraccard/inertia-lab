@@ -17,7 +17,7 @@ export default function RememberingStateDetail({
         <div className="mx-auto max-w-2xl space-y-6 p-6">
             <header>
                 <h1 className="text-2xl font-semibold">Post detail</h1>
-                <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+                <p className="mt-2 text-neutral-600 dark:text-neutral-300">
                     Leaving this page through the button below, rather than a
                     link, is what makes the difference the chapter is about
                     observable.
@@ -36,7 +36,7 @@ export default function RememberingStateDetail({
             >
                 Go back
             </button>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="text-sm text-neutral-600 dark:text-neutral-300">
                 This calls the browser&apos;s own{' '}
                 <code className="font-mono">window.history.back()</code>, the
                 same navigation your browser&apos;s own back button performs. A

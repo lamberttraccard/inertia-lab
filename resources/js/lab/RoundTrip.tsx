@@ -256,12 +256,12 @@ export function RoundTrip({ entry }: { entry: WireEntry | null }) {
                     <div key={segment} className="flex flex-col">
                         <dt className="font-medium">
                             {segment}{' '}
-                            <span className="font-normal text-neutral-500">
+                            <span className="font-normal text-neutral-500 dark:text-neutral-400">
                                 ({state[segment].active ? 'active' : 'inactive'}
                                 )
                             </span>
                         </dt>
-                        <dd className="text-neutral-600 dark:text-neutral-400">
+                        <dd className="text-neutral-600 dark:text-neutral-300">
                             {state[segment].note}
                         </dd>
                     </div>

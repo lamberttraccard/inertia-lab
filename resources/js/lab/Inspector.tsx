@@ -129,7 +129,7 @@ export function Inspector({
             <div className="rounded-lg border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900/40">
                 <div className="flex items-center justify-between gap-3 px-4 py-3">
                     <div className="min-w-0">
-                        <p className="text-xs tracking-wide text-neutral-500 uppercase dark:text-neutral-500">
+                        <p className="text-xs tracking-wide text-neutral-500 uppercase dark:text-neutral-400">
                             Last response
                         </p>
                         <p className="mt-0.5 flex flex-wrap items-baseline gap-x-2 font-mono">
@@ -152,7 +152,7 @@ export function Inspector({
                                     )}
                                 </>
                             ) : (
-                                <span className="text-base font-normal text-neutral-400 dark:text-neutral-600">
+                                <span className="text-base font-normal text-neutral-500 dark:text-neutral-400">
                                     no visit recorded yet
                                 </span>
                             )}
@@ -197,7 +197,7 @@ export function Inspector({
                                     className={`rounded px-2.5 py-1 text-sm ${FOCUS_RING} ${
                                         tab === t.id
                                             ? 'bg-neutral-200/70 font-semibold text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50'
-                                            : 'text-neutral-500 hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200'
+                                            : 'text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200'
                                     }`}
                                 >
                                     {t.label}
@@ -266,7 +266,7 @@ export function Inspector({
 function WireTab({ entries }: { entries: WireEntry[] }) {
     if (entries.length === 0) {
         return (
-            <p className="text-neutral-500">
+            <p className="text-neutral-500 dark:text-neutral-400">
                 No Inertia visit yet. Use a link or a control in this chapter to
                 record one.
             </p>
@@ -294,7 +294,7 @@ function WireTab({ entries }: { entries: WireEntry[] }) {
                                     key={`request-${key}`}
                                     className="flex gap-1 break-all"
                                 >
-                                    <dt className="text-neutral-500">
+                                    <dt className="text-neutral-500 dark:text-neutral-400">
                                         req {key}
                                     </dt>
                                     <dd>{value}</dd>
@@ -307,7 +307,7 @@ function WireTab({ entries }: { entries: WireEntry[] }) {
                                     key={`response-${key}`}
                                     className="flex gap-1 break-all"
                                 >
-                                    <dt className="text-neutral-500">
+                                    <dt className="text-neutral-500 dark:text-neutral-400">
                                         res {key}
                                     </dt>
                                     <dd>{value}</dd>
@@ -317,7 +317,7 @@ function WireTab({ entries }: { entries: WireEntry[] }) {
                     </dl>
                     <details className="mt-1.5">
                         <summary
-                            className={`cursor-pointer text-neutral-500 ${FOCUS_RING}`}
+                            className={`cursor-pointer text-neutral-500 dark:text-neutral-400 ${FOCUS_RING}`}
                         >
                             Page object
                         </summary>
@@ -333,7 +333,11 @@ function WireTab({ entries }: { entries: WireEntry[] }) {
 
 function LifecycleTab({ events }: { events: LifecycleEvent[] }) {
     if (events.length === 0) {
-        return <p className="text-neutral-500">No lifecycle event yet.</p>;
+        return (
+            <p className="text-neutral-500 dark:text-neutral-400">
+                No lifecycle event yet.
+            </p>
+        );
     }
 
     return (
@@ -347,7 +351,7 @@ function LifecycleTab({ events }: { events: LifecycleEvent[] }) {
                         {event.name}
                         {event.cancelable ? ' (cancelable)' : ''}
                     </span>
-                    <span className="text-neutral-500">
+                    <span className="text-neutral-500 dark:text-neutral-400">
                         {Math.round(event.at)} ms
                     </span>
                 </li>
@@ -397,7 +401,7 @@ function TraceTab({ trace }: { trace: LabTrace | null }) {
                     Resolved on the server ({resolved.length})
                 </p>
                 {resolved.length === 0 ? (
-                    <p className="mt-1 text-neutral-500">
+                    <p className="mt-1 text-neutral-500 dark:text-neutral-400">
                         Nothing resolved on this response.
                     </p>
                 ) : (
@@ -405,7 +409,7 @@ function TraceTab({ trace }: { trace: LabTrace | null }) {
                         {resolved.map(([key, prop]) => (
                             <li key={key}>
                                 {key}{' '}
-                                <span className="text-neutral-500">
+                                <span className="text-neutral-500 dark:text-neutral-400">
                                     ({prop.type})
                                 </span>{' '}
                                 {prop.ms} ms
@@ -423,7 +427,7 @@ function TraceTab({ trace }: { trace: LabTrace | null }) {
                     Skipped by the server ({skipped.length})
                 </p>
                 {skipped.length === 0 ? (
-                    <p className="mt-1 text-neutral-500">
+                    <p className="mt-1 text-neutral-500 dark:text-neutral-400">
                         Nothing skipped on this response.
                     </p>
                 ) : (
@@ -432,11 +436,11 @@ function TraceTab({ trace }: { trace: LabTrace | null }) {
                             <li key={key}>
                                 <p className="font-mono text-xs">
                                     {key}{' '}
-                                    <span className="text-neutral-500">
+                                    <span className="text-neutral-500 dark:text-neutral-400">
                                         ({prop.type})
                                     </span>
                                 </p>
-                                <p className="text-neutral-600 dark:text-neutral-400">
+                                <p className="text-neutral-600 dark:text-neutral-300">
                                     {prop.reason}. {prop.explanation}
                                 </p>
                             </li>
@@ -446,7 +450,7 @@ function TraceTab({ trace }: { trace: LabTrace | null }) {
             </div>
             {trace.partial && (
                 <div>
-                    <p className="font-mono text-xs font-semibold text-neutral-500">
+                    <p className="font-mono text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                         This request&apos;s partial-reload headers
                     </p>
                     <dl className="mt-1.5 grid grid-cols-1 gap-x-4 font-mono text-xs">
@@ -459,7 +463,9 @@ function TraceTab({ trace }: { trace: LabTrace | null }) {
                             ] as const
                         ).map(([key, value]) => (
                             <div key={key} className="flex gap-1 break-all">
-                                <dt className="text-neutral-500">{key}</dt>
+                                <dt className="text-neutral-500 dark:text-neutral-400">
+                                    {key}
+                                </dt>
                                 <dd>{value ?? 'none'}</dd>
                             </div>
                         ))}

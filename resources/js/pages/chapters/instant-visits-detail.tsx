@@ -31,7 +31,7 @@ export default function InstantVisitsDetail({
         <div className="mx-auto max-w-2xl space-y-6 p-6">
             <header>
                 <h1 className="text-2xl font-semibold">Post detail</h1>
-                <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+                <p className="mt-2 text-neutral-600 dark:text-neutral-300">
                     The page an instant visit&apos;s component option points at.
                 </p>
             </header>
@@ -53,7 +53,7 @@ export default function InstantVisitsDetail({
                     <div className="mt-1 rounded border border-neutral-400 p-3 text-sm dark:border-neutral-600">
                         <p className="font-medium">{post.title}</p>
                         <p className="mt-1">{post.excerpt}</p>
-                        <p className="mt-1 text-neutral-600 dark:text-neutral-400">
+                        <p className="mt-1 text-neutral-600 dark:text-neutral-300">
                             By {post.author}
                         </p>
                     </div>
@@ -67,7 +67,7 @@ export default function InstantVisitsDetail({
                 <p className="mt-1 font-mono text-sm">
                     [{propKeys.join(', ')}]
                 </p>
-                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                     During the instant window this list holds only whichever
                     keys the previous page&apos;s own sharedProps metadata
                     named, the props HandleInertiaRequests::share() and

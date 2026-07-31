@@ -150,7 +150,7 @@ export default function PartialReloads({
                                     ))}
                                 </tbody>
                             </table>
-                            <p className="text-xs text-neutral-500">
+                            <p className="text-xs text-neutral-500 dark:text-neutral-400">
                                 except: stats can land on more bytes than a full
                                 reload despite excluding a real prop: a bare
                                 reload happens to skip demoUserOptions (shared

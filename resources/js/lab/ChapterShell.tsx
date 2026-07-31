@@ -63,7 +63,7 @@ export function ChapterShell({
                         <h1 className="text-2xl font-semibold">
                             {chapter.title}
                         </h1>
-                        <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+                        <p className="mt-2 text-neutral-600 dark:text-neutral-300">
                             {chapter.question}
                         </p>
                     </header>

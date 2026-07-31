@@ -99,7 +99,7 @@ export default function ErrorHandling({
                             Visit a non-Inertia response
                         </button>
                     </div>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300">
                         Last protected-action result: {status}
                     </p>
                 </div>

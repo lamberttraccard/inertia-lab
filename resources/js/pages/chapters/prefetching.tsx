@@ -133,7 +133,7 @@ export default function Prefetching({
                         ), and all point at the same URL, so they read and write
                         the same cache entry.
                     </p>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300">
                         The 0 preset only reads as single-use on the click link
                         below. For hover or mount, this installed version cannot
                         tell 0 apart from leaving cacheFor unset entirely, so
@@ -210,7 +210,7 @@ export default function Prefetching({
                             router.flushAll()
                         </button>
                     </div>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300">
                         Cache status: {cacheStatus}
                     </p>
                 </div>

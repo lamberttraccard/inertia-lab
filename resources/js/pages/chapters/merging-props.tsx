@@ -198,7 +198,7 @@ export default function MergingProps({
                     />
                     Use deepMerge for the next load
                 </label>
-                <p className="mt-1 text-sm text-neutral-500">
+                <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                     Fetched at {postDigest.fetchedAt}
                 </p>
                 <ul className="mt-2 space-y-1 text-sm">

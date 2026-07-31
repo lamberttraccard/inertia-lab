@@ -37,7 +37,7 @@ export default function ViewTransitionsDetail({
                 {post.excerpt}
             </p>
 
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="text-sm text-neutral-600 dark:text-neutral-300">
                 This browser {supported ? 'supports' : 'does not support'} the
                 View Transitions API right now, read live from{' '}
                 <code className="font-mono">

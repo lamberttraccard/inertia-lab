@@ -113,7 +113,7 @@ export default function InfiniteScrollChapter({
                     buffer={300}
                     className="mt-3 max-h-96 divide-y divide-neutral-200 overflow-y-auto dark:divide-neutral-800"
                     previous={({ loading, hasPrevious }) => (
-                        <p className="py-2 text-center text-sm text-neutral-500">
+                        <p className="py-2 text-center text-sm text-neutral-500 dark:text-neutral-400">
                             {loading
                                 ? 'Loading earlier posts…'
                                 : hasPrevious
@@ -122,7 +122,7 @@ export default function InfiniteScrollChapter({
                         </p>
                     )}
                     next={({ loading, hasNext }) => (
-                        <p className="py-2 text-center text-sm text-neutral-500">
+                        <p className="py-2 text-center text-sm text-neutral-500 dark:text-neutral-400">
                             {loading
                                 ? 'Loading more posts…'
                                 : hasNext
@@ -134,7 +134,7 @@ export default function InfiniteScrollChapter({
                     {posts.data.map((post) => (
                         <li key={post.id} className="py-2 text-sm">
                             <p className="font-medium">{post.title}</p>
-                            <p className="text-neutral-500">
+                            <p className="text-neutral-500 dark:text-neutral-400">
                                 {post.author?.name ?? 'Unknown'} ·{' '}
                                 {post.published_at}
                             </p>

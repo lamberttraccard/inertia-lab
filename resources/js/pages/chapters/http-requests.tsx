@@ -33,7 +33,7 @@ export default function HttpRequests({
                     >
                         Send a GET with useHttp
                     </button>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300">
                         processing: {String(http.processing)}, wasSuccessful:{' '}
                         {String(http.wasSuccessful)}
                     </p>
@@ -44,7 +44,7 @@ export default function HttpRequests({
                             className="overflow-x-auto"
                         />
                     ) : (
-                        <p className="text-sm text-neutral-500">
+                        <p className="text-sm text-neutral-500 dark:text-neutral-400">
                             No response yet.
                         </p>
                     )}

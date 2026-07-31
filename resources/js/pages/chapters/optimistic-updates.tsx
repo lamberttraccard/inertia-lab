@@ -47,7 +47,7 @@ function LikeCard({
             >
                 {likedByMe ? 'Unlike' : 'Like'}
             </button>
-            <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+            <p className="mt-2 text-neutral-600 dark:text-neutral-300">
                 {note}
             </p>
         </div>

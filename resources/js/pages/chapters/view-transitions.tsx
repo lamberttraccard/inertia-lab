@@ -44,7 +44,7 @@ export default function ViewTransitions({
                         />
                         viewTransition on every card link below
                     </label>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300">
                         This browser{' '}
                         {supported ? 'supports' : 'does not support'} the{' '}
                         <Term term="View transition">View Transitions API</Term>{' '}
@@ -73,7 +73,7 @@ export default function ViewTransitions({
                                 >
                                     {post.title}
                                 </span>
-                                <span className="mt-1 block text-neutral-600 dark:text-neutral-400">
+                                <span className="mt-1 block text-neutral-600 dark:text-neutral-300">
                                     {post.excerpt}
                                 </span>
                             </Link>

@@ -89,7 +89,7 @@ export default function RememberingState({
                                     </li>
                                 ))}
                                 {matching(posts, plainFilter).length === 0 ? (
-                                    <li className="text-neutral-500">
+                                    <li className="text-neutral-500 dark:text-neutral-400">
                                         No title matches.
                                     </li>
                                 ) : null}
@@ -123,7 +123,7 @@ export default function RememberingState({
                                 )}
                                 {matching(posts, rememberedFilter).length ===
                                 0 ? (
-                                    <li className="text-neutral-500">
+                                    <li className="text-neutral-500 dark:text-neutral-400">
                                         No title matches.
                                     </li>
                                 ) : null}

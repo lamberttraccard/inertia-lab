@@ -154,7 +154,7 @@ export default function Precognition({
                         />
                     </label>
                     {form.validating ? (
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                        <p className="text-sm text-neutral-600 dark:text-neutral-300">
                             Checking…
                         </p>
                     ) : form.invalid('slug') ? (
@@ -174,7 +174,7 @@ export default function Precognition({
                         Create post
                     </button>
                     {form.wasSuccessful && created ? (
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                        <p className="text-sm text-neutral-600 dark:text-neutral-300">
                             Created &quot;{created.title}&quot; at slug &quot;
                             {created.slug}&quot;.
                         </p>

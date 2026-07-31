@@ -91,7 +91,7 @@ export default function AuthorizationAndCsrf({
             tryThis={
                 <div className="space-y-3">
                     <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm text-neutral-500">
+                        <span className="text-sm text-neutral-500 dark:text-neutral-400">
                             Switch demo user:
                         </span>
                         {demoUserOptions.map((option) => (

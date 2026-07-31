@@ -66,7 +66,7 @@ export function SourceView({ slug, serverFile, clientFile }: SourceViewProps) {
 
     return (
         <section>
-            <p className="text-neutral-600 dark:text-neutral-400">
+            <p className="text-neutral-600 dark:text-neutral-300">
                 The server file and the client file that produced this page,
                 read from disk on this request.
             </p>
@@ -83,7 +83,10 @@ export function SourceView({ slug, serverFile, clientFile }: SourceViewProps) {
             )}
 
             {state.status === 'loading' && (
-                <p role="status" className="mt-2 text-neutral-500">
+                <p
+                    role="status"
+                    className="mt-2 text-neutral-500 dark:text-neutral-400"
+                >
                     Loading {serverFile} and {clientFile}.
                 </p>
             )}
@@ -91,7 +94,7 @@ export function SourceView({ slug, serverFile, clientFile }: SourceViewProps) {
             {state.status === 'loaded' && (
                 <div className="mt-2 space-y-4">
                     <div>
-                        <p className="font-mono text-xs text-neutral-500">
+                        <p className="font-mono text-xs text-neutral-500 dark:text-neutral-400">
                             {state.data.server.path} ({state.data.server.lines}{' '}
                             lines)
                         </p>
@@ -103,7 +106,7 @@ export function SourceView({ slug, serverFile, clientFile }: SourceViewProps) {
                         />
                     </div>
                     <div>
-                        <p className="font-mono text-xs text-neutral-500">
+                        <p className="font-mono text-xs text-neutral-500 dark:text-neutral-400">
                             {state.data.client.path} ({state.data.client.lines}{' '}
                             lines)
                         </p>

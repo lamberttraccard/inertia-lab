@@ -87,11 +87,11 @@ export default function FileUploads({
                         className="mt-2 h-40 w-full max-w-sm rounded object-cover"
                     />
                 ) : (
-                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                         No cover uploaded yet.
                     </p>
                 )}
-                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                     coverPath: {coverPath ?? 'null'}
                 </p>
             </section>
@@ -136,7 +136,7 @@ export default function FileUploads({
                                     }}
                                 />
                             </div>
-                            <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                            <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
                                 {form.progress.percentage ?? 0}%
                             </p>
                         </div>

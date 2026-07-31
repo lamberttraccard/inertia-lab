@@ -38,7 +38,7 @@ export function ChapterHeader({ chapter, previous, next }: ChapterHeaderProps) {
                 >
                     /
                 </span>
-                <span className="text-neutral-600 dark:text-neutral-400">
+                <span className="text-neutral-600 dark:text-neutral-300">
                     {chapter.partLabel}
                 </span>
                 <span className="rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-xs text-neutral-600 tabular-nums dark:bg-neutral-900 dark:text-neutral-400">
@@ -59,7 +59,7 @@ export function ChapterHeader({ chapter, previous, next }: ChapterHeaderProps) {
                         {previous.title}
                     </Link>
                 ) : (
-                    <span className="text-neutral-400 dark:text-neutral-600">
+                    <span className="text-neutral-500 dark:text-neutral-400">
                         Start of the lab
                     </span>
                 )}
@@ -72,7 +72,7 @@ export function ChapterHeader({ chapter, previous, next }: ChapterHeaderProps) {
                         <span aria-hidden="true">&rarr;</span>
                     </Link>
                 ) : (
-                    <span className="text-neutral-400 dark:text-neutral-600">
+                    <span className="text-neutral-500 dark:text-neutral-400">
                         End of the lab
                     </span>
                 )}

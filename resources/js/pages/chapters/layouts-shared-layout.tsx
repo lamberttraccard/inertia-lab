@@ -55,7 +55,7 @@ export function ChapterPairLayout({ children, badge }: ChapterPairLayoutProps) {
             </div>
 
             <div className="h-40 overflow-y-auto rounded border border-neutral-400 p-2 text-sm dark:border-neutral-600">
-                <p className="mb-1 text-neutral-500">
+                <p className="mb-1 text-neutral-500 dark:text-neutral-400">
                     Scroll me, then switch panels.
                 </p>
                 <ul className="space-y-1">
