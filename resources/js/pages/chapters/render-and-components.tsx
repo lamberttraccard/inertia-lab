@@ -63,10 +63,10 @@ export default function RenderAndComponents({
                     This page is the string{' '}
                     <code className="font-mono">{resolvedComponent}</code>,
                     handed to{' '}
-                    <code className="font-mono">Inertia::render()</code>.
-                    Nothing on the server ever opens the client file. The client
+                    <code className="font-mono">Inertia::render()</code>;
+                    nothing on the server ever opens the client file. The client
                     resolves that same string against{' '}
-                    <code className="font-mono">{pagesRoot}</code> instead: this
+                    <code className="font-mono">{pagesRoot}</code> instead. This
                     app&apos;s resources/js/app.tsx passes neither{' '}
                     <code className="font-mono">pages</code> nor{' '}
                     <code className="font-mono">resolve</code> to{' '}
@@ -77,14 +77,18 @@ export default function RenderAndComponents({
                     <code className="font-mono">
                         {pagesRoot}/**/*.{'{tsx,jsx}'}
                     </code>
-                    , matched against the component name, throwing a plain{' '}
+                    , matched against the component name. Nothing matching
+                    throws a plain{' '}
                     <code className="font-mono">
                         Error(&apos;Page not found: ...&apos;)
                     </code>{' '}
-                    in the browser console if nothing matches. The classic
-                    explicit helper for writing that resolver by hand,{' '}
+                    in the browser console.
+                </p>
+                <p className="mt-2">
+                    The classic explicit helper for writing that resolver by
+                    hand,{' '}
                     <code className="font-mono">resolvePageComponent</code>, is
-                    not exported by @inertiajs/react in this version; it still
+                    not exported by @inertiajs/react in this version. It still
                     exists, but only in{' '}
                     <code className="font-mono">
                         laravel-vite-plugin/inertia-helpers
@@ -102,7 +106,7 @@ export default function RenderAndComponents({
                         inertia.pages.ensure_pages_exist
                     </code>{' '}
                     to true and{' '}
-                    <code className="font-mono">Inertia::render()</code> calls{' '}
+                    <code className="font-mono">Inertia::render()</code> throws{' '}
                     <code className="font-mono">
                         Inertia\ComponentNotFoundException
                     </code>{' '}
