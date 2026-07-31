@@ -72,45 +72,62 @@ export default function Precognition({
                 </p>
             }
             watchFor={
-                <p className="mt-2">
-                    Every change to the slug field calls
-                    form.validate(&apos;slug&apos;), which sends the exact same
-                    title and slug this form would submit for real, to the exact
-                    same route, but carrying a{' '}
-                    <Term term="Precognition">Precognition</Term> header that
-                    tells the server to run its validation and stop there. That
-                    request is not a visit at all: it is built by the
-                    laravel-precognition package&apos;s own client (a dependency
-                    of @inertiajs/react itself, already installed, confirmed in
-                    node_modules/@inertiajs/react/package.json), which sends it
-                    through the browser&apos;s fetch function rather than the
-                    XMLHttpRequest every Inertia visit in this app uses. Because
-                    it carries no X-Inertia header, this app&apos;s own
-                    inspector never records it. Open your browser&apos;s network
-                    tab to see it directly: an available slug answers 204 with a
-                    Precognition-Success header and an empty body, and a taken
-                    one answers 422 with{' '}
-                    <code className="font-mono">
-                        {
-                            '{"message":"The slug has already been taken.","errors":{"slug":["The slug has already been taken."]}}'
-                        }
-                    </code>
-                    , straight from the validator&apos;s own{' '}
-                    <code className="font-mono">MessageBag</code>. A failed real
-                    submission never reaches a 422 at all. Chapter 17 already
-                    covers why: this form&apos;s real POST is an ordinary
-                    Inertia visit, which asks for text/html rather than JSON, so
-                    Laravel redirects back instead of returning a body, and the
-                    errors prop that redirect eventually delivers holds{' '}
-                    <code className="font-mono">
-                        {'{"slug":"The slug has already been taken."}'}
-                    </code>
-                    , one plain string, because Inertia&apos;s own middleware
-                    keeps only the first message per field. Same rule, same
-                    message, a different shape depending only on which path
-                    produced it. Submitting for real, by contrast, is an
-                    ordinary Inertia visit, and does show up below.
-                </p>
+                <>
+                    <p className="mt-2">
+                        Every change to the slug field calls
+                        form.validate(&apos;slug&apos;), which sends the exact
+                        same title and slug this form would submit for real, to
+                        the exact same route, but carrying a{' '}
+                        <Term term="Precognition">Precognition</Term> header
+                        that tells the server to run its validation and stop
+                        there. That request is not a visit at all: it is built
+                        by the laravel-precognition package&apos;s own client (a
+                        dependency of @inertiajs/react itself, already
+                        installed, confirmed in
+                        node_modules/@inertiajs/react/package.json), which sends
+                        it through the browser&apos;s fetch function rather than
+                        the XMLHttpRequest every Inertia visit in this app uses.
+                        Because it carries no X-Inertia header, this app&apos;s
+                        own inspector never records it.
+                    </p>
+                    <p className="mt-2">
+                        Open your browser&apos;s network tab to see it directly:
+                    </p>
+                    <ul className="mt-1 list-disc space-y-1 pl-5">
+                        <li>
+                            an available slug answers 204 with a
+                            Precognition-Success header and an empty body.
+                        </li>
+                        <li>
+                            a taken one answers 422 with{' '}
+                            <code className="font-mono">
+                                {
+                                    '{"message":"The slug has already been taken.","errors":{"slug":["The slug has already been taken."]}}'
+                                }
+                            </code>
+                            , straight from the validator&apos;s own{' '}
+                            <code className="font-mono">MessageBag</code>.
+                        </li>
+                    </ul>
+                    <p className="mt-2">
+                        Same rule, same message, a different shape depending
+                        only on which path produced it: a failed real submission
+                        never reaches a 422 at all. Chapter 17 already covers
+                        why: this form&apos;s real POST is an ordinary Inertia
+                        visit, which asks for text/html rather than JSON, so
+                        Laravel redirects back instead of returning a body, and
+                        the errors prop that redirect eventually delivers holds{' '}
+                        <code className="font-mono">
+                            {'{"slug":"The slug has already been taken."}'}
+                        </code>
+                        , one plain string, because Inertia&apos;s own
+                        middleware keeps only the first message per field.
+                    </p>
+                    <p className="mt-2">
+                        Submitting for real, by contrast, is an ordinary Inertia
+                        visit, and does show up below.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
