@@ -57,29 +57,37 @@ export default function OnceProps({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    tags is a <Term term="Once prop">once prop</Term>. The very
-                    first response you ever received for this page carried it
-                    and listed it under page.onceProps, shown below. Click
-                    &quot;Visit again&quot; or &quot;router.reload(),
-                    bare&quot;: neither sends only or except, so neither is a
-                    partial reload of this page, and both requests carry
-                    X-Inertia-Except-Once-Props: tags, because your client
-                    already holds a value for it. The trace agrees: tags moves
-                    to skipped, reason once prop already held by the client,
-                    while visitedAt, an ordinary closure, refreshes to a new
-                    timestamp every time regardless. tags itself never blinks
-                    empty on screen either way: the client's own
-                    mergeOncePropsIntoResponse() quietly copies the value it
-                    already holds back into a response that skipped it, which is
-                    the entire point of once, continuity, not a missing update.
-                    Click the third button and tags comes back for real: naming
-                    it inside only makes this request a partial reload of the
-                    current component, and the server only consults the
-                    except-once header when a request is not one of those, so
-                    the exclusion never gets a chance to run and tags resolves
-                    again, fresh from the database.
-                </p>
+                <>
+                    <p className="mt-2">
+                        tags is a <Term term="Once prop">once prop</Term>. The
+                        very first response you ever received for this page
+                        carried it and listed it under page.onceProps, shown
+                        below.
+                    </p>
+                    <p className="mt-2">
+                        Click &quot;Visit again&quot; or &quot;router.reload(),
+                        bare&quot;: neither sends only or except, so neither is
+                        a partial reload of this page, and both requests carry
+                        X-Inertia-Except-Once-Props: tags, because your client
+                        already holds a value for it. The trace agrees: tags
+                        moves to skipped, reason once prop already held by the
+                        client, while visitedAt, an ordinary closure, refreshes
+                        to a new timestamp every time regardless. tags itself
+                        never blinks empty on screen either way: the
+                        client&apos;s own mergeOncePropsIntoResponse() quietly
+                        copies the value it already holds back into the response
+                        that skipped it. That is the entire point of once:
+                        continuity, not a missing update.
+                    </p>
+                    <p className="mt-2">
+                        Click the third button and tags comes back for real:
+                        naming it inside only makes this request a partial
+                        reload of the current component, and the server only
+                        consults the except-once header outside a partial
+                        reload, so the exclusion never gets a chance to run.
+                        tags resolves again, fresh from the database.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
