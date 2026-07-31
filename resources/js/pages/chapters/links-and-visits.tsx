@@ -167,16 +167,15 @@ export default function LinksAndVisits({
             }
             watchFor={
                 <p className="mt-2">
-                    Without preserveState checked, clicking either button above
-                    remounts this whole page as a fresh component instance: the
-                    toggles you just set reset to their defaults, and the
-                    inspector goes back to empty too, since it is part of the
-                    same instance. The entry for the very request that caused
-                    this was recorded a moment earlier, into the instance that
-                    no longer exists, so it never appears. Check preserveState
-                    first and click again: the same instance survives, the
-                    toggles stay exactly as you left them, and the inspector
-                    keeps every earlier entry and adds this one on top.
+                    Without preserveState checked, clicking either button
+                    remounts this whole page as a fresh component instance: your
+                    toggles reset to their defaults, and the inspector goes back
+                    to empty too, since it is part of the same instance. Even
+                    the entry for the request that caused this remount is lost,
+                    recorded into an instance that no longer exists. Check
+                    preserveState first and click again: the same instance
+                    survives, the toggles stay exactly as you left them, and the
+                    inspector keeps every earlier entry, adding this one on top.
                 </p>
             }
             whenToUse={
