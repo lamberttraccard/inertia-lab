@@ -172,11 +172,11 @@ export default function PropsAndTypes({
                     App\Http\Controllers\Chapters\Support\PublishedRecency
                     implements Inertia\ProvidesInertiaProperty. Its
                     toInertiaProperty() method runs when the resolver reaches
-                    the recency prop, receives a PropertyContext carrying the
-                    exact path it was found at, and returns whatever shape it
-                    chooses, the way a resource class would in an API-first
-                    application, except there is no separate serialization
-                    layer: this class is the prop.
+                    the recency prop, receiving a PropertyContext that carries
+                    the exact path it was found at, and returns whatever shape
+                    it chooses. That is the same job a resource class does in an
+                    API-first application, except there is no separate
+                    serialization layer: this class is the prop.
                 </p>
                 <p className="mt-2">
                     App\Http\Controllers\Chapters\Support\PostFacts implements
