@@ -76,19 +76,19 @@ export default function DeferredProps({
             watchFor={
                 <p className="mt-2">
                     Set slow mode to 1.5s first, then reload this page from the
-                    address bar: summary renders immediately, the stats panel
-                    and the tags panel below both show their fallback, then fill
-                    in on their own once their own follow-up request answers,
-                    nobody clicked anything. Each group&apos;s own query still
+                    address bar: summary renders immediately, and the stats and
+                    tags panels below both show their fallback before filling in
+                    on their own, once their own follow-up request answers.
+                    Nobody clicked anything. Each group&apos;s own query still
                     carries the full 1.5 second delay; how long you actually see
                     the fallback for also depends on how many requests your PHP
                     server can run at once, since a single-worker development
                     server answers these follow-up requests one at a time rather
                     than truly in parallel. Reload again with slow mode at 0 and
-                    the fallback is gone before you can see it, the lesson still
-                    holds, it is just fast now. The reload button above targets
+                    the fallback is gone before you can see it: the lesson still
+                    holds, just fast now. The reload button above targets
                     postStats and commentStats by name: watch the stats panel
-                    while it runs, it shows a refreshing note for exactly as
+                    while it runs. It shows a refreshing note for exactly as
                     long as that request is in flight, driven by the reloading
                     state <Term term="Deferred prop">Deferred</Term> hands its
                     children.
@@ -129,20 +129,27 @@ export default function DeferredProps({
                     Three groups, three follow-up requests
                 </h2>
                 <p className="mt-1">
-                    postStats and commentStats are declared in the same defer
-                    group, stats. tagCloud is declared in a different group,
-                    sidebar. riskyInsight, covered in the next section, is
-                    declared in a third group, insights. The client fires one
-                    follow-up request per group, regardless of which Deferred
-                    components are actually mounted on the page: open your
-                    browser&apos;s network tab and you will see exactly three
-                    requests after this page loads, never a single request for
-                    everything and never one request per prop. A rescued prop
-                    does not get out of this: riskyInsight still costs its own
-                    request and still gets its own entry in deferredProps below,
-                    the same as postStats or tagCloud; rescue only changes what
-                    happens once that request actually runs the callback, not
-                    whether the request happens at all.
+                    The client fires one follow-up request per group, never one
+                    per prop and never a single request for everything. This
+                    page declares three groups, so exactly three requests follow
+                    the initial load, visible in your browser&apos;s network tab
+                    regardless of which Deferred components are actually mounted
+                    on the page:
+                </p>
+                <ul className="mt-1 list-disc space-y-1 pl-5">
+                    <li>postStats and commentStats share one group, stats.</li>
+                    <li>tagCloud has its own group, sidebar.</li>
+                    <li>
+                        riskyInsight, covered in the next section, has its own
+                        group too, insights.
+                    </li>
+                </ul>
+                <p className="mt-2">
+                    A rescued prop does not get out of this: riskyInsight still
+                    costs its own request and still gets its own entry in
+                    deferredProps below, the same as postStats or tagCloud.
+                    Rescue only changes what happens once that request actually
+                    runs the callback, not whether the request happens at all.
                 </p>
                 <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <Deferred
