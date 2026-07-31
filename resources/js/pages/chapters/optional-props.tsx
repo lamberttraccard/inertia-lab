@@ -44,12 +44,12 @@ export default function OptionalProps({
                     value on the very first render: it runs the same three
                     queries as expensive, through a bare closure instead of{' '}
                     <Term term="Optional prop">Inertia::optional()</Term>, and a
-                    closure buys nothing here, it always resolves. The trace
+                    closure buys nothing here: it always resolves. The trace
                     agrees: eagerStats is listed under resolved from the start,
                     expensive is skipped with the reason optional and not
-                    requested. Click the button and expensive appears, with the
-                    trace now naming eagerStats and cheap as skipped for a
-                    different reason, not requested by only, because this second
+                    requested. Click the button and expensive appears. The trace
+                    now shows eagerStats and cheap skipped too, but for a
+                    different reason, not requested by only, since this second
                     request is a partial reload that named only expensive.
                 </p>
             }
