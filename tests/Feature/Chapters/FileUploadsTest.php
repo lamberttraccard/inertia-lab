@@ -42,7 +42,7 @@ it('renders the chapter with no cover recorded before any upload and no unexpect
     // standard chapter metadata every chapter passes; coverPath and coverUrl are this
     // chapter's own. Nothing else is added here.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', 'coverPath', 'coverUrl', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

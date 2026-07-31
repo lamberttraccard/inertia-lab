@@ -39,7 +39,7 @@ it('renders the chapter with encryption on, its teaching metadata and no unexpec
     // dedicated fix commit for. encryptHistory and clearHistory are top-level Page
     // fields, not props, so they are asserted separately above rather than listed here.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', 'renderedAt', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Lab\ChapterRegistry;
 use App\Lab\Lab;
 use App\Models\Notification;
 use App\Models\User;
@@ -25,7 +26,7 @@ class HandleInertiaRequests extends Middleware
     // compatible with that: Laravel still resolves HandleInertiaRequests itself through
     // the container for every request, which is what lets Lab arrive here already scoped
     // to the same request the controller's own Lab $lab parameter resolves to.
-    public function __construct(private readonly Lab $lab) {}
+    public function __construct(private readonly Lab $lab, private readonly ChapterRegistry $registry) {}
 
     /**
      * Determines the current asset version.
@@ -67,6 +68,10 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            // The chapter header's "Chapter N of 33" needs the roster's own size, not a
+            // number copied by hand: it is a plain value, like name above, because
+            // counting an in-memory array costs nothing worth tracing or skipping.
+            'totalChapters' => count($this->registry->all()),
             // chapters/shared-data switches this session value and reads it back; every
             // other chapter's test proves the switch reached it too, since this runs on
             // every request regardless of which controller is about to handle it.

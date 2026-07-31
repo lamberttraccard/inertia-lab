@@ -30,7 +30,7 @@ it('renders the chapter with three real posts to link to', function () {
     // every page regardless of this chapter; chapter, previous and next are the standard
     // chapter metadata every chapter passes.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', 'posts', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

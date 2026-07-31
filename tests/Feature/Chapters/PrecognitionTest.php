@@ -33,7 +33,7 @@ it('renders the chapter with nothing beyond the standard chapter metadata', func
     // standard chapter metadata every chapter passes. Nothing else is added here, which is
     // the whole point: this chapter has no data prop of its own beyond the form itself.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

@@ -14,6 +14,7 @@ export type ChapterData = {
     docsUrl: string;
     wave: number;
     part: string;
+    partLabel: string;
     order: number;
 };
 

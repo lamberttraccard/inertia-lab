@@ -33,7 +33,7 @@ it('renders the chapter with its teaching metadata and no unexpected props', fun
     // are the standard chapter metadata every chapter passes. This chapter adds nothing
     // of its own: the two panels below carry the props this concept actually needs.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([
@@ -60,7 +60,7 @@ it('renders both panel routes that share the persistent layout, each with its ow
     // above, chapter, previous and next never reach either one. visitedAt is this
     // panel's only own prop, and it is wrapped through Lab::value() like every other.
     expect(array_keys($panelOnePage['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'visitedAt', '_lab',
     ])
         ->and(array_keys($panelOneTrace['props']))->toEqualCanonicalizing([
@@ -80,7 +80,7 @@ it('renders both panel routes that share the persistent layout, each with its ow
     expect($panelTwoPage['props']['visitedAt'])->toBeString()->not->toBeEmpty();
 
     expect(array_keys($panelTwoPage['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'visitedAt', '_lab',
     ])
         ->and(array_keys($panelTwoTrace['props']))->toEqualCanonicalizing([

@@ -33,7 +33,7 @@ it('renders the chapter with a real reliable card and a fixed unreliable card', 
     // every page regardless of this chapter; chapter, previous and next are the standard
     // chapter metadata every chapter passes.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', 'reliable', 'unreliable', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

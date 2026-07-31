@@ -33,7 +33,7 @@ it('renders the chapter with its teaching metadata and no unexpected props', fun
     // are the standard chapter metadata every chapter passes. This chapter adds nothing
     // of its own: the title behaviour it teaches never touches the server.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

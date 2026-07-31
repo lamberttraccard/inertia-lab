@@ -41,7 +41,7 @@ it('renders the chapter with blank demo post defaults, the real tag options and 
     // standard chapter metadata every chapter passes; post and tagOptions are this
     // chapter's own. Nothing else is added here.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', 'post', 'tagOptions', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

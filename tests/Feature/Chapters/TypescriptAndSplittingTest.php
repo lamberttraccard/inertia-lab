@@ -35,7 +35,7 @@ it('renders the chapter with real build metadata for its own page chunk', functi
     // moment either the shared-prop list or this chapter's own props drift without the
     // test noticing.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', 'buildInfo', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

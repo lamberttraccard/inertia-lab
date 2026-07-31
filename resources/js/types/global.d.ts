@@ -13,6 +13,10 @@ declare module '@inertiajs/core' {
             name: string;
             auth: Auth;
             sidebarOpen: boolean;
+            // Shared on every response by HandleInertiaRequests::share(), so the chapter
+            // header can read it on any of the 33 chapter pages without each one adding
+            // it to its own props type.
+            totalChapters: number;
             [key: string]: unknown;
         };
     }

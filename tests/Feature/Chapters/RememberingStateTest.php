@@ -56,7 +56,7 @@ it('renders the chapter with the full list, its teaching metadata and no unexpec
     // this one, the same defect class chapters 17 and 18 needed a dedicated fix commit
     // for.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', 'filter', 'posts', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([
@@ -129,7 +129,7 @@ it('renders the detail route normally, with its own post prop resolved and nothi
     // it renders outside ChapterShell, so chapter, previous and next never reach it, the
     // same as the two panel routes in the layouts chapter. post is its only own prop.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'post', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([

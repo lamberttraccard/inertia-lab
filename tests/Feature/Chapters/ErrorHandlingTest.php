@@ -31,7 +31,7 @@ it('renders the chapter with its status prop resolved and no unexpected props', 
     // moment either the shared-prop list or this chapter's own props drift without the
     // test noticing.
     expect(array_keys($page['props']))->toEqualCanonicalizing([
-        'errors', 'name', 'auth', 'demoUser', 'unreadNotifications', 'demoUserOptions',
+        'errors', 'name', 'auth', 'totalChapters', 'demoUser', 'unreadNotifications', 'demoUserOptions',
         'chapter', 'previous', 'next', 'status', '_lab',
     ])
         ->and(array_keys($trace['props']))->toEqualCanonicalizing([
