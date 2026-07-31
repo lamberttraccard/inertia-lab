@@ -58,25 +58,31 @@ export default function HistoryEncryption({
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    Click the button, then open the Page object details in the
-                    inspector&apos;s Wire tab for that request: it carries{' '}
-                    <code className="font-mono">clearHistory: true</code>, and
-                    the line above updates to match. Every render of this route,
-                    including that one, also carries{' '}
-                    <code className="font-mono">encryptHistory: true</code>{' '}
-                    (verified against{' '}
-                    <code className="font-mono">
-                        vendor/inertiajs/inertia-laravel/src/Response.php
-                    </code>
-                    , which only adds either key to the page object at all when
-                    it is true, never as an explicit false). Reload the page
-                    once after clicking: the line above reads{' '}
-                    <code className="font-mono">clearHistory: false</code>{' '}
-                    again, because that flag is a one-shot instruction for the
-                    single response that carried it, read and discarded on the
-                    server the moment it renders.
-                </p>
+                <>
+                    <p className="mt-2">
+                        Click the button, then open the Page object details in
+                        the inspector&apos;s Wire tab for that request: it
+                        carries{' '}
+                        <code className="font-mono">clearHistory: true</code>,
+                        and the line above updates to match. Every render of
+                        this route, including that one, also carries{' '}
+                        <code className="font-mono">encryptHistory: true</code>{' '}
+                        (verified against{' '}
+                        <code className="font-mono">
+                            vendor/inertiajs/inertia-laravel/src/Response.php
+                        </code>
+                        , which only adds either key to the page object at all
+                        when it is true, never as an explicit false).
+                    </p>
+                    <p className="mt-2">
+                        Reload the page once after clicking: the line above
+                        reads{' '}
+                        <code className="font-mono">clearHistory: false</code>{' '}
+                        again, because that flag is a one-shot instruction for
+                        the single response that carried it, read and discarded
+                        on the server the moment it renders.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
@@ -146,8 +152,10 @@ export default function HistoryEncryption({
                     installed client catching that failure itself and issuing a
                     fresh visit to whatever URL the browser had already
                     navigated to, in place, rather than leaving the old
-                    encrypted snapshot on screen or showing nothing. This
-                    page&apos;s own button does not manufacture that exact
+                    encrypted snapshot on screen or showing nothing.
+                </p>
+                <p className="mt-2">
+                    This page&apos;s own button does not manufacture that exact
                     situation for you to click through; the practical way back
                     from this chapter, clearing included, stays what it is on
                     every chapter regardless: the previous and next links in the
