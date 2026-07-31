@@ -45,19 +45,24 @@ export default function Layouts({ chapter, previous, next }: LayoutsProps) {
                 </div>
             }
             watchFor={
-                <p className="mt-2">
-                    The counter and the scroll position both live in the shared
-                    layout wrapping each panel, not in the panel itself:
-                    switching panels keeps both exactly as you left them,
-                    because the layout component is never unmounted, only the
-                    section below it swaps. The badge line is different: it
-                    comes from setLayoutProps, called by a button on each panel,
-                    and it goes back to its unset state every time you switch
-                    panels, until the panel you land on calls setLayoutProps
-                    again itself. This lab&apos;s own inspector does not appear
-                    on either panel: they are deliberately minimal pages, not
-                    full chapters, so there is nothing here to render it into.
-                </p>
+                <>
+                    <p className="mt-2">
+                        The counter and the scroll position both live in the
+                        shared layout wrapping each panel, not in the panel
+                        itself: switching panels keeps both exactly as you left
+                        them, because the layout component is never unmounted,
+                        only the section below it swaps. The badge line is
+                        different: it comes from setLayoutProps, called by a
+                        button on each panel, and it goes back to its unset
+                        state every time you switch panels, until the panel you
+                        land on calls setLayoutProps again itself.
+                    </p>
+                    <p className="mt-2">
+                        This lab&apos;s own inspector does not appear on either
+                        panel: they are deliberately minimal pages, not full
+                        chapters, so there is nothing here to render it into.
+                    </p>
+                </>
             }
             whenToUse={
                 <p>
@@ -101,6 +106,11 @@ export default function Layouts({ chapter, previous, next }: LayoutsProps) {
                     other
                 </h2>
                 <p className="mt-1">
+                    Both forms keep the layout mounted across a visit equally
+                    well; only the plain reference used here also reaches
+                    setLayoutProps.
+                </p>
+                <p className="mt-2">
                     The classic form seen in older Inertia examples,{' '}
                     <code className="font-mono">
                         Page.layout = (page) =&gt; &lt;Layout&gt;{'{'}page{'}'}
@@ -114,9 +124,7 @@ export default function Layouts({ chapter, previous, next }: LayoutsProps) {
                     that probe, so the client uses it directly and never merges
                     setLayoutProps into anything. Assigning the layout component
                     itself, as this chapter does, takes the other path, the one
-                    that does merge setLayoutProps in. Both forms keep the
-                    layout mounted across a visit equally well; only the plain
-                    reference used here also reaches setLayoutProps.
+                    that does merge setLayoutProps in.
                 </p>
             </section>
 
