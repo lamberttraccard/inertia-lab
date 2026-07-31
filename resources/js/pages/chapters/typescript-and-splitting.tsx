@@ -114,18 +114,23 @@ export default function TypescriptAndSplitting({
                 <p className="mt-1">
                     This repository runs five gates: pint and phpstan on the PHP
                     side, eslint, prettier and tsc on the TypeScript side. None
-                    of them reads across that boundary. phpstan checks that
+                    of them reads across that boundary: phpstan checks that
                     ErrorHandlingController&apos;s own code is internally
                     consistent; tsc checks that error-handling-page.tsx is
                     internally consistent. Neither tool is given the other
                     language&apos;s file, so neither can compare the props array
-                    here to the type there. If the controller renamed
-                    requestPath to path tomorrow, tsc would not fail: the
-                    component&apos;s requestPath field would simply always be
-                    undefined at runtime, and every place the component reads it
-                    would silently render the string &quot;undefined&quot;
-                    instead. Only a test that reads the actual response, the way
-                    every chapter test in this application does through
+                    here to the type there.
+                </p>
+                <p className="mt-2">
+                    If the controller renamed requestPath to path tomorrow, tsc
+                    would not fail: the component&apos;s requestPath field would
+                    simply always be undefined at runtime, and every place the
+                    component reads it would silently render the string
+                    &quot;undefined&quot; instead.
+                </p>
+                <p className="mt-2">
+                    Only a test that reads the actual response, the way every
+                    chapter test in this application does through
                     assertInertiaPage(), would catch that, and only if it
                     happened to assert that specific key.
                 </p>
@@ -154,6 +159,8 @@ export default function TypescriptAndSplitting({
                     routes on every build, so a renamed route parameter fails
                     the TypeScript build rather than failing silently at
                     runtime. It does not type what the controller sends back.
+                </p>
+                <p className="mt-2">
                     Nothing in resources/js/actions describes
                     ErrorHandlingPageProps or any other page&apos;s props shape;
                     that remains exactly the hand-written, unchecked boundary
