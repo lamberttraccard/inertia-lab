@@ -53,8 +53,8 @@ describes regardless of when or where you run it.
 
 Every chapter uses the same shell, so the format is learned once. In order: the question
 the chapter answers, in plain language and without Inertia vocabulary; a control to
-actually try the thing; the chapter's own content; what to watch, meaning the wire strip
-docked at the bottom of the screen, its trace of which props were resolved or skipped and
+actually try the thing; the chapter's own content; what to watch, meaning the inspector
+beside the lesson, with its wire, its trace of which props were resolved or skipped and
 why, and the round trip diagram that lights up the path a visit actually took; a callout
 naming what you would have written in an API first application and what plays that role
 here, or why it no longer exists; a source view showing the exact server file and client
@@ -140,11 +140,26 @@ tools that keep the rest honest.
 31. The tools you actually use
 32. Types across the boundary
 
-## A note on how the wire strip works
+## Running the tests
 
-The strip captures every Inertia visit by patching the browser's transport at boot. The
+```
+php artisan test
+```
+
+166 tests, 1468 assertions. Run them with the dev server stopped.
+
+With `composer run dev` running, four tests fail reproducibly: two chapters that assert on
+session backed state, one on a row created mid test, and one on a history flag. The suite
+already isolates itself the usual way, an in memory SQLite database and an array session
+driver in `phpunit.xml`, so the shared resource is something else and the mechanism is not
+yet identified. Stopping the server makes all 166 pass, every time. This is a known open
+issue in this repository, not a flaky test.
+
+## A note on how the inspector captures the wire
+
+The inspector captures every Inertia visit by patching the browser's transport at boot. The
 installed client, `@inertiajs/core` 3.6.1, issues visits through `XMLHttpRequest`, not
-`fetch`, so that is the patch that actually lights up the strip; `window.fetch` is patched
+`fetch`, so that is the patch that actually feeds the inspector; `window.fetch` is patched
 too, purely as insurance in case a future Inertia release changes transport again. This is
 a blunt, low level teaching device built to show exactly what left the browser, header for
 header, independent of whatever code issued the call. It is not a pattern to copy into
@@ -187,7 +202,7 @@ Inertia 3 ships its own DevTools: a server side recorder plus a browser extensio
 server side half is on by default in a local environment (`APP_ENV=local`), or whenever
 `inertia.devtools.enabled` is set explicitly. To see it, install the official Inertia
 DevTools extension from the Chrome Web Store. It reads the entries this application's
-server has already been recording under `storage/inertia-devtools`. This lab's own wire
-strip is a different, complementary device: it needs no extension, sits directly next to
-each lesson, and is the one thing the official DevTools do not provide, a live report of
-which props the server resolved or skipped on each request and why.
+server has already been recording under `storage/inertia-devtools`. This lab's own
+inspector is a different, complementary device: it needs no extension, sits directly next
+to each lesson, and is the one thing the official DevTools do not provide, a live report
+of which props the server resolved or skipped on each request and why.
