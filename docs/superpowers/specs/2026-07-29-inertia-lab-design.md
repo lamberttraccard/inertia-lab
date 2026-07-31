@@ -18,7 +18,7 @@ The success criterion is narrow and testable: after an hour in the app, the read
 ## 2. Non-goals
 
 - No argued comparison against API + SPA: no benchmark, no scorecard, no "look how much less code" claim. The ADR already made that call and the lab does not relitigate it. This is distinct from the mental-model translation described in section 5.6, which is a teaching device: naming what an API-first developer would have written, so they can locate the equivalent here. Translating is in scope, arguing is not.
-- No SSR chapter. The target is an internal application with no SEO requirement. The README states this in one paragraph so the question does not resurface in review.
+- No SSR chapter. The lab runs locally and is never indexed, so there is no SEO requirement to demonstrate against. The README states this in one paragraph so the question does not resurface in review.
 - No production concerns: deployment, scaling, auth hardening, i18n.
 - No business domain. The sample domain is deliberately generic so that domain knowledge is never a prerequisite.
 - Not a component library, not a design system showcase.

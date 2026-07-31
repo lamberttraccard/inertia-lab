@@ -167,7 +167,7 @@ application code, and nothing else in this repository does it.
 
 ## Why there is no SSR chapter
 
-This is an internal application with no SEO requirement, so server side rendering is not
+This lab runs on your own machine and is never indexed, so server side rendering is not
 demonstrated here. Do not read that as Inertia lacking SSR: the framework supports it, and
 `config/inertia.php` even points at an SSR server in this project. This lab simply has no
 reason to exercise it, the same way it has no reason to exercise anything else outside its
