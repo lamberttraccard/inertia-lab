@@ -146,14 +146,25 @@ tools that keep the rest honest.
 php artisan test
 ```
 
-166 tests, 1468 assertions. Run them with the dev server stopped.
+167 tests, 1470 assertions. These pass whether `composer run dev` is running or not.
 
-With `composer run dev` running, four tests fail reproducibly: two chapters that assert on
-session backed state, one on a row created mid test, and one on a history flag. The suite
-already isolates itself the usual way, an in memory SQLite database and an array session
-driver in `phpunit.xml`, so the shared resource is something else and the mechanism is not
-yet identified. Stopping the server makes all 166 pass, every time. This is a known open
-issue in this repository, not a flaky test.
+A full page load in a test (a GET without the `X-Inertia` header) goes through
+`Inertia\Ssr\HttpGateway::dispatch()`, which decides whether to render server side by calling
+`Vite::isRunningHot()`, a plain check for the `public/hot` file Vite writes while its dev
+server is up. That check has no regard for `APP_ENV`: while `composer run dev` runs, the file
+is present and points at a live Vite dev server that also exposes an SSR endpoint, so a test's
+full page load was rendered there instead of embedding the props this request had just
+resolved, and the embedded page data it came back with did not always match those props. That
+was the shared resource behind four chapter tests failing only while the dev server was
+running: two on session backed state, one on a row deleted and recreated mid test, one on a
+history flag. `public/hot` is not covered by any of the isolation `phpunit.xml` already sets
+up (an in memory SQLite database, an array session driver), because SSR dispatch never
+consulted those in the first place.
+
+The fix disables SSR for the testing environment instead: `config/inertia.php` now reads
+`ssr.enabled` from `INERTIA_SSR_ENABLED`, matching the package's own default, and
+`phpunit.xml` sets that to `false`, alongside the database, session and cache overrides it
+already had. `tests/Feature/Lab/ScaffoldTest.php` asserts this stays in place.
 
 ## A note on how the inspector captures the wire
 
